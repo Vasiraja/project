@@ -1,0 +1,52 @@
+/* questions.component.css */
+.questions-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .question {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .question-serial {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .question-description {
+    margin-bottom: 10px;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  input[type='radio'] {
+    margin-right: 10px;
+  }
+  .btn-warning,.btn-primary,span{
+margin: 30px;;
+
+  }
+  .card .form-check-label ,.form-check,li{
+    cursor: pointer;
+  }
+  
+  .card .form-check-label:hover,.form-check:hover,li:hover {
+    background-color: #f5f5f5;
+  }
+  

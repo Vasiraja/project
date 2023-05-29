@@ -1,0 +1,25 @@
+.card {
+  float:left;
+  margin-left: 40px;
+   
+}
+.card:active{
+  cursor:progress;
+}
+.card:hover{
+  cursor:pointer;
+}
+
+ 
+
+ 
+  .txt-danger{
+    color:rgb(63, 75, 21);
+  }
+  .cid{
+    font-size: larger;
+    font-weight: bold;
+
+   }
+
+  

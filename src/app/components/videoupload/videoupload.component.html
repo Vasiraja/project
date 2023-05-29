@@ -1,0 +1,34 @@
+<div class="container">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Videoupload</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="message">* upload your GitHub video link and click send and process</p>
+      <form (ngSubmit)="onSubmit()" class="form">
+        <mat-form-field class="form-field">
+          <textarea matInput placeholder="video URL" [(ngModel)]="gitlink" name="gitlink" rows="3"></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">submit</button><br><br>
+      </form>
+    </mat-card-content>
+  </mat-card> 
+
+  <div class="card-content">
+    <h2 class="card-title">{{ stuid }}</h2>
+    <p class="card-subtitle"></p>
+    <div *ngIf="!transcription && submitting" class="loading">
+      <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="transcription" class="transcription">
+      <p class="card-description">
+        {{ transcription }}
+      </p>
+    </div>
+    <div class="button-group">
+      <button mat-raised-button color="warning" type="button" (click)="submit()">upload</button>
+      </div>
+  </div>
+</div>
+
+ 

@@ -1,0 +1,55 @@
+<form #loginForm="ngForm">
+  <div class="form-wrapper">
+    <div class="form">
+      <div class="card-body">
+        <p>updation works!</p>
+        <!-- <h6 class="card-title"  name="Institute">{{Institute}}</h6> -->
+        <input type="text" name="Institute" [(ngModel)]="Institute">
+        <p class="cid">{{ comp_id }}</p>
+
+        <div class="card-text">
+          <input type="time" name="timein" [(ngModel)]="AptbeginTime" placeholder="timein" class="form-control">
+          <input type="time" name="timeout" [(ngModel)]="AptendTime" placeholder="timeout" class="form-control">
+        </div> 
+
+        <!-- <input type="text" [(ngModel)]="comp_id" name="comp_id" class="form-control"> -->
+
+        <div class="short">
+          <div>
+            Reasoning: 
+            <input type="number" class="form-control" [(ngModel)]="no_ofReasoning" name="questions1" (input)="oninput1($event)" placeholder="no of questions"> x
+            <input type="number" class="form-control" [(ngModel)]="reasoningmark" name="marks1" (input)="oninput2($event)" placeholder="perMark">=
+          </div>
+          <p id="input3">{{result1}}</p>
+
+          <div>
+            EnglishAptitude: 
+            <input type="number" [(ngModel)]="no_ofEnglish" name="questions2" (input)="oninput3($event)" class="form-control" placeholder="no of questions"> x
+            <input type="number" [(ngModel)]="englishmark" name="marks2" (input)="oninput4($event)" class="form-control" placeholder="perMark">=
+          </div>
+          <p id="input3">{{result2}}</p>
+
+          <div>
+            Major: 
+            <input type="number" [(ngModel)]="no_ofmajor" name="questions3" (input)="oninput5($event)" class="form-control" placeholder="no of questions"> x
+            <input type="number" [(ngModel)]="majormark" name="marks3" (input)="oninput6($event)" class="form-control" placeholder="perMark">=
+          </div>
+          <p id="input3">{{result3}}</p>
+
+          <div>
+            Others: 
+            <input type="number" [(ngModel)]="no_ofothers" name="questions4" (input)="oninput7($event)" class="form-control" placeholder="no of questions"> x
+            <input type="number" [(ngModel)]="othermarks" name="marks4" (input)="oninput8($event)" class="form-control" placeholder="perMark">=
+          </div>
+          <p id="input3">{{result4}}</p>
+
+          <p>Total Marks: {{total}}</p>
+          <a>{{challenge_id}}</a>
+
+          <input type="submit" style="margin-left: 50px; margin-top: 40px;" (click)="publish()" class="btn btn-primary" value="publish"  >
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>

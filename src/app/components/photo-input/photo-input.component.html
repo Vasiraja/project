@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Insert and display an image in the console</title>
+  </head>
+  <body>
+    <input type="file" onchange="displayImage(event)" />
+    <script>
+      function displayImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const image = new Image();
+          image.src = e.target.result;
+          console.log(image);
+        };
+        reader.readAsDataURL(file);
+      }
+    </script>
+  </body>
+</html>
