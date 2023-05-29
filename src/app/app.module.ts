@@ -28,7 +28,6 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card'
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
-import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
 import { CardComponent } from './components/card/card.component';
  
  @NgModule({
@@ -49,7 +48,6 @@ import { CardComponent } from './components/card/card.component';
     NotEligibleComponent,
     NotLookingComponent,
      VideouploadComponent,
-     LoadingBarComponent,
      CardComponent],
   imports: [
      BrowserModule,
