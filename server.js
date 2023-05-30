@@ -722,15 +722,23 @@ app.get('/results/:stuid', (req, res) => {
           noofvoices+=data.toString();
           console.log("No of voices detected: ",noofvoices);
         });
+         
+        const pythonScript4=spawn('python',['fluency.py',videoUrl]);
+        let fluency='';
 
+        pythonScript4.stdout.on('data',(data)=>{
+          fluency+=data.toString();
+          console.log("Fluency Percentage: ",fluency,"%");
+        })
         // Handle script completion for both scripts
         const handleScriptCompletion = () => {
-          if (facedetectCount !== '' && notLookingCount !== '') {
+          if (facedetectCount !== '' && notLookingCount !== '' && fluency !=='' && noofvoices!=='') {
             console.log('All Python scripts executed successfully');
             const response = {
               facedetectCount,
               notLookingCount,
-              noofvoices
+              noofvoices,
+              fluency
             };
             // Send the response containing both outputs as JSON
             res.status(200).json(response);
@@ -772,10 +780,20 @@ app.get('/results/:stuid', (req, res) => {
             handleScriptError();
           }
         });
+
+        pythonScript4.on('close',(code)=>{
+          if(code===0){
+            console.log('fluency check python script executed successfully');
+            handleScriptCompletion();
+          }else{
+            handleScriptError();
+          }
+        });
         // Handle script errors for both scripts
         pythonScript1.on('error', handleScriptError);
         pythonScript2.on('error', handleScriptError);
         pythonScript3.on('error',handleScriptError);
+        pythonScript4.on('error',handleScriptError);
       } else {
         console.error('No video URL found in the database');
         res.sendStatus(500);
