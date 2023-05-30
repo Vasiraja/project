@@ -2,6 +2,7 @@ import moviepy.editor as mp
 import numpy as np
 from sklearn.cluster import KMeans
 import librosa
+import sys
 
 # Function to perform voice detection
 def detect_distinct_voices(video_path):
@@ -34,8 +35,9 @@ def detect_distinct_voices(video_path):
     return num_voices
 
 # Example usage
-video_file = "https://github.com/Vasiraja/videorefer/blob/main/WhatsApp%20Video%202023-05-23%20at%2011.31.08.mp4?raw=true"
+video_file=sys.argv[1]
+# video_file = "https://github.com/Vasiraja/videorefer/blob/main/WhatsApp%20Video%202023-05-23%20at%2011.31.08.mp4?raw=true"
 
 # Perform voice detection
 num_distinct_voices = detect_distinct_voices(video_file)
-print("Number of distinct voices:", num_distinct_voices)
+print(num_distinct_voices)

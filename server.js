@@ -715,13 +715,22 @@ app.get('/results/:stuid', (req, res) => {
           console.log('Not Looking Count:', notLookingCount);
         });
 
+        const pythonScript3=spawn('python',['voice_detection.py',videoUrl]);
+        let noofvoices='';
+
+        pythonScript3.stdout.on('data',(data)=>{
+          noofvoices+=data.toString();
+          console.log("No of voices detected: ",noofvoices);
+        });
+
         // Handle script completion for both scripts
         const handleScriptCompletion = () => {
           if (facedetectCount !== '' && notLookingCount !== '') {
-            console.log('Both Python scripts executed successfully');
+            console.log('All Python scripts executed successfully');
             const response = {
               facedetectCount,
-              notLookingCount
+              notLookingCount,
+              noofvoices
             };
             // Send the response containing both outputs as JSON
             res.status(200).json(response);
@@ -754,10 +763,19 @@ app.get('/results/:stuid', (req, res) => {
             handleScriptError();
           }
         });
-
+            
+        pythonScript3.on('close',(code)=>{
+          if(code===0){
+            console.log('voice detection python script executed successfully');
+            handleScriptCompletion();
+          }else{
+            handleScriptError();
+          }
+        });
         // Handle script errors for both scripts
         pythonScript1.on('error', handleScriptError);
         pythonScript2.on('error', handleScriptError);
+        pythonScript3.on('error',handleScriptError);
       } else {
         console.error('No video URL found in the database');
         res.sendStatus(500);
