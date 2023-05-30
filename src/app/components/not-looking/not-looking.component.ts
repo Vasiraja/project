@@ -44,6 +44,7 @@ export class NotLookingComponent {
 
 facedetectCount: string = '';
 notLookingCount: string = '';
+voicecount:string='';
 stuid:string='';
 isloading:boolean=true;
 constructor(private route: ActivatedRoute, private service: MyService) {}
@@ -65,6 +66,7 @@ getPythonResults() {
       this.isloading=false;
       this.facedetectCount = response.facedetectCount;
       this.notLookingCount = response.notLookingCount;
+      this.voicecount=response.noofvoices;
     
     },
     error: (error) => {
