@@ -2,8 +2,11 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser=require('body-parser');
- const exec = require('child_process').exec;
+const exec = require('child_process').exec;
+const WebSocket = require('ws');
 
+// Create a WebSocket server
+const wss = new WebSocket.Server({ port: 8080 });
 const fileUpload=require('express-fileupload');
  
 const { spawn } = require('child_process');
@@ -703,8 +706,16 @@ app.get('/results/:stuid', (req, res) => {
         pythonScript1.stdout.on('data', (data) => {
           facedetectCount += data.toString();
           console.log('Face Detection Count:', facedetectCount);
+       
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({
+              type: 'facedetect',
+              count: facedetectCount
+            }));
+          }
         });
-
+      });
         // Execute the second Python script
         const pythonScript2 = spawn('python', ['notlook.py', videoUrl]);
         let notLookingCount = '';
@@ -806,6 +817,13 @@ app.get('/results/:stuid', (req, res) => {
 });
 
 
+wss.on('connection', (ws) => {
+  console.log('WebSocket connection established');
+
+  ws.on('close', () => {
+    console.log('WebSocket connection closed');
+  });
+});
 
 
 const port = process.env.port || 3000;

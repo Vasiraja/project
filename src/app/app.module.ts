@@ -29,11 +29,10 @@ import {MatCardModule} from '@angular/material/card'
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { CardComponent } from './components/card/card.component';
- 
+  
  @NgModule({
   declarations: [
-    
-    AppComponent,
+     AppComponent,
     NewComponent,
     UpdationComponent,
     InstRegisterComponent,

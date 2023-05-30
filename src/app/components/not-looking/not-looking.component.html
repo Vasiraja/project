@@ -1,9 +1,15 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">We are getting your results please wait...</h5>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-sm-6">
-    <div class="card">
+    <div class="card" [ngClass]="{'answer-available': facedetectCount, 'no-answer': !facedetectCount}">
       <div class="card-body">
         <h5 class="card-title">No.Of faces Detected</h5>
-        <div *ngIf="!facedetectCount && isloading">
+        <div *ngIf="!facedetectCount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
         <div *ngIf="facedetectCount">
@@ -14,10 +20,10 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card">
+    <div class="card" [ngClass]="{'answer-available': notLookingCount, 'no-answer': !notLookingCount}">
       <div class="card-body">
         <h5 class="card-title">No.of not facing camera</h5>
-        <div *ngIf="!notLookingCount && isloading">
+        <div *ngIf="!notLookingCount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
         <div *ngIf="notLookingCount">
@@ -28,10 +34,10 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card">
+    <div class="card" [ngClass]="{'answer-available': voicecount, 'no-answer': !voicecount}">
       <div class="card-body">
         <h5 class="card-title">No.of voices detected</h5>
-        <div *ngIf="!voicecount && isloading">
+        <div *ngIf="!voicecount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
         <div *ngIf="voicecount">
@@ -42,10 +48,10 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card">
+    <div class="card" [ngClass]="{'answer-available': fluency, 'no-answer': !fluency}">
       <div class="card-body">
         <h5 class="card-title">Fluency Percentage</h5>
-        <div *ngIf="!fluency && isloading">
+        <div *ngIf="!fluency && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
         <div *ngIf="fluency">
