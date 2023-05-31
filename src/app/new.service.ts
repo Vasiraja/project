@@ -91,7 +91,7 @@ getEnglishQuestions(amount: number, difficulty: string): Observable<any> {
   const url = `https://opentdb.com/api.php?amount=${amount}&category=23&difficulty=${difficulty}&type=multiple`;
   return this.http.get(url);
 }
-
+       
 getComputerQuestions(amount: number, difficulty: string): Observable<any> {
   const url = `https://opentdb.com/api.php?amount=${amount}&category=18&difficulty=${difficulty}&type=multiple`;
   return this.http.get(url);

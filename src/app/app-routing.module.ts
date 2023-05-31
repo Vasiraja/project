@@ -14,6 +14,7 @@ import { QuestionsComponent } from './components/questions/questions.component';
 import { NotEligibleComponent } from './components/not-eligible/not-eligible.component';
 import { VideouploadComponent } from './components/videoupload/videoupload.component';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
   const routes: Routes = [
 {path:"tasks", component:NewComponent},
 {path: "update", component:UpdationComponent},
@@ -29,6 +30,7 @@ import { NotLookingComponent } from './components/not-looking/not-looking.compon
 // { path: 'login/:Inst_name', component: LoginComponent },
 {path: 'update-tasks' ,component:MergeComponent},
 // {path:'tasks/:challenge_id', redirectTo:'/tasks' ,pathMatch:'full'},
+{path:'dashboard',component:DashboardComponent},
  
 
 

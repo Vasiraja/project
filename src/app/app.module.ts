@@ -29,6 +29,7 @@ import {MatCardModule} from '@angular/material/card'
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { CardComponent } from './components/card/card.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
   
  @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { CardComponent } from './components/card/card.component';
     NotEligibleComponent,
     NotLookingComponent,
      VideouploadComponent,
-     CardComponent],
+     CardComponent,
+     DashboardComponent],
   imports: [
      BrowserModule,
      AppRoutingModule,

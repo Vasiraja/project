@@ -1,0 +1,257 @@
+/* Dashboard container */
+.dashboard-container {
+    display: flex;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f4f4f4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.navbar .menu {
+    position: relative;
+}
+
+.navbar {
+    display: none;
+    background-color: #ffffff;
+    padding: 10px;
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+    margin-top: 2px; /* Add margin-top to create a gap */
+    opacity: 0; /* Initially hide the submenu */
+    transition: opacity 0.3s ease-in-out; /* Add transition effect */
+}
+
+.navbar:hover .submenu {
+    display: block;
+    opacity: 1; /* Show the submenu with opacity transition */
+}
+
+.navbar.has-submenu:hover > a {
+    background-color: #f4f4f4;
+}
+
+.navbar.has-submenu:hover > a i {
+    color: #333333;
+}
+
+.navbar.submenu li {
+    margin-bottom: 5px;
+    list-style-type: none;
+}
+
+.navbar.submenu li a {
+    color: #333333;
+    text-decoration: none;
+}
+
+.navbar.submenu li a:hover {
+    text-decoration: none;
+}
+
+.navbar.submenu li:hover {
+    background-color: #f4f4f4;
+}
+
+.navbar .logo img {
+    height: 30px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.navbar a {
+    color: #333333;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #ff0000;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .menu li {
+    margin-bottom: 20px;
+}
+
+.sidebar .menu li a {
+    display: flex;
+    align-items: center;
+    color: #333333;
+    text-decoration: none;
+}
+
+.sidebar .menu li.active a {
+    font-weight: bold;
+}
+
+.sidebar .menu li a i {
+    margin-right: 10px;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.main-content header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.main-content .user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.main-content .notifications {
+    position: relative;
+}
+
+.main-content .notifications i {
+    font-size: 20px;
+}
+
+.main-content .notifications .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ed1a22;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 50%;
+}
+
+.main-content h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.main-content p {
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Badge */
+.badge {
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 12px;
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    background-color: #ffffff;
+    padding: 10px;
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+    margin-top: 2px; /* Add margin-top to create a gap */
+    opacity: 0; /* Initially hide the submenu */
+    transition: opacity 0.3s ease-in-out; /* Add transition effect */
+}
+
+.has-submenu:hover .submenu {
+    display: block;
+    opacity: 1; /* Show the submenu with opacity transition */
+}
+
+.has-submenu:hover > a {
+    background-color: #f4f4f4;
+}
+
+.has-submenu:hover > a i {
+    color: #333333;
+}
+
+.submenu li {
+    margin-bottom: 5px;
+    list-style-type: none;
+}
+
+.submenu li a {
+    color: #333333;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    text-decoration: none;
+}
+
+.submenu li:hover {
+    background-color: #f4f4f4;
+}
+
+.footer-content {
+    position: relative;
+    top: 10px;
+    color: white;
+    background-color: black;
+}
+
+.footer-links li a {
+    text-decoration: none;
+    color: white;
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-right: 600px;
+}
+
+.image-container img {
+    display: inline-block;
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-container:hover img {
+    transform: scale(1.05);
+}
+ 
