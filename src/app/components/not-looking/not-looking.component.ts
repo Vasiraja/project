@@ -46,6 +46,8 @@ facedetectCount: string = '';
 notLookingCount: string = '';
 voicecount:string='';
 fluency:string='';
+spell:string='';
+grammer:string='';
 stuid:string='';
 
 isloading:boolean=true;
@@ -70,6 +72,8 @@ getPythonResults() {
       this.notLookingCount = response.notLookingCount;
       this.voicecount=response.noofvoices;
       this.fluency=response.fluency;
+      this.spell=response.spell;
+      this.grammer=response.grammer;
     
     },
     error: (error) => {

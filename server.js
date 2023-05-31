@@ -681,8 +681,6 @@ app.get('/transcribe-video/:stuid', async (req, res) => {
 //   }
 // });
 
-
-
 app.get('/results/:stuid', (req, res) => {
   try {
     const stuid = req.params.stuid;
@@ -715,37 +713,64 @@ app.get('/results/:stuid', (req, res) => {
           console.log('Not Looking Count:', notLookingCount);
         });
 
-        const pythonScript3=spawn('python',['voice_detection.py',videoUrl]);
-        let noofvoices='';
+        const pythonScript3 = spawn('python', ['voice_detection.py', videoUrl]);
+        let noofvoices = '';
 
-        pythonScript3.stdout.on('data',(data)=>{
-          noofvoices+=data.toString();
-          console.log("No of voices detected: ",noofvoices);
+        pythonScript3.stdout.on('data', (data) => {
+          noofvoices += data.toString();
+          console.log('No of voices detected: ', noofvoices);
         });
-         
-        const pythonScript4=spawn('python',['fluency.py',videoUrl]);
-        let fluency='';
 
-        pythonScript4.stdout.on('data',(data)=>{
-          fluency+=data.toString();
-          console.log("Fluency Percentage: ",fluency,"%");
-        })
-        // Handle script completion for both scripts
+        const pythonScript4 = spawn('python', ['fluency.py', videoUrl]);
+        let fluency = '';
+
+        pythonScript4.stdout.on('data', (data) => {
+          fluency += data.toString();
+          console.log('Fluency Percentage: ', fluency, '%');
+        });
+
+        const pythonScript5 = spawn('python', ['mistakes.py', videoUrl]);
+let spell = '';
+let grammer = '';
+pythonScript5.stdout.on('data', (data) => {
+  const output = data.toString();
+  const lines = output.split('\n');
+
+  if (lines[0].startsWith('Spelling Errors:')) {
+    spell = lines.slice(1).join('\n');
+  }
+
+  // Check if the line contains grammatical errors
+  if (lines[0].startsWith('Grammatical Errors:')) {
+    grammer = lines.slice(1).join('\n');
+  }
+});
+
+        // Handle script completion for all Python scripts
         const handleScriptCompletion = () => {
-          if (facedetectCount !== '' && notLookingCount !== '' && fluency !=='' && noofvoices!=='') {
+          if (
+            facedetectCount !== '' &&
+            notLookingCount !== '' &&
+            fluency !== '' &&
+            noofvoices !== ''  &&
+            spell !== '' &&
+            grammer !== ''
+          ) {
             console.log('All Python scripts executed successfully');
             const response = {
               facedetectCount,
               notLookingCount,
               noofvoices,
-              fluency
+              fluency,mistakes,
+              spell,
+              grammer
             };
-            // Send the response containing both outputs as JSON
+            // Send the response containing all outputs as JSON
             res.status(200).json(response);
           }
         };
 
-        // Handle script errors for both scripts
+        // Handle script errors for all Python scripts
         const handleScriptError = () => {
           console.error('Python script execution failed');
           // Handle the failure case
@@ -771,29 +796,44 @@ app.get('/results/:stuid', (req, res) => {
             handleScriptError();
           }
         });
-            
-        pythonScript3.on('close',(code)=>{
-          if(code===0){
-            console.log('voice detection python script executed successfully');
+
+        // Handle script completion for the third Python script
+        pythonScript3.on('close', (code) => {
+          if (code === 0) {
+            console.log('Voice detection Python script executed successfully');
             handleScriptCompletion();
-          }else{
+          } else {
             handleScriptError();
           }
         });
 
-        pythonScript4.on('close',(code)=>{
-          if(code===0){
-            console.log('fluency check python script executed successfully');
+        // Handle script completion for the fourth Python script
+        pythonScript4.on('close', (code) => {
+          if (code === 0) {
+            console.log('Fluency check Python script executed successfully');
             handleScriptCompletion();
-          }else{
+          } else {
             handleScriptError();
           }
         });
-        // Handle script errors for both scripts
+
+        // Handle script completion for the fifth Python script
+        pythonScript5.on('close', (code) => {
+          if (code === 0) {
+            console.log('Mistakes Python script successfully executed');
+            handleScriptCompletion();
+          } else {
+            handleScriptError();
+          }
+        });
+
+        // Handle script errors for all Python scripts
         pythonScript1.on('error', handleScriptError);
         pythonScript2.on('error', handleScriptError);
-        pythonScript3.on('error',handleScriptError);
-        pythonScript4.on('error',handleScriptError);
+        pythonScript3.on('error', handleScriptError);
+        pythonScript4.on('error', handleScriptError);
+        pythonScript5.on('error',handleScriptError);
+        // pythonScript5.on('error', handleScriptError);
       } else {
         console.error('No video URL found in the database');
         res.sendStatus(500);

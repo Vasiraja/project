@@ -8,7 +8,7 @@
   <div class="col-sm-6">
     <div class="card" [ngClass]="{'answer-available': facedetectCount, 'no-answer': !facedetectCount}">
       <div class="card-body">
-        <h5 class="card-title">No.Of faces Detected</h5>
+        <h5 class="card-title">No. of faces Detected</h5>
         <div *ngIf="!facedetectCount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
@@ -22,7 +22,7 @@
   <div class="col-sm-6">
     <div class="card" [ngClass]="{'answer-available': notLookingCount, 'no-answer': !notLookingCount}">
       <div class="card-body">
-        <h5 class="card-title">No.of not facing camera</h5>
+        <h5 class="card-title">No. of not facing camera</h5>
         <div *ngIf="!notLookingCount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
@@ -36,7 +36,7 @@
   <div class="col-sm-6">
     <div class="card" [ngClass]="{'answer-available': voicecount, 'no-answer': !voicecount}">
       <div class="card-body">
-        <h5 class="card-title">No.of voices detected</h5>
+        <h5 class="card-title">No. of voices detected</h5>
         <div *ngIf="!voicecount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
@@ -56,6 +56,36 @@
         </div>
         <div *ngIf="fluency">
           <p class="card-text">{{fluency}}%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card" [ngClass]="{'answer-available': spell, 'no-answer': !spell}">
+      <div class="card-body">
+        <h5 class="card-title">Spelling Mistakes</h5>
+        <div *ngIf="!spell && isloading" class="loading-spinner">
+          <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
+        </div>
+        <div *ngIf="spell">
+          <p class="card-text">{{spell}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="card" [ngClass]="{'answer-available': grammer, 'no-answer': !grammer}">
+      <div class="card-body">
+        <h5 class="card-title">Grammar Mistakes</h5>
+        <div *ngIf="!grammer && isloading" class="loading-spinner">
+          <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
+        </div>
+        <div *ngIf="grammer">
+          <p class="card-text">{{grammer}}</p>
         </div>
       </div>
     </div>

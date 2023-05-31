@@ -1,9 +1,8 @@
 import sys
 import requests
 from sapling import SaplingClient
-# audio_url = sys.argv[1]
-audio_url='https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
-
+# audio_url=sys.argv[1]
+audio_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
 endpoint = "https://api.assemblyai.com/v2/transcript"
 json = {
     "audio_url": audio_url,
@@ -24,17 +23,10 @@ while True:
 response = requests.get(endpoint_transcribed, headers=headers)
 text = response.json()["text"]
 
- 
-
- 
 # Initialize Sapling client with API key
-api_key ='RP3ABL74AJ0TQ1DNMFW7SWKEPKW9VF37'
+api_key = 'RP3ABL74AJ0TQ1DNMFW7SWKEPKW9VF37'
 client = SaplingClient(api_key=api_key)
 
-
-
-# Input text to check
- 
 # Get edits from Sapling API
 edits = client.edits(text)
 
@@ -50,37 +42,26 @@ for edit in edits:
         grammatical_errors.append(edit)
 
 # Print out the spelling errors with correct replacements
-print("Spelling Errors:")
-for error in spelling_errors:
-    print("Sentence:", error['sentence'])
-    print("Error Type:", error['general_error_type'])
-    print("Incorrect Word:", error['sentence'][error['start']:error['end']])
-    print("Replacement:", error['replacement'])
-    print()
+# print("Spelling Errors:")
+# for error in spelling_errors:
+#     print("Sentence:", error['sentence'])
+#     print("Error Type:", error['general_error_type'])
+#     print("Incorrect Word:", error['sentence'][error['start']:error['end']])
+#     print("Replacement:", error['replacement'])
+#     print()
 
-# Print out the grammatical errors with correct replacements
-print("Grammatical Errors:")
-for error in grammatical_errors:
-    print("Sentence:", error['sentence'])
-    print("Error Type:", error['general_error_type'])
-    print("Incorrect Phrase:", error['sentence'][error['start']:error['end']])
-    print("Replacement:", error['replacement'])
- 
+# # Print out the grammatical errors with correct replacements
+# print("Grammatical Errors:")
+# for error in grammatical_errors:
+#     print("Sentence:", error['sentence'])
+#     print("Error Type:", error['general_error_type'])
+#     print("Incorrect Phrase:", error['sentence'][error['start']:error['end']])
+#     print("Replacement:", error['replacement'])
+#     print()
 
-#  Send transcription text to Node.js
-# url = "http://localhost:3000/transcription"
+# Count the number of spelling and grammatical errors
+num_spelling_errors = len(spelling_errors)
+num_grammatical_errors = len(grammatical_errors)
 
-
-# response1 = requests.post(url, json={"text": text})
-
-# if response1.status_code == 200:
-#     print("Transcription text successfully sent to Node.js.")
-# else:
-#     print("Error: Could not send transcription text to Node.js.")
-
-
-
-
-# Print the response data
-# print(response_json)
-# print(response)
+print(num_spelling_errors)
+print(num_grammatical_errors)

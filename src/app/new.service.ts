@@ -8,8 +8,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
   providedIn: 'root'
 })
 export class MyService {
-   private webSocketSubject: WebSocketSubject<any> | undefined;
-
+ 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -112,17 +111,7 @@ getPythonResults(stuid: string) {
   return this.http.get(url);
 }
 
-// getfacedetect(stuid: string): Observable<any> {
-//   const url = `${this.vidurl}/detect-faces/${stuid}`;
-//   return this.http.get(url);
-// }
-
-// getNotLookingCount(stuid: string): Observable<any>{
-//   const url = `${this.vidurl}/notlook/${stuid}`;
-//   return this.http.get(url);
-// }
-
-
+ 
 
 }
   
