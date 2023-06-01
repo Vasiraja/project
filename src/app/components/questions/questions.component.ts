@@ -199,6 +199,11 @@ export class QuestionsComponent implements OnInit {
   }
   return false;
 }
+ 
+jump(){
+  this.router.navigate(['/videoupload'],{queryParams:{stuid:this.stuid}});
+
+}
 
   }
   

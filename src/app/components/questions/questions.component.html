@@ -93,3 +93,5 @@
 <button class="btn btn-primary" [disabled]="currentQuestionIndex === 0" (click)="previousQuestion()">Previous</button>
 <button class="btn btn-primary" [disabled]="!isCurrentQuestionAnswered()" (click)="nextQuestion(selectedTab)">Next</button>
 <button class="btn btn-primary" [disabled]="!isQuizFinished" (click)="finishQuiz()">Submit</button>
+
+<button class="btn btn-secondary" (click)="jump()">finish all</button>

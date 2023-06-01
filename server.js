@@ -132,18 +132,25 @@ app.post('/api/update/:taskId', (req, res) => {
       console.log(error);
       res.send({ message: error });
     } else {
-      res.send({message: "Insertion Success"});   
+      res.send({ message: "Insertion Success" });   
     }
   });
 });
 
 
- 
-
 app.put('/api/challenges/:challenge_id', (req, res) => {
   const challenge_id = req.params.challenge_id;
   const task = req.body;
 
+  // Calculate the total marks
+  const reasontotal = task.no_ofReasoning * task.reasoningmark;
+  const englishtotal = task.no_ofEnglish * task.englishmark;
+  const majortotal = task.no_ofmajor * task.majormark;
+  const othermark = task.others * task.othermarks;
+  const total = task.no_ofReasoning + task.no_ofEnglish + task.no_ofmajor + task.others;
+  const totalmarks = reasontotal + englishtotal + majortotal + othermark;
+
+  // Update the task in the database
   connection.query('UPDATE challenges SET ? WHERE challenge_id = ?', [task, challenge_id], (err, result) => {
     if (err) {
       console.log('Error updating task:', err);
@@ -153,32 +160,27 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
       res.status(404).send(`Task with challenge_id ${challenge_id} not found`);
     } else {
       console.log(`Task with challenge_id ${challenge_id} updated successfully`);
-      res.status(200).send({message:`Task with challenge_id ${challenge_id} updated successfully`});
+       res.status(200).send({ message: `Task with challenge_id ${challenge_id} updated successfully` });
+       
     }
   });
-});
 
-app.post('/transcription', (req, res) => {
-  // Extract the transcription text from the request body
-  const text = req.body.text;
+  // Insert the calculated total marks into the database
+  const sql = `INSERT INTO challenges 
+    (total, totalmarks) 
+    VALUES 
+    (${total},${totalmarks})`;
    
-  // Respond with a success message
-  const sql = "INSERT INTO text (text) VALUES (?)";
-   const values = [text];
- 
-  connection.query(sql, values, (error, response) => {
+
+  connection.query(sql, (error, result) => {
     if (error) {
-      res.send({ message: "There is an issue" });
+      console.log(error);
+      res.send({ message: error });
     } else {
-      res.send({ message: "Text inserted successfully" });
+      res.send({ message: "Insertion Success" });
     }
   });
 });
-
-
-
-
-
   // app.get('/transcription/:textid', (req, res) => {
   //   const {textid}=req.params;
   //    const sql = `SELECT text FROM text where textid = '${textid}'`;
@@ -320,7 +322,6 @@ app.post('/api/stulogin', (req, res) => {
   });
 });
 
-
 app.post('/api/sturegister', (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
@@ -330,7 +331,7 @@ app.post('/api/sturegister', (req, res) => {
   const confirmpassword = req.body.confirmpassword;
 
   // Insert registration data into database
-  const query = `INSERT INTO sturegistration (name, email, gender, phone, password, confirmpassword) VALUES (?, ?, ?, ?, ?,?)`;
+  const query = `INSERT INTO sturegistration (name, email, gender, phone, password, confirmpassword) VALUES (?, ?, ?, ?, ?, ?)`;
   connection.query(query, [name, email, gender, phone, password, confirmpassword], (err, result) => {
     if (err) {
       console.error('Error inserting data into MySQL database: ', err);
@@ -341,7 +342,6 @@ app.post('/api/sturegister', (req, res) => {
     res.status(200).json({ message: 'Successfully registered student' });
   });
 });
-
 
 app.get('/api/challenges', (req, res) => {
    const query = `SELECT * FROM challenges`;

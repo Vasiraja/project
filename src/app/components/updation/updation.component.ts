@@ -115,10 +115,9 @@ export class UpdationComponent implements OnInit {
   totalval() {
     this.totals = this.result1 + this.result2 + this.result3 + this.result4;
   }
-
-  publish(userId: string):void {
+  publish(userId: string): void {
     console.log("publish clicked", userId);
-
+  
     const data = {
       Institute: this.Institute,
       AptbeginTime: this.AptbeginTime,
@@ -126,7 +125,7 @@ export class UpdationComponent implements OnInit {
       no_ofReasoning: this.no_ofReasoning,
       no_ofEnglish: this.no_ofEnglish,
       no_ofmajor: this.no_ofmajor,
-      no_ofothers: this.no_ofothers,
+      others: this.no_ofothers,
       reasoningmark: this.reasoningmark,
       englishmark: this.englishmark,
       majormark: this.majormark,
@@ -134,11 +133,12 @@ export class UpdationComponent implements OnInit {
       total: this.total,
       totalmarks: this.totalmarks
     };
-
+  
     this.service.publishdata(data, userId).subscribe(res => {
       console.log(res);
     });
   }
+  
 
   update(challenge_id:string): void {
     const task = {
@@ -154,8 +154,7 @@ export class UpdationComponent implements OnInit {
       englishmark: this.englishmark,
       majormark: this.majormark,
       othermarks: this.othermarks,
-      total: this.total,
-      totalmarks: this.totalmarks
+      
     };
 
     this.service.edittask(task, challenge_id).subscribe(res =>{
