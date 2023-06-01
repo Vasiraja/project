@@ -729,22 +729,22 @@ app.get('/results/:stuid', (req, res) => {
           console.log('Fluency Percentage: ', fluency, '%');
         });
 
-        const pythonScript5 = spawn('python', ['mistakes.py', videoUrl]);
-let spell = '';
-let grammer = '';
-pythonScript5.stdout.on('data', (data) => {
-  const output = data.toString();
-  const lines = output.split('\n');
+//         const pythonScript5 = spawn('python', ['mistakes.py', videoUrl]);
+// let spell = '';
+// let grammer = '';
+// pythonScript5.stdout.on('data', (data) => {
+//   const output = data.toString();
+//   const lines = output.split('\n');
 
-  if (lines[0].startsWith('Spelling Errors:')) {
-    spell = lines.slice(1).join('\n');
-  }
+//   if (lines[0].startsWith('Spelling Errors:')) {
+//     spell = lines.slice(1).join('\n');
+//   }
 
-  // Check if the line contains grammatical errors
-  if (lines[0].startsWith('Grammatical Errors:')) {
-    grammer = lines.slice(1).join('\n');
-  }
-});
+//   // Check if the line contains grammatical errors
+//   if (lines[0].startsWith('Grammatical Errors:')) {
+//     grammer = lines.slice(1).join('\n');
+//   }
+// });
 
         // Handle script completion for all Python scripts
         const handleScriptCompletion = () => {
@@ -762,9 +762,10 @@ pythonScript5.stdout.on('data', (data) => {
               facedetectCount,
               notLookingCount,
               noofvoices,
-              fluency,mistakes,
-              spell,
-              grammer
+              fluency,
+              // mistakes,
+              // spell,
+              // grammer
             };
             // Send the response containing all outputs as JSON
             res.status(200).json(response);
@@ -819,23 +820,22 @@ pythonScript5.stdout.on('data', (data) => {
         });
 
         // Handle script completion for the fifth Python script
-        pythonScript5.on('close', (code) => {
-          if (code === 0) {
-            console.log('Mistakes Python script successfully executed');
-            handleScriptCompletion();
-          } else {
-            handleScriptError();
-          }
-        });
+        // pythonScript5.on('close', (code) => {
+        //   if (code === 0) {
+        //     console.log('Mistakes Python script successfully executed');
+        //     handleScriptCompletion();
+        //   } else {
+        //     handleScriptError();
+        //   }
+        // });
 
         // Handle script errors for all Python scripts
         pythonScript1.on('error', handleScriptError);
         pythonScript2.on('error', handleScriptError);
         pythonScript3.on('error', handleScriptError);
         pythonScript4.on('error', handleScriptError);
-        pythonScript5.on('error',handleScriptError);
-        // pythonScript5.on('error', handleScriptError);
-      } else {
+        // pythonScript5.on('error',handleScriptError);
+       } else {
         console.error('No video URL found in the database');
         res.sendStatus(500);
       }

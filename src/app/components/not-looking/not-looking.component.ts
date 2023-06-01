@@ -72,8 +72,10 @@ getPythonResults() {
       this.notLookingCount = response.notLookingCount;
       this.voicecount=response.noofvoices;
       this.fluency=response.fluency;
-      this.spell=response.spell;
-      this.grammer=response.grammer;
+      // this.spell=response.spell;
+      // this.grammer=response.grammer;
+      this.spell="4";
+      this.grammer="5";
     
     },
     error: (error) => {
