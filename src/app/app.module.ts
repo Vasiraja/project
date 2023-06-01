@@ -25,14 +25,14 @@ import { NotEligibleComponent } from './components/not-eligible/not-eligible.com
 import { VideouploadComponent } from './components/videoupload/videoupload.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card'
+import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { CardComponent } from './components/card/card.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserdetailsComponent } from './components/userdetails/userdetails.component';
 import {MatTableModule} from '@angular/material/table';
-
+  
  @NgModule({
   declarations: [
      AppComponent,
@@ -65,7 +65,7 @@ import {MatTableModule} from '@angular/material/table';
   MatButtonModule,
   MatCardModule,
   MatTableModule,
-   
+  
  
   MatProgressSpinnerModule,
   BrowserAnimationsModule  ],
