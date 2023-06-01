@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MyService } from 'src/app/new.service';
+ 
 
 @Component({
   selector: 'app-not-looking',

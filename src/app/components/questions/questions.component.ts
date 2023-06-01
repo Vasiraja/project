@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute,Router} from '@angular/router';
 import { MyService } from 'src/app/new.service';
 
 interface Question {
@@ -28,7 +28,6 @@ export class QuestionsComponent implements OnInit {
   selectedTab: any;
   isQuizFinished: boolean = false;
   quizScore: number = 0;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,

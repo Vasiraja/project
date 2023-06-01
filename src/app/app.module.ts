@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { MergeComponent } from './components/merge/merge.component';
 import { PhotoInputComponent } from './components/photo-input/photo-input.component';
-import { WebcamModule } from 'ngx-webcam';
 import { TranscriptionComponent } from './components/transcription/transcription.component';
 import { StuRegisterComponent } from './components/stu-register/stu-register.component';
 import { StuLoginComponent } from './components/stu-login/stu-login.component';
@@ -25,7 +24,7 @@ import { NotEligibleComponent } from './components/not-eligible/not-eligible.com
 import { VideouploadComponent } from './components/videoupload/videoupload.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import {MatCardModule} from '@angular/material/card'
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { CardComponent } from './components/card/card.component';
@@ -58,7 +57,6 @@ import {MatTableModule} from '@angular/material/table';
      AppRoutingModule,
      HttpClientModule,
       FormsModule,
-    WebcamModule,
   MatTabsModule,
   MatIconModule,
   MatInputModule,
