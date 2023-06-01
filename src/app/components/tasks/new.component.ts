@@ -11,16 +11,16 @@ import { ActivatedRoute ,Router} from '@angular/router';
 export class NewComponent implements OnInit {
   tasks: tasks[] = [];
   dec = 2;
-  userId = ''; // set default value to empty string
-  challenge_id = '';
+   // set default value to empty string
+   userId=''
   edit='';
    task:any={};
+  
   constructor(private myService: MyService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.challenge_id=params['challenge_id'];
-      this.userId = params['userId']; // set userId to the value of "userId" query parameter, or empty string if it is null
+       this.userId = params['userId']; // set userId to the value of "userId" query parameter, or empty string if it is null
       this.getValues();
     });
   
@@ -28,9 +28,11 @@ export class NewComponent implements OnInit {
 
   getValues(): void {
     this.myService.getValues(this.userId).subscribe(tasks => this.tasks = tasks);
+
   }
 
-  deleteTask(challenge_id: string): void {
+  deleteTask(challenge_id: string): void {     
+
     this.myService.deleteTask(challenge_id).subscribe({
       next: () => {
         console.log('Task deleted successfully');
@@ -45,13 +47,20 @@ export class NewComponent implements OnInit {
     });
   }
 
- edittasks(challenge_id:string): void {
-  challenge_id=this.task.challenge_id;
-    this.myService.edittask(this.tasks,this.challenge_id).subscribe(() => {
-      console.log('Task updated successfully');
-      this.router.navigate(['/tasks']);
-    });
+
+  jump(challenge_id:string):void{
+
+    this.router.navigate(['/update'],{queryParams:{challenge_id:challenge_id,userId:this.userId}})
+
+
+
   }
+  jumpuser(userId:string):void{
+    this.router.navigate(['/update'],{queryParams:{userId:userId}})
+
+  }
+
   
+
   
 }

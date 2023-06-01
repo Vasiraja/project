@@ -21,5 +21,27 @@
     font-weight: bold;
 
    }
+   .btn-primary {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    position: absolute;
+    right:20px;
+    overflow: hidden;
+  }
+  
+  .btn-primary::before {
+    content: '+';
+    transition: transform 0.2s ease-out;
 
+  }
+  
+  .btn-primary:hover::before {
+    content: 'Add New Challenge';
+    transform: translate(-50%, -50%);
+
+  }
   

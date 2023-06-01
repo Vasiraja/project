@@ -42,15 +42,13 @@ private vidurl='http://localhost:3000';
     const login = `http://localhost:3000/api/login/${Inst_name}`;
     return this.http.post(login, data);
   }
-
-  publishdata(data: any, taskId: string): Observable<any> {
-    const apiUrl = `http://localhost:3000/api/update/'${taskId}'`;
+  publishdata(data: any, userId: string): Observable<any> {
+    const apiUrl = `http://localhost:3000/api/update/${userId}`;
     return this.http.post(apiUrl, data);
-  
   }
-  edittask(task: any,challenge_id:any){
-    const editurl=`http://localhost:3000/api/challenges/:'${challenge_id}'`;
-    return this.http.put(editurl,task);
+  edittask(task: any, challenge_id: string): Observable<any> {
+    const editurl = `http://localhost:3000/api/challenges/${challenge_id}`;
+    return this.http.put(editurl, task);
   }
 
   getText(textId: string): Observable<any> {

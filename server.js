@@ -153,7 +153,7 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
       res.status(404).send(`Task with challenge_id ${challenge_id} not found`);
     } else {
       console.log(`Task with challenge_id ${challenge_id} updated successfully`);
-      res.status(200).send(`Task with challenge_id ${challenge_id} updated successfully`);
+      res.status(200).send({message:`Task with challenge_id ${challenge_id} updated successfully`});
     }
   });
 });
@@ -752,9 +752,10 @@ pythonScript5.stdout.on('data', (data) => {
             facedetectCount !== '' &&
             notLookingCount !== '' &&
             fluency !== '' &&
-            noofvoices !== ''  &&
-            spell !== '' &&
-            grammer !== ''
+            noofvoices !== ''  
+            // &&
+            // spell !== '' &&
+            // grammer !== ''
           ) {
             console.log('All Python scripts executed successfully');
             const response = {
