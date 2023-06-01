@@ -15,6 +15,7 @@ import { NotEligibleComponent } from './components/not-eligible/not-eligible.com
 import { VideouploadComponent } from './components/videoupload/videoupload.component';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UserdetailsComponent } from './components/userdetails/userdetails.component';
   const routes: Routes = [
 {path:"tasks", component:NewComponent},
 {path: "update", component:UpdationComponent},
@@ -32,7 +33,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 // {path:'tasks/:challenge_id', redirectTo:'/tasks' ,pathMatch:'full'},
 {path:'dashboard',component:DashboardComponent},
  
-
+{path:'userdetails',component:UserdetailsComponent},
 
 //______________________Student Routes________________________________________//
 {path:'sturegister',component:StuRegisterComponent},

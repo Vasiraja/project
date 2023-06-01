@@ -19,12 +19,16 @@
 
      <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor+task.others*task.othermarks}}</div></div>
      <button class="btn btn-danger" style="margin: 20px;" (click)="deleteTask(task.challenge_id)">Delete </button>
-     <button class="btn btn-success" (click)="jump(task.challenge_id)">Update</button>   
+     <button class="btn btn-success" (click)="jump(task.challenge_id)">Update</button>  
+
 
     </div>
 
-</div>
-    <button class="btn btn-primary" (click)="jumpuser(userId)"></button>
+</div>    <button class="btn btn-primary" (click)="jumpuser(userId)"></button>
+<br><br><br>
+<button><mat-icon aria-hidden="false" aria-label="view icon" fontIcon="eye"></mat-icon></button>  
+ 
+ 
 
  
 

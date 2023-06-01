@@ -30,7 +30,9 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { CardComponent } from './components/card/card.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-  
+import { UserdetailsComponent } from './components/userdetails/userdetails.component';
+import {MatTableModule} from '@angular/material/table';
+
  @NgModule({
   declarations: [
      AppComponent,
@@ -49,7 +51,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NotLookingComponent,
      VideouploadComponent,
      CardComponent,
-     DashboardComponent],
+     DashboardComponent,
+     UserdetailsComponent],
   imports: [
      BrowserModule,
      AppRoutingModule,
@@ -61,7 +64,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
   MatInputModule,
   MatButtonModule,
   MatCardModule,
-  
+  MatTableModule,
+   
  
   MatProgressSpinnerModule,
   BrowserAnimationsModule  ],

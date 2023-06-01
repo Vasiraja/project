@@ -9,6 +9,9 @@ import { ActivatedRoute ,Router} from '@angular/router';
   styleUrls: ['./new.component.css']
 })
 export class NewComponent implements OnInit {
+view() {
+throw new Error('Method not implemented.');
+}
   tasks: tasks[] = [];
   dec = 2;
    // set default value to empty string

@@ -31,7 +31,10 @@
     position: absolute;
     right:20px;
     overflow: hidden;
+    margin:10px;
   }
+  
+  
   
   .btn-primary::before {
     content: '+';

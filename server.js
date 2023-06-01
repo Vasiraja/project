@@ -28,6 +28,15 @@ const connection = mysql.createConnection({
 });
 
 connection.connect();
+
+app.get('/userdetails/:userId', (req, res) => {
+  const {userId}=req.params; 
+  const query = `SELECT * FROM userdetails where userId = '${userId}'`;
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
  
 
 app.get('/api/challenges/:userId', (req, res) => {

@@ -18,9 +18,12 @@ private vidurl='http://localhost:3000';
   constructor(private http: HttpClient) {}
 
 
+ getdetails(){
+  const url='http://localhost:3000/userdetails';
+  return this.http.get(url);
 
 
-
+ }
   
   getValues(userId: string): Observable<tasks[]> {
     const apiUrl = `http://localhost:3000/api/challenges/${userId}`;
