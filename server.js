@@ -174,21 +174,21 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
     }
   });
 
-  // Insert the calculated total marks into the database
-  const sql = `INSERT INTO challenges 
-    (total, totalmarks) 
-    VALUES 
-    (${total},${totalmarks})`;
+  // // Insert the calculated total marks into the database
+  // const sql = `INSERT INTO challenges 
+  //   (total, totalmarks) 
+  //   VALUES 
+  //   (${total},${totalmarks})`;
    
 
-  connection.query(sql, (error, result) => {
-    if (error) {
-      console.log(error);
-      res.send({ message: error });
-    } else {
-      res.send({ message: "Insertion Success" });
-    }
-  });
+  // connection.query(sql, (error, result) => {
+  //   if (error) {
+  //     console.log(error);
+  //     res.send({ message: error });
+  //   } else {
+  //     res.send({ message: "Insertion Success" });
+  //   }
+  // });
 });
   // app.get('/transcription/:textid', (req, res) => {
   //   const {textid}=req.params;

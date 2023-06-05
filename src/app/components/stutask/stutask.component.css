@@ -1,0 +1,11 @@
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 4 columns */
+    grid-gap: 20px; /* Space between cards */
+    margin:30px;
+    
+  }
+  btn-danger{
+    position:absolute;
+    top:10px;
+  }

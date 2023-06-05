@@ -31,6 +31,8 @@ import { CardComponent } from './components/card/card.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserdetailsComponent } from './components/userdetails/userdetails.component';
 import {MatTableModule} from '@angular/material/table';
+import { LogoutComponent } from './components/logout/logout.component';
+ 
   
  @NgModule({
   declarations: [
@@ -51,8 +53,8 @@ import {MatTableModule} from '@angular/material/table';
      VideouploadComponent,
      CardComponent,
      DashboardComponent,
-     UserdetailsComponent],
-  imports: [
+     UserdetailsComponent,
+        ],  imports: [
      BrowserModule,
      AppRoutingModule,
      HttpClientModule,

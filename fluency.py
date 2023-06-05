@@ -2,6 +2,8 @@ import sys
 import requests
 from sapling import SaplingClient
 audio_url = sys.argv[1]
+# audio_url="C:/Workstation/first.mp4?raw=true"
+# audio_url='https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
 
 endpoint = "https://api.assemblyai.com/v2/transcript"
 json = {

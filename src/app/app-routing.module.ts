@@ -16,7 +16,8 @@ import { VideouploadComponent } from './components/videoupload/videoupload.compo
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserdetailsComponent } from './components/userdetails/userdetails.component';
-  const routes: Routes = [
+import { LogoutComponent } from './components/logout/logout.component';
+   const routes: Routes = [
 {path:"tasks", component:NewComponent},
 {path: "update", component:UpdationComponent},
 {path: "register", component:InstRegisterComponent},
@@ -35,15 +36,17 @@ import { UserdetailsComponent } from './components/userdetails/userdetails.compo
  
 {path:'userdetails',component:UserdetailsComponent},
 
-//______________________Student Routes________________________________________//
+//_______________________________Student Routes________________________________________//
 {path:'sturegister',component:StuRegisterComponent},
 {path:'stulogin', component:StuLoginComponent},         
-{path:'stutask',component:StutaskComponent},
-{path:'questions',component:QuestionsComponent},
+{path:'stutask',component:StutaskComponent },
+{path:'questions',component:QuestionsComponent,},
 {path:'not-eligible',component:NotEligibleComponent},
 {path:'photo-input',component:PhotoInputComponent},
 {path:'videoupload',component:VideouploadComponent},
-{path:'notlook',component:NotLookingComponent}
+{path:'notlook',component:NotLookingComponent},
+{path:'logout',component:LogoutComponent},
+ 
 // {
 //   path: 'test/:stuid/question/:challenge_id',
 //   component: QuestionsComponent
