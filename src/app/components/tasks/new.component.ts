@@ -59,7 +59,10 @@ export class NewComponent implements OnInit {
     this.router.navigate(['/update'],{queryParams:{userId:userId}})
 
   }
+  openUserInfoModal(userId:string){
+    this.router.navigate(['userdetails'],{queryParams:{userId:userId}})
 
+  }
   
 
   

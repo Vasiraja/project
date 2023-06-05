@@ -18,8 +18,8 @@ private vidurl='http://localhost:3000';
   constructor(private http: HttpClient) {}
 
 
- getdetails(){
-  const url='http://localhost:3000/userdetails';
+ getdetails(userId:string):Observable<{}>{
+  const url=`http://localhost:3000/userdetails/${userId}`;
   return this.http.get(url);
 
 
