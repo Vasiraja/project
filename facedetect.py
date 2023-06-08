@@ -7,6 +7,7 @@ net = cv2.dnn.readNetFromCaffe('deploy.prototxt', 'res10_300x300_ssd_iter_140000
 
 # Read the video URL from the command-line argument
 video_url = sys.argv[1]
+# video_url='https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
  
 # Open the video capture object
 video_capture = cv2.VideoCapture(video_url)

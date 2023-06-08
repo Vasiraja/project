@@ -1,8 +1,10 @@
 import sys
 import requests
 from sapling import SaplingClient
-# audio_url=sys.argv[1]
-audio_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
+
+audio_url = sys.argv[1]
+# audio_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
+
 endpoint = "https://api.assemblyai.com/v2/transcript"
 json = {
     "audio_url": audio_url,
@@ -34,34 +36,15 @@ edits = client.edits(text)
 spelling_errors = []
 grammatical_errors = []
 
-# Loop through each edit and add it to the appropriate list based on its error type
 for edit in edits:
     if edit['general_error_type'] == 'Spelling':
         spelling_errors.append(edit)
     elif edit['general_error_type'] == 'Grammar':
         grammatical_errors.append(edit)
 
-# Print out the spelling errors with correct replacements
-# print("Spelling Errors:")
-# for error in spelling_errors:
-#     print("Sentence:", error['sentence'])
-#     print("Error Type:", error['general_error_type'])
-#     print("Incorrect Word:", error['sentence'][error['start']:error['end']])
-#     print("Replacement:", error['replacement'])
-#     print()
-
-# # Print out the grammatical errors with correct replacements
-# print("Grammatical Errors:")
-# for error in grammatical_errors:
-#     print("Sentence:", error['sentence'])
-#     print("Error Type:", error['general_error_type'])
-#     print("Incorrect Phrase:", error['sentence'][error['start']:error['end']])
-#     print("Replacement:", error['replacement'])
-#     print()
-
-# Count the number of spelling and grammatical errors
 num_spelling_errors = len(spelling_errors)
 num_grammatical_errors = len(grammatical_errors)
 
+# Print the outputs
 print(num_spelling_errors)
 print(num_grammatical_errors)

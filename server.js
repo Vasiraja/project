@@ -174,31 +174,9 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
     }
   });
 
-  // // Insert the calculated total marks into the database
-  // const sql = `INSERT INTO challenges 
-  //   (total, totalmarks) 
-  //   VALUES 
-  //   (${total},${totalmarks})`;
-   
-
-  // connection.query(sql, (error, result) => {
-  //   if (error) {
-  //     console.log(error);
-  //     res.send({ message: error });
-  //   } else {
-  //     res.send({ message: "Insertion Success" });
-  //   }
-  // });
+  
 });
-  // app.get('/transcription/:textid', (req, res) => {
-  //   const {textid}=req.params;
-  //    const sql = `SELECT text FROM text where textid = '${textid}'`;
    
-  //   connection.query(sql, (err, results) => {
-  //     if (err) throw err;
-  //   res.json(results);
-  //   });
-  // })
   app.get('/transcribe/:textid', (req, res) => {
     const textid = req.params.textid;
     const sql = `SELECT * FROM text WHERE textid = ${textid}`;
@@ -212,98 +190,7 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
 
 
  
-
-
-// app.post('/api/challenges/update/:userId', (req, res) => {
-//    let challenge_id = req.body.challenge_id;
-//   let Institute = req.body.Institute;
-//   let AptbeginTime = req.body.AptbeginTime;
-//   let AptendTime = req.body.AptendTime;
-//   let no_ofReasoning = req.body.no_ofReasoning;
-//   let no_ofEnglish = req.body.no_ofEnglish;
-//   let no_ofmajor = req.body.no_ofmajor;
-//   let others = req.body.others;
-//   let reasoningmark = req.body.reasoningmark;
-//   let englishmark = req.body.englishmark;
-//   let majormark = req.body.majormark;
-//   let othermarks = req.body.othermarks;
-//   let comp_id = req.params.userId;
-
-//   let reasontotal = no_ofReasoning * reasoningmark;
-//   let englishtotal = no_ofEnglish * englishmark;
-//   let majortotal = no_ofmajor * majormark;
-//   let othermark = others * othermarks;
-//   let total = no_ofReasoning + no_ofEnglish + no_ofmajor + others;
-//   let totalmarks = reasontotal + englishtotal + majortotal + othermark;
-
-//   let sql = `UPDATE challenges SET Institute='${Institute}', AptbeginTime='${AptbeginTime}', AptendTime='${AptendTime}', no_ofReasoning='${no_ofReasoning}', no_ofEnglish='${no_ofEnglish}', no_ofmajor='${no_ofmajor}', others='${others}', reasoningmark='${reasoningmark}', englishmark='${englishmark}', majormark='${majormark}', othermarks='${othermarks}', total='${total}', totalmarks='${totalmarks}' WHERE challenge_id='${challenge_id}' AND comp_id='${comp_id}'`;
-
-//   connection.query(sql, (error, result) => {
-//     if (error) {
-//       res.send({ message: error });
-//       console.log(error);
-//     }
-//     if (result.affectedRows == 0) {
-//       res.send({ message: "Challenge not found" });
-//     }
-//     if (result.affectedRows == 1) {
-//       res.send({ message: "Update success" });
-//     }
-//   });
-// });
-
-
-// app.put('/api/challenges/:id', (req, res) => {
-//   const challengeId = req.params.id;
-//   const { Institute, AptbeginTime, AptendTime, no_ofReasoning, no_ofEnglish, no_ofmajor, others, reasoningmark, englishmark, majormark, othermarks, total, totalmarks } = req.body;
-
-//   const updateQuery = `
-//     UPDATE challenges SET
-//       Institute = '${Institute}',
-//       AptbeginTime = '${AptbeginTime}',
-//       AptendTime = '${AptendTime}',
-//       no_ofReasoning = '${no_ofReasoning}',
-//       no_ofEnglish = '${no_ofEnglish}',
-//       no_ofmajor = '${no_ofmajor}',
-//       others = '${others}',
-//       reasoningmark = '${reasoningmark}',
-//       englishmark = '${englishmark}',
-//       majormark = '${majormark}',
-//       othermarks = '${othermarks}',
-//       total = '${total}',
-//       totalmarks = '${totalmarks}'
-//     WHERE
-//       challenge_id = ${challengeId}
-//   `;
-
-//   connection.query(updateQuery, (err, result) => {
-//     if (err) {
-//       console.log(err);
-//       res.send({ message: 'Error updating challenge' });
-//     } else {
-//       res.send({ message: 'Challenge updated successfully' });
-//     }
-//   });
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
 
 
@@ -365,26 +252,7 @@ app.get('/api/challenges', (req, res) => {
 });
 
 
-
-// app.post('/videoupload/:stuid', (req, res) => {
-//   const stuid = req.params.stuid;
-//   const gitlink = req.body.gitlink;
-
-//   const sql = `INSERT INTO upload (stuid, gitlink) VALUES ('${stuid}', '${gitlink}')`;
-//   connection.query(sql,(err, result) => {
-//     if (result) {
-//       res.sendStatus(200);
-//       res.json(result)
-
-   
-//     } else {  
-//       console.error(err);
-//       res.status(500).send('Internal Server Error');
-//       console.log(err)
-//     }
-//   });
-// });
-
+ 
  
  
  
@@ -461,234 +329,7 @@ app.get('/transcribe-video/:stuid', async (req, res) => {
 
 
  
-
  
-
-// app.get('/transcribe-video/:stuid', async (req, res) => {
-//   try {
-//     const stuid = req.params.stuid;
-//     const sql = `SELECT gitlink FROM upload WHERE stuid = '${stuid}'`;
-
-//     connection.query(sql, (err, result) => {
-//       if (err) {
-//         console.error('Error retrieving audio URL from the database:', err);
-//         res.sendStatus(500);
-//       } else if (result && result.length > 0) {
-//         const audioUrl = result[0].gitlink;
-
-//         // Execute Python script
-//         const pythonScript = exec(`python py.py ${audioUrl}`, (error, stdout, stderr) => {
-//           if (error) {
-//             console.error('Error executing Python script:', error);
-//             res.sendStatus(500);
-//           } else {
-//             // Transcription completed, now perform additional steps
-
-//             // Process transcription response
-//             const transcriptionText = stdout.trim();
-
-//             // Perform API call to AssemblyAI
-//             const endpoint = 'https://api.assemblyai.com/v2/transcript';
-//             const json = {
-//               audio_url: audioUrl,
-//               disfluencies: true
-//             };
-//             const headers = {
-//               authorization: '0a9acaa0ce364b0b995785d7c09920c2'
-//             };
-
-//             request.post({ url: endpoint, json: json, headers: headers }, (error, response, body) => {
-//               if (error) {
-//                 console.error('Error performing API call to AssemblyAI:', error);
-//                 res.sendStatus(500);
-//               } else {
-//                 const transcribedId = body.id;
-//                 const endpointTranscribed = `https://api.assemblyai.com/v2/transcript/${transcribedId}`;
-
-//                 // Check transcription status
-//                 const checkTranscriptionStatus = () => {
-//                   request.get({ url: endpointTranscribed, headers: headers }, (error, response, body) => {
-//                     if (error) {
-//                       console.error('Error checking transcription status:', error);
-//                       res.sendStatus(500);
-//                     } else {
-//                       const status = body.status;
-//                       if (status === 'completed') {
-//                         // Transcription completed, now process the text
-
-//                         // Process the text using Sapling API
-//                         const api_key = 'RP3ABL74AJ0TQ1DNMFW7SWKEPKW9VF37';
-//                         const client = new SaplingClient(api_key);
-
-//                         // Get edits from Sapling API
-//                         const edits = client.edits(transcriptionText);
-
-//                         // Initialize lists to hold spelling and grammatical errors
-//                         const spellingErrors = [];
-//                         const grammaticalErrors = [];
-
-//                         // Loop through each edit and add it to the appropriate list based on its error type
-//                         for (const edit of edits) {
-//                           if (edit.general_error_type === 'Spelling') {
-//                             spellingErrors.push(edit);
-//                           } else if (edit.general_error_type === 'Grammar') {
-//                             grammaticalErrors.push(edit);
-//                           }
-//                         }
-
-//                         // Print out the spelling errors with correct replacements
-//                         console.log('Spelling Errors:');
-//                         for (const error of spellingErrors) {
-//                           console.log('Sentence:', error.sentence);
-//                           console.log('Error Type:', error.general_error_type);
-//                           console.log('Incorrect Word:', error.sentence.slice(error.start, error.end));
-//                           console.log('Replacement:', error.replacement);
-//                           console.log();
-//                         }
-
-//                         // Print out the grammatical errors with correct replacements
-//                         console.log('Grammatical Errors:');
-//                         for (const error of grammaticalErrors) {
-//                           console.log('Sentence:', error.sentence);
-//                           console.log('Error Type:', error.general_error_type);
-//                           console.log('Incorrect Phrase:', error.sentence.slice(error.start, error.end));
-//                           console.log('Replacement:', error.replacement);
-//                           console.log();
-//                         }
-
-//                         // Send the transcription and errors as the response
-//                         res.status(200).json({ transcription: transcriptionText, spellingErrors, grammaticalErrors });
-//                       } else {
-//                         // Transcription still in progress, check again after a delay
-//                         setTimeout(checkTranscriptionStatus, 2000);
-//                       }
-//                     }
-//                   });
-//                 };
-
-//                 // Start checking transcription status
-//                 checkTranscriptionStatus();
-//               }
-//             });
-//           }
-//         });
-//       } else {
-//         console.error('No audio URL found in the database');
-//         res.sendStatus(500);
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error retrieving audio URL from the database:', error);
-//     res.sendStatus(500);
-//   }
-// });
-
-
-// app.get('/detect-faces/:stuid', async (req, res) => {
-//   try {
-//     const stuid = req.params.stuid;
-//     const sql = `SELECT gitlink FROM upload WHERE stuid = '${stuid}'`;
-
-//     connection.query(sql, (err, result) => {
-//       if (err) {
-//         console.error('Error retrieving video URL from the database:', err);
-//         res.sendStatus(500);
-//       } else if (result && result.length > 0) {
-//         const videoUrl = result[0].gitlink;
-
-//         // Absolute path to the Python script
-//         const pythonScript = spawn('python', ['facedetect.py', videoUrl]);
-//          // Execute Python script
-       
-
-//         // Capture output from Python script
-//         let totalFacesDetected = '';
-
-//         pythonScript.stdout.on('data', (data) => {
-//           totalFacesDetected += data.toString();
-//         });
-
-//         pythonScript.on('close', (code) => {
-//           if (code === 0) {
-//             console.log('Python script executed successfully');
-//             console.log('Total Faces Detected:', totalFacesDetected);
-//             res.status(200).json({ totalFacesDetected });
-//           } else {
-//             console.error('Python script execution failed');
-//             console.log('Error:', err);
-//             res.sendStatus(500);
-//           }
-//         });
-
-//         pythonScript.on('error', (error) => {
-//           console.error('Error executing Python script:', error);
-//           res.sendStatus(500);
-//         });
-//       } else {
-//         console.error('No video URL found in the database');
-//         res.sendStatus(500);
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error retrieving video URL from the database:', error);
-//     res.sendStatus(500);
-//   }
-// });
-
-
-
-
-
-
-// app.get('/notlook/:stuid', (req, res) => {
-//   try {
-//     const stuid = req.params.stuid;
-//     const sql = `SELECT gitlink FROM upload WHERE stuid = '${stuid}'`;
-
-//     connection.query(sql, (err, result) => {
-//       if (err) {
-//         console.error('Error retrieving audio URL from the database:', err);
-//         res.sendStatus(500);
-//       } else if (result && result.length > 0) {
-//         const videoUrl = result[0].gitlink;
-
-//         // Execute Python script
-//         const pythonScript = spawn('python', ['notlook.py', videoUrl]);
-
-//         // Capture output from Python script
-//         let notLookingCount = '';
-//         pythonScript.stdout.on('data', (data) => {
-//           notLookingCount += data.toString();
-//           console.log(notLookingCount)
-//         });
-
-//         pythonScript.on('close', (code) => {
-//           if (code === 0) {
-//             console.log('Python script executed successfully');
-//             console.log('Not Looking Count:', notLookingCount);
-//             // Send the notLookingCount as a JSON response
-//             res.status(200).json({ notLookingCount });
-//           } else {
-//             console.error('Python script execution failed');
-//             // Handle the failure case
-//             res.sendStatus(500);
-//           }
-//         });
-
-//         pythonScript.on('error', (error) => {
-//           console.error('Error executing Python script:', error);
-//           res.sendStatus(500);
-//         });
-//       } else {
-//         console.error('No video URL found in the database');
-//         res.sendStatus(500);
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error retrieving video URL from the database:', error);
-//     res.sendStatus(500);
-//   }
-// });
 
 app.get('/results/:stuid', (req, res) => {
   try {
@@ -828,18 +469,7 @@ app.get('/results/:stuid', (req, res) => {
           }
         });
 
-        // Handle script completion for the fifth Python script
-        // pythonScript5.on('close', (code) => {
-        //   if (code === 0) {
-        //     console.log('Mistakes Python script successfully executed');
-        //     handleScriptCompletion();
-        //   } else {
-        //     handleScriptError();
-        //   }
-        // });
-
-        // Handle script errors for all Python scripts
-        pythonScript1.on('error', handleScriptError);
+         pythonScript1.on('error', handleScriptError);
         pythonScript2.on('error', handleScriptError);
         pythonScript3.on('error', handleScriptError);
         pythonScript4.on('error', handleScriptError);
