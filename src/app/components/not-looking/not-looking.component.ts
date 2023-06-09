@@ -18,23 +18,21 @@ export class NotLookingComponent {
   userId: string = '';
   isloading: boolean = true;
   minus: minus | null = null;
- 
-    constructor(private route: ActivatedRoute, private service: MyService) {}
+
+  constructor(private route: ActivatedRoute, private service: MyService) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.stuid = params['stuid'];
       this.userId = params['compID'];
-      console.log(this.userId) ;
-           this.performCalculations();
+      console.log(this.userId);
 
-            this.getminus();
-
+      this.getminus();
+      this.getPythonResults();
     });
   }
 
   getPythonResults() {
-
     this.service.getPythonResults(this.stuid).subscribe({
       next: (response: any) => {
         this.isloading = false;
@@ -42,11 +40,11 @@ export class NotLookingComponent {
         this.notLookingCount = response.notLookingCount;
         this.voicecount = response.noofvoices;
         this.fluency = response.fluency;
-        // this.spell = response.spell;
-        // this.grammer = response.grammer;
         this.spell = '4';
         this.grammer = '5';
-       },
+
+        this.performCalculations();
+      },
       error: (error) => {
         console.error('Error retrieving Python results:', error);
       },
@@ -58,20 +56,18 @@ export class NotLookingComponent {
       (response: minus[]) => {
         if (response && response.length > 0) {
           this.minus = response[0];
-          // Perform calculations using the values
-         
-
+          console.log('Minus Data:', this.minus);
+           this.performCalculations();
         }
       },
       (error) => {
         console.error('Error retrieving minus data:', error);
       }
     );
- 
-   }
+  }
 
-   performCalculations() {
-    console.log("perform");
+  performCalculations() {
+    console.log('perform');
 
     if (
       this.minus &&
@@ -80,17 +76,19 @@ export class NotLookingComponent {
       this.voicecount &&
       this.fluency
     ) {
-      const faceMinus = parseInt(this.minus.faceminus);
-      const notLookingMinus = parseInt(this.minus.notlookminus);
-      const voiceminus = parseInt(this.minus.voiceminus);
+      console.log(this.minus.facedetectminus);
+      const faceMinus = parseInt(this.minus.facedetectminus);
+      const notLookingMinus = parseInt(this.minus.notlookcameraminus);
+      const voiceminus = parseInt(this.minus.voicedetectminus);
       const gramMinus = parseInt(this.minus.gramminus);
 
       const facetotal = faceMinus * parseInt(this.facedetectCount);
       const notlooktotal = notLookingMinus * parseInt(this.notLookingCount);
       const voicetotal = voiceminus * parseInt(this.voicecount);
       const gramtotal = gramMinus * parseInt(this.grammer);
-      const fluencymark = Math.floor(parseInt(this.fluency));
-      const total = 90 - (facetotal + notlooktotal + voicetotal + gramtotal);
+      const fluencymark = (Math.floor(parseInt(this.fluency)))/10;
+      const total =
+        90 - (facetotal + notlooktotal + voicetotal + gramtotal);
       const grandtotal = total + fluencymark;
 
       console.log(
@@ -99,7 +97,8 @@ export class NotLookingComponent {
         'Voice Total:', voicetotal,
         'Gram Total:', gramtotal,
         'Fluency Mark:', fluencymark,
-        'Total:', total
+        'Total:', total,
+        "finaltotal",grandtotal
       );
     }
   }

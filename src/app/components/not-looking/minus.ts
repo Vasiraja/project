@@ -1,8 +1,8 @@
 export interface minus{
-     faceminus:string,
-     voiceminus:string,
+     facedetectminus:string,
+     voicedetectminus:string,
     gramminus:string,
-    notlookminus:string,
+    notlookcameraminus:string,
 
     
 }
