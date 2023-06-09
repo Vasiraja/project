@@ -361,6 +361,7 @@ app.post('/videoupload/:stuid', (req, res) => {
 
 app.get('/transcribe-video/:stuid', async (req, res) => {
   try {
+
     // Retrieve audio URL from the database
     const stuid = req.params.stuid;
     const sql = `SELECT gitlink FROM upload WHERE stuid = '${stuid}'`;
@@ -420,6 +421,8 @@ app.get('/transcribe-video/:stuid', async (req, res) => {
 
 app.get('/results/:stuid', (req, res) => {
   try {
+    let completedScripts = 0;
+
     const stuid = req.params.stuid;
     const sql = `SELECT gitlink FROM upload WHERE stuid = '${stuid}'`;
 
@@ -429,43 +432,44 @@ app.get('/results/:stuid', (req, res) => {
         res.sendStatus(500);
       } else if (result && result.length > 0) {
         const videoUrl = result[0].gitlink;
+        let facedetectCount = '';
+        let notLookingCount = '';
+        let noofvoices = '';
+        let fluency = '';
+        function checkAllScriptsCompleted() {
+          const totalScripts = 4; // Total number of scripts being executed
+        
+          if (completedScripts === totalScripts) {
+            console.log('All Python scripts executed successfully');
+            // Perform desired actions here, such as sending the response
+          }
+        }
+        
+
 
         // Execute the first Python script
         const pythonScript1 = spawn('python', ['facedetect.py', videoUrl]);
-        let facedetectCount = '';
-
-        // Capture output from the first Python script
         pythonScript1.stdout.on('data', (data) => {
           facedetectCount += data.toString();
-          console.log('Face Detection Count:', facedetectCount);
         });
 
         // Execute the second Python script
         const pythonScript2 = spawn('python', ['notlook.py', videoUrl]);
-        let notLookingCount = '';
-
-        // Capture output from the second Python script
         pythonScript2.stdout.on('data', (data) => {
           notLookingCount += data.toString();
-          console.log('Not Looking Count:', notLookingCount);
         });
 
+        // Execute the third Python script
         const pythonScript3 = spawn('python', ['voice_detection.py', videoUrl]);
-        let noofvoices = '';
-
         pythonScript3.stdout.on('data', (data) => {
           noofvoices += data.toString();
-          console.log('No of voices detected: ', noofvoices);
         });
 
+        // Execute the fourth Python script
         const pythonScript4 = spawn('python', ['fluency.py', videoUrl]);
-        let fluency = '';
-
         pythonScript4.stdout.on('data', (data) => {
           fluency += data.toString();
-          console.log('Fluency Percentage: ', fluency, '%');
         });
-
 //         const pythonScript5 = spawn('python', ['mistakes.py', videoUrl]);
 // let spell = '';
 // let grammer = '';
@@ -489,27 +493,20 @@ app.get('/results/:stuid', (req, res) => {
             facedetectCount !== '' &&
             notLookingCount !== '' &&
             fluency !== '' &&
-            noofvoices !== ''  
-            // &&
-            // spell !== '' &&
-            // grammer !== ''
+            noofvoices !== ''
           ) {
-            console.log('All Python scripts executed successfully');
-            const response = {
+             const response = {
               facedetectCount,
               notLookingCount,
               noofvoices,
               fluency,
-              // mistakes,
-              // spell,
-              // grammer
             };
             // Send the response containing all outputs as JSON
             res.status(200).json(response);
           }
         };
 
-        // Handle script errors for all Python scripts
+        // Handle script error for any Python script
         const handleScriptError = () => {
           console.error('Python script execution failed');
           // Handle the failure case
@@ -524,6 +521,8 @@ app.get('/results/:stuid', (req, res) => {
           } else {
             handleScriptError();
           }
+          completedScripts++;
+          checkAllScriptsCompleted();
         });
 
         // Handle script completion for the second Python script
@@ -534,6 +533,8 @@ app.get('/results/:stuid', (req, res) => {
           } else {
             handleScriptError();
           }
+          completedScripts++;
+          checkAllScriptsCompleted();
         });
 
         // Handle script completion for the third Python script
@@ -544,6 +545,8 @@ app.get('/results/:stuid', (req, res) => {
           } else {
             handleScriptError();
           }
+          completedScripts++;
+          checkAllScriptsCompleted();
         });
 
         // Handle script completion for the fourth Python script
@@ -554,14 +557,16 @@ app.get('/results/:stuid', (req, res) => {
           } else {
             handleScriptError();
           }
+          completedScripts++;
+          checkAllScriptsCompleted();
         });
 
-         pythonScript1.on('error', handleScriptError);
+        // Handle script error for any Python script
+        pythonScript1.on('error', handleScriptError);
         pythonScript2.on('error', handleScriptError);
         pythonScript3.on('error', handleScriptError);
         pythonScript4.on('error', handleScriptError);
-        // pythonScript5.on('error',handleScriptError);
-       } else {
+      } else {
         console.error('No video URL found in the database');
         res.sendStatus(500);
       }

@@ -28,6 +28,7 @@ export class QuestionsComponent implements OnInit {
   selectedTab: any;
   isQuizFinished: boolean = false;
   quizScore: number = 0;
+  comp_id:string='';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -42,6 +43,7 @@ export class QuestionsComponent implements OnInit {
       const reasoningCount = params['no_ofReasoning'] ? +params['no_ofReasoning'] : 0;
       const englishCount = params['no_ofEnglish'] ? +params['no_ofEnglish'] : 0;
       const majorCount = params['no_ofmajor'] ? +params['no_ofmajor'] : 0;
+      this.comp_id=params['comp_id'];
 
       if (reasoningCount > 0) {
         this.service.getReasoningQuestions(reasoningCount, 'medium').subscribe((data: any) => {
@@ -200,7 +202,7 @@ export class QuestionsComponent implements OnInit {
 }
  
 jump(){
-  this.router.navigate(['/videoupload'],{queryParams:{stuid:this.stuid}});
+  this.router.navigate(['/videoupload'],{queryParams:{stuid:this.stuid,id:this.comp_id}});
 
 }
 

@@ -13,6 +13,7 @@ export interface tasks{
     englishmark: number,
     majormark: number,
     othermarks: number,
+    comp_id:string
   
  
 }

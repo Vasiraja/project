@@ -11,7 +11,7 @@ export class VideouploadComponent implements OnInit {
   gitlink: string = '';  
   stuid: string = '';
   transcription: string = '';
-  
+  compID='';
    spellingErrors: any[] | undefined;
   grammaticalErrors: any[] | undefined;
   constructor(
@@ -23,6 +23,7 @@ export class VideouploadComponent implements OnInit {
   ngOnInit() {
      this.route.queryParams.subscribe(params => {
       this.stuid = params['stuid'];
+      this.compID=params['id'];
       console.log(this.stuid); // Check if the value is printed in the console
      });
   }
@@ -61,7 +62,7 @@ export class VideouploadComponent implements OnInit {
             console.log(response)
             alert("Uploaded Successfully..")
             
-              this.router.navigate(['/notlook'], { queryParams: { stuid: this.stuid } });
+              this.router.navigate(['/notlook'], { queryParams: { stuid: this.stuid ,compID:this.compID} });
             
             
            },

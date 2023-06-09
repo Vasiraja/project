@@ -10,6 +10,7 @@
   <p class="cid">{{task.challenge_id}} </p>
    <div class="card-text" ><p class="txt-danger">{{task.AptbeginTime}}</p> 
   <p class="txt txt-danger">{{task.AptendTime}}</p></div>
+  <div>{{task.comp_id}}</div>
 <div class="short">
   <div> Reasoning: {{task.no_ofReasoning}}x{{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}</div>
   <div > English:  {{task.no_ofEnglish}}x{{task.englishmark}}={{task.no_ofEnglish*task.englishmark}} </div>
@@ -17,7 +18,7 @@
   <div > Others:   {{task.others}}x{{task.othermarks}}={{task.others*task.othermarks}} </div>
 
      <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor+task.others*task.othermarks}}</div></div>
-     <button class="btn btn-danger" style="margin: 20px;" (click)="attendtask(stuid,task.challenge_id,task.no_ofReasoning,task.no_ofEnglish,task.no_ofmajor)" 
+     <button class="btn btn-danger" style="margin: 20px;" (click)="attendtask(stuid,task.challenge_id,task.no_ofReasoning,task.no_ofEnglish,task.no_ofmajor,task.comp_id)" 
      [routerLink]="['/questions']" [queryParams]="{reasoning: task.no_ofReasoning ,english:task.no_ofEnglish,major:task.no_ofmajor}">
        Attend
    </button>

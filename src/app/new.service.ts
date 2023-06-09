@@ -59,10 +59,18 @@ private vidurl='http://localhost:3000';
   }
 
 
-  minusdata(formData: any,userId:any):Observable<any> {
-    const url=`http://localhost:3000/minus/${userId}`
+  minusdata(formData: any,userId:string):Observable<any> {
+    const url=`http://localhost:3000/minus/${userId}`;
     return this.http.post(url, formData);
   }
+
+  getminus(userId: string): Observable<any> {
+    const url = `http://localhost:3000/getminus/${userId}`;
+    return this.http.get(url);
+  }
+
+
+
 
   
   //----------------------_______________students_________________-----------------------//

@@ -5,6 +5,7 @@ import { tasks } from './stutask';
 import { MyService } from 'src/app/new.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
  
 @Component({
   selector: 'app-stutask',
@@ -19,7 +20,8 @@ export class StutaskComponent {
 no_ofReasoning:string='';
 no_ofEnglish:string='';
 no_ofmajor:string='';
-  constructor(
+id:string='';
+   constructor(
     private myService: MyService,
     private route: ActivatedRoute,
     private router: Router
@@ -28,7 +30,7 @@ no_ofmajor:string='';
   ngOnInit(): void {  
     this.route.queryParamMap.subscribe(params => {
       this.stuid = params.get('stuid') || '';
-       this.gettasks();
+          this.gettasks();
     });
   }
 
@@ -37,10 +39,10 @@ no_ofmajor:string='';
     console.log( this.tasks )
    }
 
-  attendtask(stuid: string, challenge_id: any,no_ofReasoning:number,no_ofEnglish:number,no_ofmajor:number): void {
+  attendtask(stuid: string, challenge_id: any,no_ofReasoning:number,no_ofEnglish:number,no_ofmajor:number,id:string): void {
     if (this.stuid && challenge_id) {
       this.router.navigate(['/questions'], {
-        queryParams: { stuid: this.stuid, challenge_id: challenge_id ,no_ofReasoning:no_ofReasoning,no_ofEnglish:no_ofEnglish,no_ofmajor:no_ofmajor}
+        queryParams: { stuid: this.stuid, challenge_id: challenge_id ,no_ofReasoning:no_ofReasoning,no_ofEnglish:no_ofEnglish,no_ofmajor:no_ofmajor,comp_id:id}
        });
     }
   }
