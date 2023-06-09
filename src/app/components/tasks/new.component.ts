@@ -55,6 +55,10 @@ export class NewComponent implements OnInit {
 
 
   }
+  openinput(userId:string):void{
+    this.router.navigate(['/admininput'],{queryParams:{userId:userId}})
+  
+}
   jumpuser(userId:string):void{
     this.router.navigate(['/update'],{queryParams:{userId:userId}})
 

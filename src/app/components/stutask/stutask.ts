@@ -13,7 +13,7 @@ export interface tasks{
     englishmark: number,
     majormark: number,
     othermarks: number,
- 
+  
  
 }
 

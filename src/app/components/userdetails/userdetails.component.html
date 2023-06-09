@@ -1,20 +1,18 @@
-
 <div class="table">
-<mat-table [dataSource]="user" class="mat-elevation-z8" style="width:80%; margin:30px 40px 0">
+  <mat-table [dataSource]="user" class="mat-elevation-z8" style="width:80%; margin:30px 40px 0">
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{ column }}">
       <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let user">
-        <ng-container *ngIf="column === 'video_link'">
-          <a [href]="user[column]">{{ user[column] }}</a>
+        <ng-container *ngIf="isLinkColumn(column)">
+          <a [href]="user[column]" (click)="navigateToUserProfile(user.userId)">{{ user[column] }}</a>
         </ng-container>
-        <ng-container *ngIf="column !== 'video_link'">
+        <ng-container *ngIf="!isLinkColumn(column)">
           {{ user[column] }}
         </ng-container>
       </mat-cell>
     </ng-container>
-  
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  
-  </div>
+</div>

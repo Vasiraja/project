@@ -136,6 +136,9 @@ export class UpdationComponent implements OnInit {
   
     this.service.publishdata(data, userId).subscribe(res => {
       console.log(res);
+      alert("Task Added Sucessfully")
+
+      this.router.navigate(['/tasks'],{queryParams:{userId:this.userId}})
     });
   }
   

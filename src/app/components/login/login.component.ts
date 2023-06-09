@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string | undefined;
+  email: string | undefined;
   password: string | undefined;
   Inst_name: string = "";
 
@@ -19,26 +19,26 @@ export class LoginComponent implements OnInit {
       this.Inst_name = params['Inst_name'];
     });
   }
+
   login(): void {
-    if (!this.username || !this.password) {
-      console.error('Username and password are required.');
+    if (!this.email || !this.password) {
+      console.error('Email and password are required.');
       return;
     }
-  
+
     const data = {
-      username: this.username,
+      email: this.email,
       password: this.password
     };
-  
-    this.service.logindata(data, this.Inst_name).subscribe(
+
+    this.service.logindata(data).subscribe(
       response => {
         console.log(response);
         if (response && response.message === 'Login successful') {
-          const userId = this.username?.substring(0, this.username.indexOf('@')) ?? '';
+          const userId = this.email?.substring(0, this.email.indexOf('@')) ?? '';
           this.router.navigate(['/tasks'], { queryParams: { userId } });
         } else {
           console.error('Invalid credentials');
-          console.log
         }
       },
       error => {
@@ -51,5 +51,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-  
 }

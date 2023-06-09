@@ -32,6 +32,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserdetailsComponent } from './components/userdetails/userdetails.component';
 import {MatTableModule} from '@angular/material/table';
 import { LogoutComponent } from './components/logout/logout.component';
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
+import { AdmininputComponent } from './components/admininput/admininput.component';
  
   
  @NgModule({
@@ -54,6 +56,8 @@ import { LogoutComponent } from './components/logout/logout.component';
      CardComponent,
      DashboardComponent,
      UserdetailsComponent,
+     UserprofileComponent,
+     AdmininputComponent,
         ],  imports: [
      BrowserModule,
      AppRoutingModule,

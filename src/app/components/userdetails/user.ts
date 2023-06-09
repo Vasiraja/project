@@ -1,7 +1,6 @@
 export interface user{
     stuid:string;
-    vidlink:string;
-    fluency:string;
+     fluency:string;
     notlook:string;
     aptiscore:string;
     grammer:string;

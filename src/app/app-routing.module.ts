@@ -17,6 +17,8 @@ import { NotLookingComponent } from './components/not-looking/not-looking.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserdetailsComponent } from './components/userdetails/userdetails.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
+import { AdmininputComponent } from './components/admininput/admininput.component';
    const routes: Routes = [
 {path:"tasks", component:NewComponent},
 {path: "update", component:UpdationComponent},
@@ -34,7 +36,8 @@ import { LogoutComponent } from './components/logout/logout.component';
 // {path:'tasks/:challenge_id', redirectTo:'/tasks' ,pathMatch:'full'},
 {path:'dashboard',component:DashboardComponent},
  
-{path:'userdetails',component:UserdetailsComponent},
+{path:'userprofile',component:UserprofileComponent},
+{path:'admininput',component:AdmininputComponent},
 
 //_______________________________Student Routes________________________________________//
 {path:'sturegister',component:StuRegisterComponent},
@@ -46,7 +49,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 {path:'videoupload',component:VideouploadComponent},
 {path:'notlook',component:NotLookingComponent},
 {path:'logout',component:LogoutComponent},
- 
+ {path:'userdetails',component:UserdetailsComponent}
 // {
 //   path: 'test/:stuid/question/:challenge_id',
 //   component: QuestionsComponent

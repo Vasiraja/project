@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MyService } from 'src/app/new.service';
 import { user } from './user';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userdetails',
@@ -10,11 +11,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserdetailsComponent implements OnInit {
  
-  displayedColumns: string[] = ['stuId', 'video_link', 'fluency', 'notlook', 'aptiscore', 'gram', 'spell', 'facedetections', 'Totalmarks','compId'];
+  displayedColumns: string[] = ['stuId', 'fluency', 'notlook', 'aptiscore', 'gram', 'spell', 'facedetections', 'Totalmarks','compId'];
   user: user[] = [];
   userId:string='';
  
-  constructor(private service: MyService,private route:ActivatedRoute) {}
+  constructor(private service: MyService,private route:ActivatedRoute,private router:Router) {}
  
   ngOnInit(): void {
     this.getUsers();
@@ -38,6 +39,14 @@ export class UserdetailsComponent implements OnInit {
     );
 
   }
+
+  isLinkColumn(column: string): boolean {
+    return column === 'stuId';
+  }
+  navigateToUserProfile(userId: string): void {
+    window.location.href = 'http://localhost:4200/userprofile';
+  }
+  
 }
 
  

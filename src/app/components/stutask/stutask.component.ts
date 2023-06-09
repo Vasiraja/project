@@ -33,8 +33,9 @@ no_ofmajor:string='';
   }
 
   gettasks(): void {
-    this.myService.gettasks().subscribe(tasks => this.tasks = tasks);     
-  }
+    this.myService.gettasks().subscribe(tasks => this.tasks = tasks);    
+    console.log( this.tasks )
+   }
 
   attendtask(stuid: string, challenge_id: any,no_ofReasoning:number,no_ofEnglish:number,no_ofmajor:number): void {
     if (this.stuid && challenge_id) {

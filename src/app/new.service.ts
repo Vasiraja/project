@@ -40,8 +40,8 @@ private vidurl='http://localhost:3000';
     return this.http.post(`${this.register}`, data);
   }
 
-  logindata(data: any, Inst_name: string): Observable<any> {
-    const login = `http://localhost:3000/api/login/${Inst_name}`;
+  logindata(data: any): Observable<any> {
+    const login = 'http://localhost:3000/api/login';
     return this.http.post(login, data);
   }
   publishdata(data: any, userId: string): Observable<any> {
@@ -59,6 +59,12 @@ private vidurl='http://localhost:3000';
   }
 
 
+  minusdata(formData: any,userId:any):Observable<any> {
+    const url=`http://localhost:3000/minus/${userId}`
+    return this.http.post(url, formData);
+  }
+
+  
   //----------------------_______________students_________________-----------------------//
 
   
@@ -110,6 +116,7 @@ getPythonResults(stuid: string) {
   const url=`${this.vidurl}/results/${stuid}`
   return this.http.get(url);
 }
+
 
  
 

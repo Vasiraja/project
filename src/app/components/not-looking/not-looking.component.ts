@@ -60,9 +60,11 @@ constructor(private route: ActivatedRoute, private service: MyService) {}
       this.stuid=params["stuid"];
       this.getPythonResults();
 
+      
+
     })
   }
-
+ 
 getPythonResults() {
 
   this.service.getPythonResults(this.stuid).subscribe({    
@@ -77,12 +79,23 @@ getPythonResults() {
       // this.grammer=response.grammer;
       this.spell="4";
       this.grammer="5";
+
+
+
+
+
+
+      
     
     },
     error: (error) => {
       console.error('Error retrieving Python results:', error);
     }
   });
+
+
+
+  
 }
 
 
@@ -90,4 +103,8 @@ getPythonResults() {
 
 
 
+}
+
+function calcee() {
+  throw new Error('Function not implemented.');
 }

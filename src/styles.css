@@ -2,5 +2,16 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;   
+     background: linear-gradient(to bottom right, #6c50a2, #9b59b6 2%); 
+}
  
+
+card{
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #ffffff;
+   
+     margin:30px;
+     position:relative;
+     bottom:30px;
+}

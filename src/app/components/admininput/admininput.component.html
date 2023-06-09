@@ -1,0 +1,19 @@
+<div class="container">
+  <h2>Disclaimer:</h2>
+  <p>Please note we provide <b>90 </b>marks for the specific users. The input values below should be considered as minus marks for the video detections to calculate minus the value from the specific user's initial marks.</p>
+  <label for="facedetectminus">facedetect:</label>
+  <input type="number" [(ngModel)]="facedetectminus" placeholder="Enter the minus mark for facedetection">
+  <label for="voicedetectminus">voicedetect:</label>
+  <input type="number" [(ngModel)]="voicedetectminus" placeholder="Enter the minus mark for voicedetection">
+  <label for="notlookcameraminus">notlookcamera:</label>
+  <input type="number" [(ngModel)]="notlookcameraminus" placeholder="Enter the minus mark for notlookcamera">
+  <label for="gramminus">grammercheck:</label>
+  <input type="number" [(ngModel)]="gramminus" placeholder="Enter the minus mark for grammar check">
+  <h2>Fluency Bonus:</h2> 
+  <p>we Provide total mark for the fluency is : <b>10</b> <br>Ex. If the user has a fluency percent<b> 60%</b>
+     than consider as a <b>6</b> marks</p>
+   
+
+
+  <input type="submit" style="background-color: rgb(218, 197, 223);" (click)="submitForm()">
+</div>

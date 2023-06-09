@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser=require('body-parser');
 const exec = require('child_process').exec;
-
+const bcrypt=require('bcrypt');
 const fileUpload=require('express-fileupload');
  
 const { spawn } = require('child_process');
@@ -29,6 +29,29 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+app.post('/minus/:userId', (req, res) => {
+  const userId=req.params.userId;
+  const facedetectminus = req.body.facedetectminus;
+  const voicedetectminus = req.body.voicedetectminus;
+  const notlookcameraminus = req.body.notlookcameraminus;
+   const gramminus = req.body.gramminus;
+
+  const query = `INSERT INTO minusmarks (facedetectminus, voicedetectminus, notlookcameraminus, gramminus,userId)
+                 VALUES (?, ?, ?, ?, ?)`;
+
+  connection.query(query, [facedetectminus, voicedetectminus, notlookcameraminus, gramminus,userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ message: 'Internal server error' });
+    } else {
+      res.status(200).send({ message: 'Data inserted successfully' });
+    }
+  });
+});
+
+
+ 
+
 app.get('/userdetails/:userId', (req, res) => {
   const {userId}=req.params; 
   const query = `SELECT * FROM userdetails where userId = '${userId}'`;
@@ -38,8 +61,36 @@ app.get('/userdetails/:userId', (req, res) => {
   });
 });
  
+app.post('/api/userdetails/:stuId',(req,res)=>{
+const stuId=req.params.stuId;
+const facedetectCount=req.body.facedetectCount;
+const notLookingCount=req.body.notLookingCount;
+const voicecount=req.body.voicecount;
+const fluency=req.body.fluency;
+const grammer=req.body.grammer;
+const spell=req.body.spell;
 
-app.get('/api/challenges/:userId', (req, res) => {
+  
+const query=`insert into userdetails values('${stuId}','${facedetectCount}','${notLookingCount}','${voicecount}','${fluency}','${grammer}','${spell}')`;
+connection.query(query,(err,results)=>{
+  if(err) throw err;
+  res.json(results);
+})
+
+
+})
+
+
+app.get('/userprofile/:userId',(req,res)=>{
+  const {userId}=req.params;
+  const query =`select * from sturegistration where SUBSTRING_INDEX(email, '@', 1) AS trimmed_user_id = '${userId}' ='${userId}'`;
+  connection.query(query,(err,results)=>{
+    if (err)throw err;
+    res.json(results);
+  })
+})
+
+ app.get('/api/challenges/:userId', (req, res) => {
   const {userId}=req.params;
   const query = `SELECT * FROM challenges where comp_id = '${userId}'`;
   connection.query(query, (err, results) => {
@@ -47,6 +98,8 @@ app.get('/api/challenges/:userId', (req, res) => {
     res.json(results);
   });
 });
+
+ 
 
 app.delete('/api/challenges/:challenge_id', (req, res) => {
   const {challenge_id} = req.params;
@@ -57,40 +110,58 @@ app.delete('/api/challenges/:challenge_id', (req, res) => {
   });
 });
 
-app.post('/api/register', (req, res) => {
- let email =  req.body.email;
-   let Inst_name = req.body.Inst_name;
-   let password = req.body.password;
-   let confirmPassword = req.body.confirmPassword;
-   if (password !== confirmPassword) {
-    res.send({ message: "Password does not match" });
-     return;  
+app.post('/api/register', async (req, res) => {
+  try {
+    const email = req.body.email;
+    const Inst_name = req.body.Inst_name;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+    if (password !== confirmPassword) {
+      res.send({ message: 'Password does not match' });
+      return;
+    }
+
+    // Use parameterized query to prevent SQL injection
+    const checkEmailSql = 'SELECT * FROM inst_register WHERE email = ?';
+    const checkEmailValues = [email];
+
+    connection.query(checkEmailSql, checkEmailValues, async (error, result) => {
+      if (error) {
+        res.send({ message: error });
+      } else if (result.length > 0) {
+        // Email already exists
+        res.send({ message: 'Email already exists' });
+      } else {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert the new user
+        const insertSql = 'INSERT INTO inst_register (email, Inst_name, password) VALUES (?, ?, ?)';
+        const insertValues = [email, Inst_name, hashedPassword];
+
+        connection.query(insertSql, insertValues, (error, result) => {
+          if (error) {
+            res.send({ message: error });
+          } else {
+            res.send({ message: 'Registration success' });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.sendStatus(500);
   }
- let sql=`INSERT INTO inst_register (email,Inst_name,password,confirmPassword) values 
- ('${email}','${Inst_name}', '${password}', '${confirmPassword}')`;
- 
- 
-   connection.query(sql, (error,result) => {
-   if(error){
-     res.send({message: error});
-   }
-   if(result)
-   res.send({message:"Insertion success"});
-  
-  });
-})
- 
+});
 
-
-
-
- app.post('/api/login/:Inst_name', async (req, res) => {
-   const username = req.body.username;
+app.post('/api/login', async (req, res) => {
+  const email = req.body.email;
   const password = req.body.password;
- 
+
   // Use parameterized query to prevent SQL injection
-  const sql = 'SELECT * FROM inst_register WHERE email = ? AND password = ?';
-  connection.query(sql, [username, password], (error, result) => {
+  const sql = 'SELECT * FROM inst_register WHERE email = ?';
+  connection.query(sql, [email], async (error, result) => {
     if (error) {
       // Handle the error case
       console.error(error);
@@ -99,9 +170,18 @@ app.post('/api/register', (req, res) => {
       // Handle the case where no user is found
       res.status(401).send({ message: 'Invalid credentials' });
     } else {
-      // Handle the case where a user is found
-      res.send({ message: 'Login successful' });
+      const hashedPassword = result[0].password;
 
+      // Compare the user's input with the stored hashed password
+      const passwordMatch = await bcrypt.compare(password, hashedPassword);
+
+      if (passwordMatch) {
+        // Handle the case where the password matches
+        res.send({ message: 'Login successful' });
+      } else {
+        // Handle the case where the password does not match
+        res.status(401).send({ message: 'Invalid credentials' });
+      }
     }
   });
 });
@@ -189,11 +269,19 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
 
 
 
- 
- 
-
-
-
+ app.get('/getminus/:userId',(req,res)=>{
+  const userId=req.params.userId;
+  
+  const sql=`SELECT * FROM minusmarks WHERE userId = '${userId}' ORDER BY id DESC LIMIT 1;
+  `;
+   
+  connection.query(sql,(err,results)=>{
+    if(err)throw err;
+    res.json(results);
+  })
+  
+ })
+  
 //----------------__________________________Studetent_Database_________________________-----------------//
  
 app.post('/api/stulogin', (req, res) => {
@@ -250,10 +338,9 @@ app.get('/api/challenges', (req, res) => {
     }
   });
 });
+ 
 
 
- 
- 
  
  
 app.post('/videoupload/:stuid', (req, res) => {
