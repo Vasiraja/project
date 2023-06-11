@@ -18,11 +18,12 @@ export class MyService {
 
   constructor(private http: HttpClient) {}
 
-  getdetails(userId: string): Observable<{}> {
-    const url = `http://localhost:3000/userdetails/${userId}`;
-    return this.http.get(url);
-  }
+getdetails(userId: string): Observable<any> {
+  const url = `http://localhost:3000/userdetails/${userId}`;
+  return this.http.get<any>(url);
+}
 
+  
   getValues(userId: string): Observable<tasks[]> {
     const apiUrl = `http://localhost:3000/api/challenges/${userId}`;
     return this.http.get<tasks[]>(apiUrl);

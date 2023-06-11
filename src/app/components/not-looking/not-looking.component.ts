@@ -29,8 +29,8 @@ export class NotLookingComponent {
       console.log(this.userId);
 
      
-      // this.getPythonResults();
-      // this.getminus();
+      this.getPythonResults();
+      this.getminus();
     });
   }
 
