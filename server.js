@@ -9,6 +9,7 @@ const fileUpload=require('express-fileupload');
 const { spawn } = require('child_process');
 const { connect } = require('http2');
 const path = require('path');
+const { FaceDetection } = require('face-api.js');
 
 
 const app = express();
@@ -46,7 +47,7 @@ app.post('/minus/:userId', (req, res) => {
     } else {
       res.status(200).send({ message: 'Data inserted successfully' });
     }
-  });
+  }); 
 });
 
 
@@ -60,35 +61,38 @@ app.get('/userdetails/:userId', (req, res) => {
     res.json(results);
   });
 });
- 
-app.post('/api/userdetails/:stuId',(req,res)=>{
-const stuId=req.params.stuId;
-const facedetectCount=req.body.facedetectCount;
-const notLookingCount=req.body.notLookingCount;
-const voicecount=req.body.voicecount;
-const fluency=req.body.fluency;
-const grammer=req.body.grammer;
-const spell=req.body.spell;
-
-  
-const query=`insert into userdetails values('${stuId}','${facedetectCount}','${notLookingCount}','${voicecount}','${fluency}','${grammer}','${spell}')`;
-connection.query(query,(err,results)=>{
-  if(err) throw err;
-  res.json(results);
-})
 
 
-})
+app.post('/userdetails/:stuId/:userId', (req, res) => {
+  // Extract parameters and data from the request
+  const stuId = req.params.stuId;
+  const aptiscore = req.body.aptiscore;
+  const fluency = req.body.fluency;
+  const userId = req.params.userId;
+  const facedetections = req.body.facedetections;
+  const notlook = req.body.notlook;
+  const voice = req.body.voice;
+  const gram = req.body.gram;
+  const spell=req.body.spell;
+  const totalmarks = parseInt(aptiscore) + parseInt(fluency) + parseInt(facedetections) + parseInt(notlook) + parseInt(voice) + parseInt(gram);
 
+  // Construct the SQL query
+  const query = `INSERT INTO userdetails (stuid, aptiscore, fluency, userId, totalmarks, facedetections, notlook, voice, gram,spell) 
+                 VALUES ('${stuId}', '${aptiscore}', '${fluency}', '${userId}', '${totalmarks}', '${facedetections}', '${notlook}', '${voice}', '${gram}','${spell}')`;
 
-app.get('/userprofile/:userId',(req,res)=>{
-  const {userId}=req.params;
-  const query =`select * from sturegistration where SUBSTRING_INDEX(email, '@', 1) AS trimmed_user_id = '${userId}' ='${userId}'`;
-  connection.query(query,(err,results)=>{
-    if (err)throw err;
+  // Execute the SQL query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error inserting user details:', err);
+      res.status(500).json({ error: 'Error inserting user details' });
+      return;
+    }
     res.json(results);
-  })
-})
+  });
+});
+
+
+ 
 
  app.get('/api/challenges/:userId', (req, res) => {
   const {userId}=req.params;
@@ -194,27 +198,23 @@ app.post('/api/update/:taskId', (req, res) => {
   const no_ofReasoning = req.body.no_ofReasoning;
   const no_ofEnglish = req.body.no_ofEnglish;
   const no_ofmajor = req.body.no_ofmajor;
-  const others = req.body.others;
-  const reasoningmark = req.body.reasoningmark;
+   const reasoningmark = req.body.reasoningmark;
   const englishmark = req.body.englishmark;
   const majormark = req.body.majormark;
-  const othermarks = req.body.othermarks;
-  const comp_id = req.params.taskId;
+   const comp_id = req.params.taskId;
 
   const reasontotal = no_ofReasoning * reasoningmark;
   const englishtotal = no_ofEnglish * englishmark;
   const majortotal = no_ofmajor * majormark;
-  const othermark = others * othermarks;
-  const total = no_ofReasoning + no_ofEnglish + no_ofmajor + others;
-  const totalmarks = reasontotal + englishtotal + majortotal + othermark;
+   const total = no_ofReasoning + no_ofEnglish + no_ofmajor ;
+  const totalmarks = reasontotal + englishtotal + majortotal ;
 
   const sql = `INSERT INTO challenges 
-    (Institute, AptbeginTime, AptendTime, no_ofReasoning, no_ofEnglish, no_ofmajor, 
-      others, reasoningmark, englishmark, majormark, othermarks, total, totalmarks, comp_id) 
+    (Institute, AptbeginTime, AptendTime, no_ofReasoning, no_ofEnglish, no_ofmajor, reasoningmark, englishmark, majormark, total, totalmarks, comp_id) 
       VALUES 
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    (?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)`;
   const values = [Institute, AptbeginTime, AptendTime, no_ofReasoning, no_ofEnglish, no_ofmajor, 
-      others, reasoningmark, englishmark, majormark, othermarks, total, totalmarks, comp_id];
+     reasoningmark, englishmark, majormark, total, totalmarks, comp_id];
 
   connection.query(sql, values, (error, result) => {
     if (error) {
@@ -235,9 +235,8 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
   const reasontotal = task.no_ofReasoning * task.reasoningmark;
   const englishtotal = task.no_ofEnglish * task.englishmark;
   const majortotal = task.no_ofmajor * task.majormark;
-  const othermark = task.others * task.othermarks;
-  const total = task.no_ofReasoning + task.no_ofEnglish + task.no_ofmajor + task.others;
-  const totalmarks = reasontotal + englishtotal + majortotal + othermark;
+   const total = task.no_ofReasoning + task.no_ofEnglish + task.no_ofmajor ;
+  const totalmarks = reasontotal + englishtotal + majortotal ;
 
   // Update the task in the database
   connection.query('UPDATE challenges SET ? WHERE challenge_id = ?', [task, challenge_id], (err, result) => {

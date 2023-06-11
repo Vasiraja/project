@@ -18,6 +18,7 @@ export class NotLookingComponent {
   userId: string = '';
   isloading: boolean = true;
   minus: minus | null = null;
+  quizScore: number = 0;
 
   constructor(private route: ActivatedRoute, private service: MyService) {}
 
@@ -27,8 +28,9 @@ export class NotLookingComponent {
       this.userId = params['compID'];
       console.log(this.userId);
 
-      this.getminus();
-      this.getPythonResults();
+     
+      // this.getPythonResults();
+      // this.getminus();
     });
   }
 
@@ -57,7 +59,7 @@ export class NotLookingComponent {
         if (response && response.length > 0) {
           this.minus = response[0];
           console.log('Minus Data:', this.minus);
-           this.performCalculations();
+          this.performCalculations();
         }
       },
       (error) => {
@@ -66,39 +68,64 @@ export class NotLookingComponent {
     );
   }
 
-  performCalculations() {
-    console.log('perform');
+  
+performCalculations() {
+  console.log('perform');
+  console.log(this.facedetectCount)
+  console.log(this.notLookingCount)
+  console.log(this.voicecount)
+  console.log(this.fluency)
+  console.log(this.minus)
 
-    if (
-      this.minus &&
-      this.facedetectCount &&
-      this.notLookingCount &&
-      this.voicecount &&
-      this.fluency
-    ) {
-      console.log(this.minus.facedetectminus);
-      const faceMinus = parseInt(this.minus.facedetectminus);
-      const notLookingMinus = parseInt(this.minus.notlookcameraminus);
-      const voiceminus = parseInt(this.minus.voicedetectminus);
-      const gramMinus = parseInt(this.minus.gramminus);
+  if (
+    this.minus &&
+    this.facedetectCount &&
+    this.notLookingCount &&
+    this.voicecount &&
+    this.fluency
+  ) {
+    console.log(this.minus.facedetectminus);
+    const faceMarks = parseInt(this.minus.facedetectminus) * parseInt(this.facedetectCount);
+    const notLookingMarks = parseInt(this.minus.notlookcameraminus) * parseInt(this.notLookingCount);
+    const voiceMarks = parseInt(this.minus.voicedetectminus) * parseInt(this.voicecount);
+    const grammerMarks = parseInt(this.minus.gramminus) * parseInt(this.grammer);
+    const spellmarks=parseInt(this.spell)
+    const fluencyMarks = Math.floor(parseInt(this.fluency)) / 10;
+    const total = 90 - (faceMarks + notLookingMarks + voiceMarks + grammerMarks);
+    const grandTotal = total + fluencyMarks;
+    this.quizScore = this.service.getQuizScore();
 
-      const facetotal = faceMinus * parseInt(this.facedetectCount);
-      const notlooktotal = notLookingMinus * parseInt(this.notLookingCount);
-      const voicetotal = voiceminus * parseInt(this.voicecount);
-      const gramtotal = gramMinus * parseInt(this.grammer);
-      const fluencymark = (Math.floor(parseInt(this.fluency)))/10;
-      const total =
-        90 - (facetotal + notlooktotal + voicetotal + gramtotal);
-      const grandtotal = total + fluencymark;
+    console.log(
+      'Face Marks:', faceMarks,
+      'Not Looking Marks:', notLookingMarks,
+      'Voice Marks:', voiceMarks,
+      'Grammer Marks:', grammerMarks,
+      'Fluency Marks:', fluencyMarks,
+      'Total:', total,
+      'Grand Total:', grandTotal,
+      'AptiScore:', this.quizScore
+    );
 
-      console.log(
-        'Face Total:', facetotal,
-        'Not Looking Total:', notlooktotal,
-        'Voice Total:', voicetotal,
-        'Gram Total:', gramtotal,
-        'Fluency Mark:', fluencymark,
-        'Total:', total,
-        "finaltotal",grandtotal
+    const postData = {
+      stuid: this.stuid,
+      aptiscore: this.quizScore,
+      fluency: fluencyMarks,
+      compId: this.userId,
+      totalmarks: grandTotal,
+      facedetections: faceMarks,
+      notlook: notLookingMarks,
+      voice: voiceMarks,
+      gram: grammerMarks,
+      spell:spellmarks
+    };
+
+      this.service.postuser(postData).subscribe(
+        (response: any) => {
+          console.log('User details inserted successfully:', response);
+        },
+        (error) => {
+          console.error('Error inserting user details:', error);
+        }
       );
     }
   }

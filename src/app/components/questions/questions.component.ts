@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute,Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MyService } from 'src/app/new.service';
 
 interface Question {
@@ -12,11 +12,63 @@ interface Question {
   correctAnswer: string; // Add this property
 }
 
-
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
-  styleUrls: ['./questions.component.css']
+  styles: [`/* questions.component.css */
+  .questions-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .question {
+      margin-bottom: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .question-serial {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .question-description {
+      margin-bottom: 10px;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    input[type='radio'] {
+      margin-right: 10px;
+    }
+    .btn-warning,.btn-primary,span{
+  margin: 30px;;
+  
+    }
+    .card .form-check-label ,.form-check,li{
+      cursor: pointer;
+    }
+    
+    .card .form-check-label:hover,.form-check:hover,li:hover {
+      background-color: #f5f5f5;
+    }
+    .card{
+      margin-top: 20px;
+    }`]
 })
 export class QuestionsComponent implements OnInit {
   stuid: string = '';
@@ -25,10 +77,14 @@ export class QuestionsComponent implements OnInit {
   englishQuestions: Question[] = [];
   majorQuestions: Question[] = [];
   currentQuestionIndex: number = 0;
-  selectedTab: any;
+  selectedTab: string = '';
   isQuizFinished: boolean = false;
   quizScore: number = 0;
-  comp_id:string='';
+  comp_id: string = '';
+  reasoningmark:string='';
+  englishmark:string='';
+  majormark:string='';
+ total:string='';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -36,14 +92,18 @@ export class QuestionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params: any) => {
       this.stuid = params['stuid'];
       this.challenge_id = params['challenge_id'];
 
       const reasoningCount = params['no_ofReasoning'] ? +params['no_ofReasoning'] : 0;
       const englishCount = params['no_ofEnglish'] ? +params['no_ofEnglish'] : 0;
       const majorCount = params['no_ofmajor'] ? +params['no_ofmajor'] : 0;
-      this.comp_id=params['comp_id'];
+      this.comp_id = params['comp_id'];
+      this.reasoningmark=params['reasoningmark'];
+      this.englishmark=params['englishmark'];
+      this.majormark=params['majormark']
+      this.total=params['total'];
 
       if (reasoningCount > 0) {
         this.service.getReasoningQuestions(reasoningCount, 'medium').subscribe((data: any) => {
@@ -79,7 +139,6 @@ export class QuestionsComponent implements OnInit {
       };
     });
   }
-  
 
   previousQuestion(): void {
     if (this.currentQuestionIndex > 0) {
@@ -87,124 +146,105 @@ export class QuestionsComponent implements OnInit {
     }
   }
 
-  nextQuestion(selectedTab: string): void {
+  nextQuestion(): void {
     if (this.isQuizFinished) {
       return;
     }
-  
-    const currentQuestion = this.getCurrentQuestion(selectedTab);
-  
+
+    const currentQuestion = this.getCurrentQuestion();
+
     if (currentQuestion.selectedOption === null) {
       // No option selected, show an error or prompt the user to select an option.
       return;
     }
-  
+
     currentQuestion.isAnswered = true;
-  
-    if (selectedTab === 'reasoning') {
-      if (this.currentQuestionIndex < this.reasoningQuestions.length - 1) {
-        this.currentQuestionIndex++;
-      } else if (this.englishQuestions.length > 0) {
-        this.selectedTab = 'english';
-        this.currentQuestionIndex = 0;
-      }
-    } else if (selectedTab === 'english') {
-      if (this.currentQuestionIndex < this.englishQuestions.length - 1) {
-        this.currentQuestionIndex++;
-      } else if (this.majorQuestions.length > 0) {
-        this.selectedTab = 'major';
-        this.currentQuestionIndex = 0;
-      }
-    } else if (selectedTab === 'major') {
-      if (this.currentQuestionIndex < this.majorQuestions.length - 1) {
-        this.currentQuestionIndex++;
-      } else {
-        this.isQuizFinished = true;
-        this.calculateQuizScore();
-      }
+
+    if (this.currentQuestionIndex < this.getQuestionsLength() - 1) {
+      this.currentQuestionIndex++;
+    } else {
+      this.isQuizFinished = true;
+      this.calculateQuizScore();
     }
   }
-  
-        
-  selectTab(tabName: any): void {
+
+  selectTab(tabName: string): void {
     this.selectedTab = tabName;
   }
-        
+
   selectAnswer(question: Question, selectedOption: string): void {
     question.selectedOption = selectedOption;
   }
-        
-  getCurrentQuestion(selectedTab: string): Question {
-    if (selectedTab === 'reasoning') {
+
+  getCurrentQuestion(): Question {
+    if (this.selectedTab === 'reasoning') {
       return this.reasoningQuestions[this.currentQuestionIndex];
-    } else if (selectedTab === 'english') {
+    } else if (this.selectedTab === 'english') {
       return this.englishQuestions[this.currentQuestionIndex];
-    } else if (selectedTab === 'major') {
+    } else if (this.selectedTab === 'major') {
       return this.majorQuestions[this.currentQuestionIndex];
     }
     return {} as Question;
   }
-        
   calculateQuizScore(): void {
     let score = 0;
   
     this.reasoningQuestions.forEach(question => {
-      if (question.selectedOption === question.options[question.options.indexOf(question.correctAnswer)]) {
-        score++;
+      if (question.selectedOption == question.correctAnswer) { // Use loose comparison
+        score += parseInt(this.reasoningmark, 10);
       }
     });
   
     this.englishQuestions.forEach(question => {
-      if (question.selectedOption === question.options[question.options.indexOf(question.correctAnswer)]) {
-        score++;
+      if (question.selectedOption == question.correctAnswer) { // Use loose comparison
+        score += parseInt(this.englishmark, 10);
       }
     });
   
     this.majorQuestions.forEach(question => {
-      if (question.selectedOption === question.options[question.options.indexOf(question.correctAnswer)]) {
-        score++;
+      if (question.selectedOption == question.correctAnswer) { // Use loose comparison
+        score += parseInt(this.majormark, 10);
       }
     });
   
-    this.quizScore = score;
-    if(this.quizScore<4){
-      this.router.navigate(['/not-eligible'],{ queryParams:{stuid:this.stuid}});
-    }
-    else{
-      this.router.navigate(['/photo-input'])
-    }
-  }
-  
-  
-        
-  finishQuiz(): void {
-    this.calculateQuizScore();
-    
-    console.log('Quiz Score:', this.quizScore);
+    this.quizScore = (score / parseInt(this.total)) * 100;
+    this.quizScore = Math.floor(this.quizScore);
      
+alert("Total Score in percent: " + this.quizScore);
+    this.service.setQuizScore(this.quizScore);
+
   }
+  
  
 
   isCurrentQuestionAnswered(): boolean {
-    const currentQuestion = this.getCurrentQuestion(this.selectedTab);
+    const currentQuestion = this.getCurrentQuestion();
     return currentQuestion.isAnswered || !this.hasNextQuestion();
   }
 
   hasNextQuestion(): boolean {
-  if (this.selectedTab === 'reasoning') {
-    return this.currentQuestionIndex < this.reasoningQuestions.length - 1;
-  } else if (this.selectedTab === 'english') {
-    return this.currentQuestionIndex < this.englishQuestions.length - 1;
-  } else if (this.selectedTab === 'major') {
-    return this.currentQuestionIndex < this.majorQuestions.length - 1;
+    return this.currentQuestionIndex < this.getQuestionsLength() - 1;
   }
-  return false;
-}
+
+  getQuestionsLength(): number {
+    if (this.selectedTab === 'reasoning') {
+      return this.reasoningQuestions.length;
+    } else if (this.selectedTab === 'english') {
+      return this.englishQuestions.length;
+    } else if (this.selectedTab === 'major') {
+      return this.majorQuestions.length;
+    }
+    return 0;
+  }
+
+  finishQuiz(): void {
+    this.calculateQuizScore();
+    console.log('Quiz Score:', this.quizScore);
  
-jump(){
-  this.router.navigate(['/videoupload'],{queryParams:{stuid:this.stuid,id:this.comp_id}});
-
-}
-
   }
-  
+
+  jump(): void {
+    this.calculateQuizScore();
+    this.router.navigate(['/videoupload'], { queryParams: { stuid: this.stuid, id: this.comp_id } });
+  }
+}

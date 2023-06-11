@@ -1,6 +1,5 @@
 
-<p>new works!</p>
-  
+   
   <div class="card"    
     style="width: 15rem;" *ngFor="let task of tasks" 
      >
@@ -15,9 +14,8 @@
       <div>Reasoning: {{task.no_ofReasoning}} X  {{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}</div>
      <div >English:  {{task.no_ofEnglish}} X  {{task.englishmark}} = {{task.no_ofEnglish*task.englishmark}} </div>
      <div >Major:  {{task.no_ofmajor}} X   {{task.majormark}} = {{task.no_ofmajor*task.majormark}} </div>
-     <div >Others:  {{task.others}}  X   {{task.othermarks}} = {{task.others*task.othermarks}} </div>
-
-     <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor+task.others*task.othermarks}}</div></div>
+ 
+     <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor}}</div></div>
      <button class="btn btn-danger" style="margin: 20px;" (click)="deleteTask(task.challenge_id)">Delete </button>
      <button class="btn btn-success" (click)="jump(task.challenge_id)">Update</button>  
 

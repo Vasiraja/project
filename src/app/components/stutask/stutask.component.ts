@@ -1,50 +1,56 @@
-
-// ---------------------------------------------
-import { Component } from '@angular/core';
-import { tasks } from './stutask';
+import { Component, OnInit } from '@angular/core';
 import { MyService } from 'src/app/new.service';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
- 
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { tasks } from './stutask';
+
 @Component({
   selector: 'app-stutask',
   templateUrl: './stutask.component.html',
   styleUrls: ['./stutask.component.css']
 })
-export class StutaskComponent {
+export class StutaskComponent implements OnInit {
   tasks: tasks[] = [];
-  dec = 2;
-  isLoading = false;
-   stuid = '';
-no_ofReasoning:string='';
-no_ofEnglish:string='';
-no_ofmajor:string='';
-id:string='';
-   constructor(
+  stuid = '';
+
+  constructor(
     private myService: MyService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
-  ngOnInit(): void {  
-    this.route.queryParamMap.subscribe(params => {
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params) => {
       this.stuid = params.get('stuid') || '';
-          this.gettasks();
+      this.getTasks();
     });
   }
 
-  gettasks(): void {
-    this.myService.gettasks().subscribe(tasks => this.tasks = tasks);    
-    console.log( this.tasks )
-   }
+   
 
-  attendtask(stuid: string, challenge_id: any,no_ofReasoning:number,no_ofEnglish:number,no_ofmajor:number,id:string): void {
+  getTasks(): void {
+    this.myService.gettasks().subscribe((tasks) => {
+
+      this.tasks = tasks;
+    });
+  }
+
+  attendTask(task: tasks): void {
+    const { challenge_id, no_ofReasoning, no_ofEnglish, no_ofmajor, comp_id,reasoningmark,englishmark,majormark,total } = task;
     if (this.stuid && challenge_id) {
       this.router.navigate(['/questions'], {
-        queryParams: { stuid: this.stuid, challenge_id: challenge_id ,no_ofReasoning:no_ofReasoning,no_ofEnglish:no_ofEnglish,no_ofmajor:no_ofmajor,comp_id:id}
-       });
+        queryParams: {
+          stuid:this.stuid,
+          challenge_id,
+          no_ofReasoning,
+          no_ofEnglish,
+          no_ofmajor,
+reasoningmark,
+englishmark,majormark,  
+total,        
+          comp_id
+        }
+      });
     }
   }
-  
 }

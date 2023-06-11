@@ -11,15 +11,16 @@ import { Router } from '@angular/router';
 })
 export class UserdetailsComponent implements OnInit {
  
-  displayedColumns: string[] = ['stuId', 'fluency', 'notlook', 'aptiscore', 'gram', 'spell', 'facedetections', 'Totalmarks','compId'];
+  displayedColumns: string[] = ['stuId', 'fluency', 'notlook', 'aptiscore', 'gram', 'spell', 'facedetections', 'totalmarks','compId'];
   user: user[] = [];
   userId:string='';
- 
+  
   constructor(private service: MyService,private route:ActivatedRoute,private router:Router) {}
  
   ngOnInit(): void {
     this.getUsers();
     this.route.queryParams.subscribe(params => {
+
       this.userId = params['userId']; // set userId to the value of "userId" query parameter, or empty string if it is null
      this.getUsers();
    });
@@ -32,6 +33,7 @@ export class UserdetailsComponent implements OnInit {
         console.log(response);
         this.user = response;
         console.log(this.user);
+        
       },
       (error: any) => {
         console.error('Error retrieving user details: ', error);

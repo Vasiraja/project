@@ -3,9 +3,7 @@
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{ column }}">
       <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let user">
-        <ng-container *ngIf="isLinkColumn(column)">
-          <a [href]="user[column]" (click)="navigateToUserProfile(user.userId)">{{ user[column] }}</a>
-        </ng-container>
+      
         <ng-container *ngIf="!isLinkColumn(column)">
           {{ user[column] }}
         </ng-container>
