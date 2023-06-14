@@ -7,10 +7,21 @@ const bcrypt=require('bcrypt');
 const fileUpload=require('express-fileupload');
  
 const { spawn } = require('child_process');
-const { connect } = require('http2');
-const path = require('path');
-const { FaceDetection } = require('face-api.js');
+const multer = require('multer');
 
+// Configure multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Specify the destination folder for uploaded files
+    cb(null, 'uploads');
+  },
+  filename: function (req, file, cb) {
+    // Specify a unique filename for the uploaded file
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 const app = express();
 
@@ -61,6 +72,18 @@ app.get('/userdetails/:userId', (req, res) => {
     res.json(results);
   });
 });
+
+
+
+app.get('/userprofile/:stuid',(req,res)=>{
+  const {stuid}=req.params;
+  const query=`Select * from sturegistration where email='${stuid}@gmail.com'`;
+  connection.query(query,(err,results)=>{
+    if(err) throw err;
+    res.json(results);
+  })
+})
+
 
 
 app.post('/userdetails/:stuId/:userId', (req, res) => {
@@ -305,25 +328,24 @@ app.post('/api/stulogin', (req, res) => {
   });
 });
 
-app.post('/api/sturegister', (req, res) => {
-  const name = req.body.name;
-  const email = req.body.email;
-  const gender = req.body.gender;
-  const phone = req.body.phone;
-  const password = req.body.password;
-  const confirmpassword = req.body.confirmpassword;
+app.post('/api/sturegister', upload.single('img'), (req, res) => {
+  const { name, email, gender, phone, password, confirmpassword } = req.body;
+  const profileImage = req.file.buffer;
 
-  // Insert registration data into database
-  const query = `INSERT INTO sturegistration (name, email, gender, phone, password, confirmpassword) VALUES (?, ?, ?, ?, ?, ?)`;
-  connection.query(query, [name, email, gender, phone, password, confirmpassword], (err, result) => {
-    if (err) {
-      console.error('Error inserting data into MySQL database: ', err);
-      res.status(500).json({ message: 'Error registering student' });
-      return;
+  // Insert the student data into the database
+  connection.query(
+    'INSERT INTO sturegistration (name, email, gender, phone, password, confirmpassword, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [name, email, gender, phone, password, confirmpassword, profileImage],
+    (error, results) => {
+      if (error) {
+        console.error('Error during registration:', error);
+        res.status(500).json({ error: 'An error occurred during registration.' });
+      } else {
+        console.log('Registration successful:', results);
+        res.status(200).json({ message: 'Registration successful.' });
+      }
     }
-    console.log('Successfully registered new student with ID: ', result.insertId);
-    res.status(200).json({ message: 'Successfully registered student' });
-  });
+  );
 });
 
 app.get('/api/challenges', (req, res) => {
@@ -416,12 +438,8 @@ app.get('/transcribe-video/:stuid', async (req, res) => {
 
 
  
- 
-
 app.get('/results/:stuid', (req, res) => {
   try {
-    let completedScripts = 0;
-
     const stuid = req.params.stuid;
     const sql = `SELECT gitlink FROM upload WHERE stuid = '${stuid}'`;
 
@@ -431,44 +449,43 @@ app.get('/results/:stuid', (req, res) => {
         res.sendStatus(500);
       } else if (result && result.length > 0) {
         const videoUrl = result[0].gitlink;
-        let facedetectCount = '';
-        let notLookingCount = '';
-        let noofvoices = '';
-        let fluency = '';
-        function checkAllScriptsCompleted() {
-          const totalScripts = 4; // Total number of scripts being executed
-        
-          if (completedScripts === totalScripts) {
-            console.log('All Python scripts executed successfully');
-            // Perform desired actions here, such as sending the response
-          }
-        }
-        
-
 
         // Execute the first Python script
         const pythonScript1 = spawn('python', ['facedetect.py', videoUrl]);
+        let facedetectCount = '';
+
+        // Capture output from the first Python script
         pythonScript1.stdout.on('data', (data) => {
           facedetectCount += data.toString();
+          console.log('Face Detection Count:', facedetectCount);
         });
 
         // Execute the second Python script
         const pythonScript2 = spawn('python', ['notlook.py', videoUrl]);
+        let notLookingCount = '';
+
+        // Capture output from the second Python script
         pythonScript2.stdout.on('data', (data) => {
           notLookingCount += data.toString();
+          console.log('Not Looking Count:', notLookingCount);
         });
 
-        // Execute the third Python script
         const pythonScript3 = spawn('python', ['voice_detection.py', videoUrl]);
+        let noofvoices = '';
+
         pythonScript3.stdout.on('data', (data) => {
           noofvoices += data.toString();
+          console.log('No of voices detected: ', noofvoices);
         });
 
-        // Execute the fourth Python script
         const pythonScript4 = spawn('python', ['fluency.py', videoUrl]);
+        let fluency = '';
+
         pythonScript4.stdout.on('data', (data) => {
           fluency += data.toString();
+          console.log('Fluency Percentage: ', fluency, '%');
         });
+
 //         const pythonScript5 = spawn('python', ['mistakes.py', videoUrl]);
 // let spell = '';
 // let grammer = '';
@@ -492,25 +509,32 @@ app.get('/results/:stuid', (req, res) => {
             facedetectCount !== '' &&
             notLookingCount !== '' &&
             fluency !== '' &&
-            noofvoices !== ''
+            noofvoices !== ''  
+            // &&
+            // spell !== '' &&
+            // grammer !== ''
           ) {
-             const response = {
+            console.log('All Python scripts executed successfully');
+            const response = {
               facedetectCount,
               notLookingCount,
               noofvoices,
               fluency,
+              // mistakes,
+              // spell,
+              // grammer
             };
             // Send the response containing all outputs as JSON
             res.status(200).json(response);
           }
         };
 
-        // Handle script error for any Python script
-        const handleScriptError = () => {
-          console.error('Python script execution failed');
-          // Handle the failure case
-          res.sendStatus(500);
-        };
+        // Handle script errors for all Python scripts
+        // const handleScriptError = () => {
+        //   console.error('Python script execution failed');
+        //   // Handle the failure case
+        //   res.sendStatus(500);
+        // };
 
         // Handle script completion for the first Python script
         pythonScript1.on('close', (code) => {
@@ -518,10 +542,8 @@ app.get('/results/:stuid', (req, res) => {
             console.log('Face detection Python script executed successfully');
             handleScriptCompletion();
           } else {
-            handleScriptError();
+            // handleScriptError();
           }
-          completedScripts++;
-          checkAllScriptsCompleted();
         });
 
         // Handle script completion for the second Python script
@@ -530,10 +552,8 @@ app.get('/results/:stuid', (req, res) => {
             console.log('Not looking Python script executed successfully');
             handleScriptCompletion();
           } else {
-            handleScriptError();
+            // handleScriptError();
           }
-          completedScripts++;
-          checkAllScriptsCompleted();
         });
 
         // Handle script completion for the third Python script
@@ -542,10 +562,8 @@ app.get('/results/:stuid', (req, res) => {
             console.log('Voice detection Python script executed successfully');
             handleScriptCompletion();
           } else {
-            handleScriptError();
+            // handleScriptError();
           }
-          completedScripts++;
-          checkAllScriptsCompleted();
         });
 
         // Handle script completion for the fourth Python script
@@ -554,18 +572,27 @@ app.get('/results/:stuid', (req, res) => {
             console.log('Fluency check Python script executed successfully');
             handleScriptCompletion();
           } else {
-            handleScriptError();
+            // handleScriptError();
           }
-          completedScripts++;
-          checkAllScriptsCompleted();
         });
 
-        // Handle script error for any Python script
-        pythonScript1.on('error', handleScriptError);
-        pythonScript2.on('error', handleScriptError);
-        pythonScript3.on('error', handleScriptError);
-        pythonScript4.on('error', handleScriptError);
-      } else {
+        // Handle script completion for the fifth Python script
+        // pythonScript5.on('close', (code) => {
+        //   if (code === 0) {
+        //     console.log('Mistakes Python script successfully executed');
+        //     handleScriptCompletion();
+        //   } else {
+        //     handleScriptError();
+        //   }
+        // });
+
+        // Handle script errors for all Python scripts
+        // pythonScript1.on('error', handleScriptError);
+        // pythonScript2.on('error', handleScriptError);
+        // pythonScript3.on('error', handleScriptError);
+        // pythonScript4.on('error', handleScriptError);
+        // pythonScript5.on('error',handleScriptError);
+       } else {
         console.error('No video URL found in the database');
         res.sendStatus(500);
       }
@@ -575,8 +602,6 @@ app.get('/results/:stuid', (req, res) => {
     res.sendStatus(500);
   }
 });
-
-
 
 
 const port = process.env.port || 3000;

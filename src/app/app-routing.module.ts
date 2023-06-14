@@ -49,7 +49,7 @@ import { AdmininputComponent } from './components/admininput/admininput.componen
 {path:'videoupload',component:VideouploadComponent},
 {path:'notlook',component:NotLookingComponent},
 {path:'logout',component:LogoutComponent},
- {path:'userdetails',component:UserdetailsComponent}
+{path:'userdetails',component:UserdetailsComponent}
 // {
 //   path: 'test/:stuid/question/:challenge_id',
 //   component: QuestionsComponent

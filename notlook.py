@@ -77,5 +77,6 @@ while True:
 # Release the video capture object and close any open windows
 video_capture.release()
 cv2.destroyAllWindows()
-
+if(not_looking_camera_count==0):
+    not_looking_camera_count=1
 print(not_looking_camera_count)

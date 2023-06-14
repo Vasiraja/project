@@ -4,7 +4,7 @@
       <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let user">
         <ng-container *ngIf="isLinkColumn(column)">
-          <a [href]="user[column]" (click)="navigateToUserProfile(user.userId)">{{ user[column] }}</a>
+          <a [routerLink]="user[column]" (click)="navigateToUserProfile(user.stuid)">{{ user[column] }}</a>
         </ng-container>
         <ng-container *ngIf="!isLinkColumn(column)">
           <ng-container *ngIf="column === 'grammer' || column === 'spell' || column === 'facedetection' || column === 'compId'">
@@ -23,3 +23,4 @@
   <button class="save" (click)="downloadData()">Download as EXCEL</button>
 
 </div>
+ 

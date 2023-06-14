@@ -23,6 +23,11 @@ getdetails(userId: string): Observable<any> {
   return this.http.get<any>(url);
 }
 
+getprofile(stuid:string):Observable<any>{
+  const url=`http://localhost:3000/userprofile/${stuid}`;
+  return this.http.get<any>(url);
+}
+
   
   getValues(userId: string): Observable<tasks[]> {
     const apiUrl = `http://localhost:3000/api/challenges/${userId}`;
@@ -78,9 +83,9 @@ getdetails(userId: string): Observable<any> {
   }
   //----------------------_______________students_________________-----------------------//
 
-  registerStudent(name: string, email: string, gender: string, phone: string, password: string, confirmpassword: string) {
+  registerStudent(img:File,name: string, email: string, gender: string, phone: string, password: string, confirmpassword: string) {
     const url = 'http://localhost:3000/api/sturegister';
-    const data = { name, email, gender, phone, password, confirmpassword };
+    const data = { img,name, email, gender, phone, password, confirmpassword };
     return this.http.post(url, data, { responseType: 'json' });
   }
 
@@ -139,5 +144,6 @@ getdetails(userId: string): Observable<any> {
     const url = `${this.vidurl}/results/${stuid}`;
     return this.http.get(url);
   }
+  
 
 }

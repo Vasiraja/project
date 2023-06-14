@@ -29,12 +29,11 @@ export class NotLookingComponent {
       console.log(this.userId);
 
      
-      this.getPythonResults();
+      this.get();
       this.getminus();
     });
   }
-
-  getPythonResults() {
+  get() {
     this.service.getPythonResults(this.stuid).subscribe({
       next: (response: any) => {
         this.isloading = false;
@@ -52,7 +51,6 @@ export class NotLookingComponent {
       },
     });
   }
-
   getminus() {
     this.service.getminus(this.userId).subscribe(
       (response: minus[]) => {
@@ -130,3 +128,4 @@ performCalculations() {
     }
   }
 }
+//________________________________________________________-

@@ -41,8 +41,8 @@ export class UserdetailsComponent implements OnInit {
     return column === 'stuid';
   }
 
-  navigateToUserProfile(userId: string): void {
-    this.router.navigate(['/userprofile'], { queryParams: { userId } });
+  navigateToUserProfile(stuid: string): void {
+    this.router.navigate(['/userprofile'], { queryParams: { stuid } });
   }
 
   downloadData(): void {

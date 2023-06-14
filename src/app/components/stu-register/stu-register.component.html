@@ -1,38 +1,27 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="/src/assets/image.png" alt="logo">    
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#"> 
-             <mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon>
-            
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <mat-icon aria-hidden="false" aria-label="About icon" fontIcon="info"></mat-icon>
-           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <mat-icon aria-hidden="false" aria-label="Contact icon" fontIcon="phone"></mat-icon>
-           </a>
-        </li>
-      </ul>
-      
-    </div>
-  </div>
-</nav>
 <div class="container-fluid">
   <div class="container">
     <h2 class="text-center mb-4">Register</h2>
     <form (ngSubmit)="put()">
+       
+
+
+
+      <div class="form-group">
+        <label for="profileImage" class="form-label">Profile Image:</label>
+        <input type="file" class="form-control-file" id="profileImage" (change)="handleImageUpload($event)" accept="image/*">
+      </div>
+      <div class="form-group">
+        <div class="circle" *ngIf="imgPreview">
+          <img [src]="imgPreview" class="img-preview" alt="Image Preview">
+          <button class="cancel-button" (click)="cancelImageUpload()">Cancel</button>
+        </div>
+      </div>
+      
+      
+      <div class="form-group">
+        <!-- Add image preview -->
+        <img [src]="imgPreview" *ngIf="imgPreview" class="img-preview" alt="Image Preview">
+      </div>
       <div class="form-group">
         <label for="name" class="form-label">Name:</label>
         <input type="text" class="form-control" id="name" [(ngModel)]="name" name="name" required>
@@ -62,8 +51,8 @@
         <label for="confirmPassword" class="form-label">Confirm Password:</label>
         <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmpassword" name="confirmPassword" required>
       </div>
-      <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-    
-      </div>
+   
+       <button type="submit" class="btn btn-primary">Register</button>
+      </form>
     </div>
+  </div>
