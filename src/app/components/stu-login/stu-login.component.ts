@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyService } from 'src/app/new.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-stu-login',

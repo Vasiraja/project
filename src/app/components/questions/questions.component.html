@@ -1,7 +1,11 @@
 
+<div class="timer-container">
+  <div class="timer">{{ formatTime(countdownTimer) }}</div>
+</div>
+<mat-tab-group [selectedIndex]="selectedTab"  class="quiz-tabs">
 
-<mat-tab-group [selectedIndex]="selectedTab" style="margin: 10px;">
   <mat-tab label="Reasoning">
+ 
     <div class="question-container">
       <div class="questions-list">
         <div class="card" *ngFor="let question of reasoningQuestions; let i = index">

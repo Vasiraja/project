@@ -23,34 +23,52 @@ export class StutaskComponent implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       this.stuid = params.get('stuid') || '';
       this.getTasks();
-    });
+      
+     });
   }
 
-   
-
   getTasks(): void {
-    this.myService.gettasks().subscribe((tasks) => {
-
+    this.myService.gettasks().subscribe((tasks) => { 
       this.tasks = tasks;
     });
   }
-
+  
   attendTask(task: tasks): void {
-    const { challenge_id, no_ofReasoning, no_ofEnglish, no_ofmajor, comp_id,reasoningmark,englishmark,majormark,total } = task;
+    const { challenge_id, no_ofReasoning, no_ofEnglish, no_ofmajor, comp_id, reasoningmark, englishmark, majormark, total, AptbeginTime, AptendTime } = task;
+  
     if (this.stuid && challenge_id) {
-      this.router.navigate(['/questions'], {
-        queryParams: {
-          stuid:this.stuid,
-          challenge_id,
-          no_ofReasoning,
-          no_ofEnglish,
-          no_ofmajor,
-reasoningmark,
-englishmark,majormark,  
-total,        
-          comp_id
-        }
-      });
+      const beginTimeParts = AptbeginTime.split(':');
+      const endTimeParts = AptendTime.split(':');
+  
+      const beginTime = new Date();
+      beginTime.setHours(parseInt(beginTimeParts[0], 10));
+      beginTime.setMinutes(parseInt(beginTimeParts[1], 10));
+      const endTime = new Date();
+      endTime.setHours(parseInt(endTimeParts[0], 10));
+      endTime.setMinutes(parseInt(endTimeParts[1], 10));
+  
+      const duration = endTime.getTime() - beginTime.getTime();
+      console.log(duration);
+  
+      if (!isNaN(duration) && duration > 0) {
+        this.router.navigate(['/questions'], {
+          queryParams: {
+            stuid: this.stuid,
+            challenge_id,
+            no_ofReasoning,
+            no_ofEnglish,
+            no_ofmajor,
+            reasoningmark,
+            englishmark,
+            majormark,
+            total,
+            comp_id,
+            duration
+          }
+        });
+      } else {
+        console.error('Invalid duration:', duration);
+      }
     }
   }
 }

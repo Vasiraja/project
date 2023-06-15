@@ -83,15 +83,28 @@ getprofile(stuid:string):Observable<any>{
   }
   //----------------------_______________students_________________-----------------------//
 
-  registerStudent(img:File,name: string, email: string, gender: string, phone: string, password: string, confirmpassword: string) {
+  registerStudent(name: string, email: string, gender: string, phone: string, password: string, confirmpassword: string) {
     const url = 'http://localhost:3000/api/sturegister';
-    const data = { img,name, email, gender, phone, password, confirmpassword };
+    const data = { name, email, gender, phone, password, confirmpassword };
     return this.http.post(url, data, { responseType: 'json' });
   }
 
   stulogin(email: string, password: string): Observable<any> {
     const login = 'http://localhost:3000/api/stulogin';
     return this.http.post(login, { email, password });
+  }
+
+  getProfile(stuid: string): Observable<any> {
+    const url = `${this.vidurl}/api/getProfile?id=${stuid}`;
+    return this.http.get(url);
+  }
+
+  uploadProfilePicture(file: File): Observable<any> {
+    const url = `${this.vidurl}/api/uploadProfilePicture`;
+    const formData: FormData = new FormData();
+    formData.append('profilePicture', file);
+
+    return this.http.post(url, formData);
   }
 
   gettasks(): Observable<tasks[]> {

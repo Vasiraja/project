@@ -7,21 +7,10 @@ const bcrypt=require('bcrypt');
 const fileUpload=require('express-fileupload');
  
 const { spawn } = require('child_process');
-const multer = require('multer');
+const { connect } = require('http2');
+const path = require('path');
+const { FaceDetection } = require('face-api.js');
 
-// Configure multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Specify the destination folder for uploaded files
-    cb(null, 'uploads');
-  },
-  filename: function (req, file, cb) {
-    // Specify a unique filename for the uploaded file
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
 
 const app = express();
 
@@ -136,18 +125,20 @@ app.delete('/api/challenges/:challenge_id', (req, res) => {
     res.send(results);
   });
 });
-
 app.post('/api/register', async (req, res) => {
   try {
     const email = req.body.email;
-    const Inst_name = req.body.Inst_name;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
-
+    
     if (password !== confirmPassword) {
       res.send({ message: 'Password does not match' });
       return;
     }
+
+    // Extract the institution name from the email
+    const userid = email.split('@')[0].trim(); // Extracting the first part before '@'
+    const Inst_name = userid;
 
     // Use parameterized query to prevent SQL injection
     const checkEmailSql = 'SELECT * FROM inst_register WHERE email = ?';
@@ -164,8 +155,8 @@ app.post('/api/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the new user
-        const insertSql = 'INSERT INTO inst_register (email, Inst_name, password) VALUES (?, ?, ?)';
-        const insertValues = [email, Inst_name, hashedPassword];
+        const insertSql = 'INSERT INTO inst_register (email, Inst_name, password, userid) VALUES (?, ?, ?, ?)';
+        const insertValues = [email, Inst_name, hashedPassword, userid];
 
         connection.query(insertSql, insertValues, (error, result) => {
           if (error) {
@@ -182,9 +173,11 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+
 app.post('/api/login', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  
 
   // Use parameterized query to prevent SQL injection
   const sql = 'SELECT * FROM inst_register WHERE email = ?';
@@ -205,7 +198,7 @@ app.post('/api/login', async (req, res) => {
       if (passwordMatch) {
         // Handle the case where the password matches
         res.send({ message: 'Login successful' });
-      } else {
+        } else {
         // Handle the case where the password does not match
         res.status(401).send({ message: 'Invalid credentials' });
       }
@@ -303,9 +296,46 @@ app.put('/api/challenges/:challenge_id', (req, res) => {
   })
   
  })
+
+
+
   
 //----------------__________________________Studetent_Database_________________________-----------------//
  
+const multer = require('multer'); // Import multer for handling file uploads
+const upload = multer({ dest: 'uploads/' }); // Set the destination folder for uploaded files
+
+// ...
+
+app.post('/api/updatePhoto', upload.single('photo'), async (req, res) => {
+  try {
+    const email = req.body.email;
+    const photo = req.file ? req.file.filename : '';
+
+    // Update the user's photo in the database
+    const updateSql = 'UPDATE inst_register SET photo = ? WHERE email = ?';
+    const updateValues = [photo, email];
+
+    connection.query(updateSql, updateValues, (error, result) => {
+      if (error) {
+        res.send({ message: error });
+      } else {
+        res.send({ message: 'Photo updated successfully' });
+      }
+    });
+  } catch (error) {
+    console.error('Error updating photo:', error);
+    res.sendStatus(500);
+  }
+});
+
+// ...
+
+
+
+
+
+
 app.post('/api/stulogin', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -328,24 +358,25 @@ app.post('/api/stulogin', (req, res) => {
   });
 });
 
-app.post('/api/sturegister', upload.single('img'), (req, res) => {
-  const { name, email, gender, phone, password, confirmpassword } = req.body;
-  const profileImage = req.file.buffer;
+app.post('/api/sturegister', (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const gender = req.body.gender;
+  const phone = req.body.phone;
+  const password = req.body.password;
+  const confirmpassword = req.body.confirmpassword;
 
-  // Insert the student data into the database
-  connection.query(
-    'INSERT INTO sturegistration (name, email, gender, phone, password, confirmpassword, profile_image) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [name, email, gender, phone, password, confirmpassword, profileImage],
-    (error, results) => {
-      if (error) {
-        console.error('Error during registration:', error);
-        res.status(500).json({ error: 'An error occurred during registration.' });
-      } else {
-        console.log('Registration successful:', results);
-        res.status(200).json({ message: 'Registration successful.' });
-      }
+  // Insert registration data into database
+  const query = `INSERT INTO sturegistration (name, email, gender, phone, password, confirmpassword) VALUES (?, ?, ?, ?, ?, ?)`;
+  connection.query(query, [name, email, gender, phone, password, confirmpassword], (err, result) => {
+    if (err) {
+      console.error('Error inserting data into MySQL database: ', err);
+      res.status(500).json({ message: 'Error registering student' });
+      return;
     }
-  );
+    console.log('Successfully registered new student with ID: ', result.insertId);
+    res.status(200).json({ message: 'Successfully registered student' });
+  });
 });
 
 app.get('/api/challenges', (req, res) => {

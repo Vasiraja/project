@@ -1,6 +1,8 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MyService } from 'src/app/new.service';
+import { interval, Subscription } from 'rxjs';
 
 interface Question {
   serialNumber: number;
@@ -15,60 +17,7 @@ interface Question {
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
-  styles: [`/* questions.component.css */
-  .questions-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .question {
-      margin-bottom: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f5f5f5;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .question-serial {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    
-    .question-description {
-      margin-bottom: 10px;
-    }
-    
-    .options {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .option {
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-    
-    input[type='radio'] {
-      margin-right: 10px;
-    }
-    .btn-warning,.btn-primary,span{
-  margin: 30px;;
-  
-    }
-    .card .form-check-label ,.form-check,li{
-      cursor: pointer;
-    }
-    
-    .card .form-check-label:hover,.form-check:hover,li:hover {
-      background-color: #f5f5f5;
-    }
-    .card{
-      margin-top: 20px;
-    }`]
+  styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent implements OnInit {
   stuid: string = '';
@@ -81,10 +30,16 @@ export class QuestionsComponent implements OnInit {
   isQuizFinished: boolean = false;
   quizScore: number = 0;
   comp_id: string = '';
-  reasoningmark:string='';
-  englishmark:string='';
-  majormark:string='';
- total:string='';
+  reasoningmark: string = '';
+  englishmark: string = '';
+  majormark: string = '';
+  total: string = '';
+  timer: number = 0;
+  timerSubscription: Subscription | undefined;
+  countdownTimer: number = 0;
+
+  duration: number | undefined;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -100,10 +55,12 @@ export class QuestionsComponent implements OnInit {
       const englishCount = params['no_ofEnglish'] ? +params['no_ofEnglish'] : 0;
       const majorCount = params['no_ofmajor'] ? +params['no_ofmajor'] : 0;
       this.comp_id = params['comp_id'];
-      this.reasoningmark=params['reasoningmark'];
-      this.englishmark=params['englishmark'];
-      this.majormark=params['majormark']
-      this.total=params['total'];
+      this.reasoningmark = params['reasoningmark'];
+      this.englishmark = params['englishmark'];
+      this.majormark = params['majormark'];
+      this.total = params['total'];
+      this.duration = params['duration'];
+      this.timer = this.duration || 0;
 
       if (reasoningCount > 0) {
         this.service.getReasoningQuestions(reasoningCount, 'medium').subscribe((data: any) => {
@@ -123,6 +80,41 @@ export class QuestionsComponent implements OnInit {
         });
       }
     });
+
+   
+    
+
+    this.countdownTimer = (this.duration || 0) - 1;
+
+    // Start the countdown timer
+    interval(1000).subscribe(() => {
+      if (this.countdownTimer > 0) {
+        this.countdownTimer--;
+      }
+    });
+
+
+
+
+
+
+
+
+    if (this.timer > 0) {
+      this.timerSubscription = interval(1000).subscribe(() => {
+        this.timer--;
+      });
+    }
+
+    setTimeout(() => {
+      this.jump();
+    }, this.duration);
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
   processQuestionsData(results: any[]): Question[] {
@@ -186,36 +178,37 @@ export class QuestionsComponent implements OnInit {
     }
     return {} as Question;
   }
+
   calculateQuizScore(): void {
     let score = 0;
-  
-    this.reasoningQuestions.forEach(question => {
-      if (question.selectedOption == question.correctAnswer) { // Use loose comparison
+
+    this.reasoningQuestions.forEach((question) => {
+      if (question.selectedOption === question.correctAnswer) {
+        // Use strict equality comparison for correctness check
         score += parseInt(this.reasoningmark, 10);
       }
     });
-  
-    this.englishQuestions.forEach(question => {
-      if (question.selectedOption == question.correctAnswer) { // Use loose comparison
+
+    this.englishQuestions.forEach((question) => {
+      if (question.selectedOption === question.correctAnswer) {
+        // Use strict equality comparison for correctness check
         score += parseInt(this.englishmark, 10);
       }
     });
-  
-    this.majorQuestions.forEach(question => {
-      if (question.selectedOption == question.correctAnswer) { // Use loose comparison
+
+    this.majorQuestions.forEach((question) => {
+      if (question.selectedOption === question.correctAnswer) {
+        // Use strict equality comparison for correctness check
         score += parseInt(this.majormark, 10);
       }
     });
-  
-    this.quizScore = (score / parseInt(this.total)) * 100;
-    this.quizScore = Math.floor(this.quizScore);
-     
-alert("Total Score in percent: " + this.quizScore);
-    this.service.setQuizScore(this.quizScore);
 
+    this.quizScore = (score / parseInt(this.total, 10)) * 100;
+    this.quizScore = Math.floor(this.quizScore);
+
+    alert("Total Score in percent: " + this.quizScore);
+    this.service.setQuizScore(this.quizScore);
   }
-  
- 
 
   isCurrentQuestionAnswered(): boolean {
     const currentQuestion = this.getCurrentQuestion();
@@ -240,11 +233,28 @@ alert("Total Score in percent: " + this.quizScore);
   finishQuiz(): void {
     this.calculateQuizScore();
     console.log('Quiz Score:', this.quizScore);
- 
   }
 
   jump(): void {
     this.calculateQuizScore();
     this.router.navigate(['/videoupload'], { queryParams: { stuid: this.stuid, id: this.comp_id } });
   }
+  
+  
+
+
+
+
+
+
+  formatTime(time: number): string {
+    const min = (parseInt(Math.floor(time / 60).toString().padStart(2, '0')))/1000;
+    const seconds = (time % 60).toString().padStart(2, '0');
+     const minutes=Math.floor(min)
+   
+    return `${minutes}:${seconds}`;
+  }
+  
+  
+
 }

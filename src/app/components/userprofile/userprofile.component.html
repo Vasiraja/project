@@ -1,20 +1,26 @@
 <div class="profile-card">
   <div class="profile-card-header">
     <div class="user-avatar">
-      <img src={{ }} alt="User Photo">
+      <label for="photo-input">
+        <img id="preview-image" [src]="previewSrc || 'default-profile-pic.jpg'" alt="User Photo">
+        <input id="photo-input" type="file" name="photo" (change)="handleFileInput($event)">
+        <span class="change-profile-picture">Change Profile Picture</span>
+      </label>
     </div>
-    <h4>{{name}}</h4>
-  </div>
-  <div class="profile-item">
-    <p class="label">Gender:</p>
-    <h6 class="value">{{gender}}</h6>
-  </div>
-  <div class="profile-item">
-    <p class="label">Email:</p>
-    <h6 class="value">{{email}}</h6>
-  </div>
-  <div class="profile-item phone">
-    <p class="label">Phone:</p>
-    <h6 class="value">{{phone}}</h6>
+    <div class="profile-info">
+      <h4>{{name}}</h4>
+      <div class="profile-item">
+        <p class="label">Gender:</p>
+        <h6 class="value">{{gender}}</h6>
+      </div>
+      <div class="profile-item">
+        <p class="label">Email:</p>
+        <h6 class="value">{{email}}</h6>
+      </div>
+      <div class="profile-item phone">
+        <p class="label">Phone:</p>
+        <h6 class="value">{{phone}}</h6>
+      </div>
+    </div>
   </div>
 </div>
