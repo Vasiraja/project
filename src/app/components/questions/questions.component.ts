@@ -1,8 +1,8 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MyService } from 'src/app/new.service';
 import { interval, Subscription } from 'rxjs';
+import { MatTabGroup } from '@angular/material/tabs';
 
 interface Question {
   serialNumber: number;
@@ -20,6 +20,8 @@ interface Question {
   styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent implements OnInit {
+  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
+
   stuid: string = '';
   challenge_id: string = '';
   reasoningQuestions: Question[] = [];
@@ -37,6 +39,7 @@ export class QuestionsComponent implements OnInit {
   timer: number = 0;
   timerSubscription: Subscription | undefined;
   countdownTimer: number = 0;
+  selectedOptions: string[] = []; // Array to store selected options
 
   duration: number | undefined;
 
@@ -81,9 +84,6 @@ export class QuestionsComponent implements OnInit {
       }
     });
 
-   
-    
-
     this.countdownTimer = (this.duration || 0) - 1;
 
     // Start the countdown timer
@@ -92,13 +92,6 @@ export class QuestionsComponent implements OnInit {
         this.countdownTimer--;
       }
     });
-
-
-
-
-
-
-
 
     if (this.timer > 0) {
       this.timerSubscription = interval(1000).subscribe(() => {
@@ -164,8 +157,13 @@ export class QuestionsComponent implements OnInit {
     this.selectedTab = tabName;
   }
 
-  selectAnswer(question: Question, selectedOption: string): void {
+  selectAnswer(question: any, selectedOption: any): void {
     question.selectedOption = selectedOption;
+    this.selectedOptions[question.serialNumber] = selectedOption; 
+    
+    this.isQuizFinished = this.reasoningQuestions.every(question => question.selectedOption !== null) &&
+                        this.englishQuestions.every(question => question.selectedOption !== null) &&
+                        this.majorQuestions.every(question => question.selectedOption !== null);
   }
 
   getCurrentQuestion(): Question {
@@ -239,22 +237,31 @@ export class QuestionsComponent implements OnInit {
     this.calculateQuizScore();
     this.router.navigate(['/videoupload'], { queryParams: { stuid: this.stuid, id: this.comp_id } });
   }
-  
-  
 
+  // Go to the next tab
+  nextTab() {
+    const selectedIndex = this.tabGroup.selectedIndex;
+    const tabCount = this.tabGroup._tabs.length;
 
+    if (selectedIndex !== null && selectedIndex < tabCount - 1) {
+      this.tabGroup.selectedIndex = selectedIndex + 1;
+    }
+  }
 
+  // Go to the previous tab
+  previousTab() {
+    const selectedIndex = this.tabGroup.selectedIndex;
 
-
+    if (selectedIndex !== null && selectedIndex > 0) {
+      this.tabGroup.selectedIndex = selectedIndex - 1;
+    }
+  }
 
   formatTime(time: number): string {
     const min = (parseInt(Math.floor(time / 60).toString().padStart(2, '0')))/1000;
     const seconds = (time % 60).toString().padStart(2, '0');
-     const minutes=Math.floor(min)
-   
+    const minutes = Math.floor(min);
+
     return `${minutes}:${seconds}`;
   }
-  
-  
-
 }
