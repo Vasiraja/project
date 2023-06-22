@@ -12,28 +12,34 @@
       <div class="short">
         <div>
           Reasoning:
-          <input type="number" class="form-control" [(ngModel)]="no_ofReasoning" name="questions1" (input)="calculateTotal()" placeholder="No. of questions"> x
-          <input type="number" class="form-control" [(ngModel)]="reasoningmark" name="marks1" (input)="calculateTotal()" placeholder="Per Mark"> =
+          <input type="number" class="form-control" [(ngModel)]="no_ofReasoning" name="questions1"
+            (input)="calculateTotal()" placeholder="No. of questions"> x
+          <input type="number" class="form-control" [(ngModel)]="reasoningmark" name="marks1" (input)="calculateTotal()"
+            placeholder="Per Mark"> =
           <p class="input-result">{{result1}}</p>
         </div>
 
         <div>
           English Aptitude:
-          <input type="number" [(ngModel)]="no_ofEnglish" name="questions2" (input)="calculateTotal()" class="form-control" placeholder="No. of questions"> x
-          <input type="number" [(ngModel)]="englishmark" name="marks2" (input)="calculateTotal()" class="form-control" placeholder="Per Mark"> =
+          <input type="number" [(ngModel)]="no_ofEnglish" name="questions2" (input)="calculateTotal()"
+            class="form-control" placeholder="No. of questions"> x
+          <input type="number" [(ngModel)]="englishmark" name="marks2" (input)="calculateTotal()" class="form-control"
+            placeholder="Per Mark"> =
           <p class="input-result">{{result2}}</p>
         </div>
 
         <div>
           Major:
-          <input type="number" [(ngModel)]="no_ofmajor" name="questions3" (input)="calculateTotal()" class="form-control" placeholder="No. of questions"> x
-          <input type="number" [(ngModel)]="majormark" name="marks3" (input)="calculateTotal()" class="form-control" placeholder="Per Mark"> =
+          <input type="number" [(ngModel)]="no_ofmajor" name="questions3" (input)="calculateTotal()"
+            class="form-control" placeholder="No. of questions"> x
+          <input type="number" [(ngModel)]="majormark" name="marks3" (input)="calculateTotal()" class="form-control"
+            placeholder="Per Mark"> =
           <p class="input-result">{{result3}}</p>
         </div>
 
- 
+
         <p class="total-marks">Total Marks: {{total}}</p>
-    
+
         <button *ngIf="userId && !challenge_id" class="publish-button" (click)="publish(userId)">Publish</button>
         <button *ngIf="challenge_id && userId" class="update-button" (click)="update(challenge_id)">Update</button>
       </div>

@@ -1,16 +1,19 @@
 import cv2
 import numpy as np
 import sys
+import urllib.request
 
 # Load the face detection model
 net = cv2.dnn.readNetFromCaffe('deploy.prototxt', 'res10_300x300_ssd_iter_140000.caffemodel')
 
 # Read the video URL from the command-line argument
-video_url = sys.argv[1]
-# video_url='https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
+video_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
 
 # Open the video capture object
-video_capture = cv2.VideoCapture(video_url)
+video_capture = cv2.VideoCapture()
+
+# Open the video URL using urllib and pass it to VideoCapture
+video_capture.open(video_url)
 
 total_faces_detected = 0
 unique_faces_detected = []
@@ -65,8 +68,6 @@ while True:
 video_capture.release()
 
 # Output the total number of unique faces detected
-# if(total_faces_detected==0):
-#     total_faces_detected=1
 print(total_faces_detected)
 
 # Terminate the script

@@ -1,50 +1,89 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+}
+
 .card {
-  float:left;
-  margin-left: 40px;
-   
+  width: 15rem;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
-.card:active{
-  cursor:progress;
+
+.card img {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
 }
-.card:hover{
-  cursor:pointer;
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  margin-top: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.cid {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.card-text {
+  margin-bottom: 0.5rem;
+  color: #333;
 }
 
  
+ 
+
 
  
-  .txt-danger{
-    color:rgb(63, 75, 21);
-  }
-  .cid{
-    font-size: larger;
-    font-weight: bold;
 
-   }
-   .btn-primary {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    position: absolute;
-    right:20px;
-    overflow: hidden;
-    margin:10px;
-  }
-  
-  
-  
-  .btn-primary::before {
-    content: '+';
-    transition: transform 0.2s ease-out;
 
-  }
-  
-  .btn-primary:hover::before {
-    content: 'Add New Challenge';
-    transform: translate(-50%, -50%);
 
-  }
-  
+.btn-primary::before {
+ content: '+';
+ transition: transform 0.9s ease-out;
+ 
+}
+
+.btn-primary:hover::before {
+ content: 'Add New Challenge';
+ 
+}
+
+.navigation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-task-button {
+  margin-right: 1rem;
+}
+
+.other-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+ }
+
+ .user-button,
+.video-analyze-button {
+  padding: 5px 10px;
+  font-size: 12px;
+ }

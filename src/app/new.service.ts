@@ -4,31 +4,33 @@ import { Observable } from 'rxjs';
 import { tasks } from './components/tasks/new';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MyService {
-
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
   private quizScore: number = 0;
 
-  private register = "http://localhost:3000/api/register";
+  private register = 'http://localhost:3000/api/register';
   private vidurl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
-getdetails(userId: string): Observable<any> {
-  const url = `http://localhost:3000/userdetails/${userId}`;
-  return this.http.get<any>(url);
-}
+  getdetails(userId: string): Observable<any> {
+    const url = `http://localhost:3000/userdetails/${userId}`;
+    return this.http.get<any>(url);
+  }
+  getinformation(): Observable<any> {
+    const url = 'http://localhost:3000/getinformation';
+    return this.http.get<any>(url);
+  }
 
-getprofile(stuid:string):Observable<any>{
-  const url=`http://localhost:3000/userprofile/${stuid}`;
-  return this.http.get<any>(url);
-}
+  getprofile(stuid: string): Observable<any> {
+    const url = `http://localhost:3000/userprofile/${stuid}`;
+    return this.http.get<any>(url);
+  }
 
-  
   getValues(userId: string): Observable<tasks[]> {
     const apiUrl = `http://localhost:3000/api/challenges/${userId}`;
     return this.http.get<tasks[]>(apiUrl);
@@ -73,7 +75,6 @@ getprofile(stuid:string):Observable<any>{
     return this.http.get(url);
   }
 
-
   setQuizScore(quizScore: number): void {
     this.quizScore = quizScore;
   }
@@ -83,7 +84,14 @@ getprofile(stuid:string):Observable<any>{
   }
   //----------------------_______________students_________________-----------------------//
 
-  registerStudent(name: string, email: string, gender: string, phone: string, password: string, confirmpassword: string) {
+  registerStudent(
+    name: string,
+    email: string,
+    gender: string,
+    phone: string,
+    password: string,
+    confirmpassword: string
+  ) {
     const url = 'http://localhost:3000/api/sturegister';
     const data = { name, email, gender, phone, password, confirmpassword };
     return this.http.post(url, data, { responseType: 'json' });
@@ -112,6 +120,11 @@ getprofile(stuid:string):Observable<any>{
     return this.http.get<tasks[]>(geturl);
   }
 
+  uploadcloud(path: string, stuId: string) {
+    const url = `${this.vidurl}/upload/${stuId}`;
+    return this.http.post(url, { path }, { responseType: 'json' }); // Specify response type as JSON
+  }
+
   getReasoningQuestions(amount: number, difficulty: string): Observable<any> {
     const url = `https://opentdb.com/api.php?amount=${amount}&category=10&difficulty=${difficulty}&type=multiple`;
     return this.http.get(url);
@@ -130,7 +143,12 @@ getprofile(stuid:string):Observable<any>{
     const url = `http://localhost:3000/userdetails/${data.stuid}/${data.compId}`;
     return this.http.post(url, data);
   }
-  getQuestions(subject: string, amount: number, difficulty: string): Observable<any> {
+
+  getQuestions(
+    subject: string,
+    amount: number,
+    difficulty: string
+  ): Observable<any> {
     switch (subject) {
       case 'reasoning':
         return this.getReasoningQuestions(amount, difficulty);
@@ -143,20 +161,32 @@ getprofile(stuid:string):Observable<any>{
     }
   }
 
-  uploadVideo(gitlink: string, stuid: string): Observable<any> {
-    const url = `${this.vidurl}/videoupload/${stuid}`;
-    return this.http.post(url, { gitlink });
-  }
+  // uploadVideo(gitlink: string, stuid: string): Observable<any> {
+  //   const url = `${this.vidurl}/videoupload/${stuid}`;
+  //   return this.http.post(url, { gitlink });
+  // }
 
   gettextresult(stuid: string): Observable<any> {
     const url = `${this.vidurl}/transcribe-video/${stuid}`;
     return this.http.get(url);
   }
 
-  getPythonResults(stuid: string): Observable<any> {
-    const url = `${this.vidurl}/results/${stuid}`;
+  // getPythonResults(stuid: string): Observable<any> {
+  //   const url = `${this.vidurl}/results/${stuid}`;
+  //   return this.http.get(url);
+  // }
+  getcloudresults(stuid: string): Observable<any> {
+    const url = `${this.vidurl}/cloudresult/${stuid}`;
     return this.http.get(url);
   }
-  
+  //------------------------admin--------------------------//
+  postinfo(infodata: any): Observable<any> {
+    const url = 'http://localhost:3000/postinfo';
+    return this.http.post(url, infodata);
+  }
 
+  deleteinfo(id: any): Observable<{}> {
+    const url = `http://localhost:3000/deleteinfo/${id}`;
+    return this.http.delete(url, this.httpOptions);
+  }
 }

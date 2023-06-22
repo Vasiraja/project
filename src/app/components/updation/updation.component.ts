@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-updation',
   templateUrl: './updation.component.html',
-  styleUrls: ['./updation.component.css']
+  styleUrls: ['./updation.component.css'],
 })
 export class UpdationComponent implements OnInit {
   userId: string | undefined;
@@ -26,10 +26,14 @@ export class UpdationComponent implements OnInit {
   total: number = 0;
   challenge_id: string | undefined;
 
-  constructor(private service: MyService, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private service: MyService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.challenge_id = params['challenge_id'];
       this.userId = params['userId'];
     });
@@ -59,7 +63,7 @@ export class UpdationComponent implements OnInit {
   }
 
   publish(userId: string): void {
-    console.log("publish clicked", userId);
+    console.log('publish clicked', userId);
 
     const data = {
       Institute: this.Institute,
@@ -71,14 +75,16 @@ export class UpdationComponent implements OnInit {
       reasoningmark: this.reasoningmark,
       englishmark: this.englishmark,
       majormark: this.majormark,
-      total: this.total
+      total: this.total,
     };
 
-    this.service.publishdata(data, userId).subscribe(res => {
+    this.service.publishdata(data, userId).subscribe((res) => {
       console.log(res);
-      alert("Task Added Successfully");
+      alert('Task Added Successfully');
 
-      this.router.navigate(['/tasks'], { queryParams: { userId: this.userId } });
+      this.router.navigate(['/tasks'], {
+        queryParams: { userId: this.userId },
+      });
     });
   }
 
@@ -93,14 +99,16 @@ export class UpdationComponent implements OnInit {
       no_ofmajor: this.no_ofmajor,
       reasoningmark: this.reasoningmark,
       englishmark: this.englishmark,
-      majormark: this.majormark
+      majormark: this.majormark,
     };
 
-    this.service.edittask(task, challenge_id).subscribe(res => {
+    this.service.edittask(task, challenge_id).subscribe((res) => {
       console.log(res);
-      alert("Task: " + challenge_id + this.userId + " Updated Successfully");
+      alert('Task: ' + challenge_id + this.userId + ' Updated Successfully');
 
-      this.router.navigate(['/tasks'], { queryParams: { userId: this.userId } });
+      this.router.navigate(['/tasks'], {
+        queryParams: { userId: this.userId },
+      });
     });
   }
 }

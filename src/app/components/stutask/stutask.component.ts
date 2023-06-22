@@ -10,7 +10,7 @@ import { tasks } from './stutask';
   styleUrls: ['./stutask.component.css']
 })
 export class StutaskComponent implements OnInit {
-  tasks: tasks[] = [];
+  tasks:any= [];
   stuid = '';
 
   constructor(
@@ -34,7 +34,7 @@ export class StutaskComponent implements OnInit {
   }
   
   attendTask(task: tasks): void {
-    const { challenge_id, no_ofReasoning, no_ofEnglish, no_ofmajor, comp_id, reasoningmark, englishmark, majormark, total, AptbeginTime, AptendTime } = task;
+    const { challenge_id, no_ofReasoning, no_ofEnglish, no_ofmajor, comp_id, reasoningmark, englishmark, majormark,totalmarks, AptbeginTime, AptendTime } = task;
   
     if (this.stuid && challenge_id) {
       const beginTimeParts = AptbeginTime.split(':');
@@ -61,7 +61,8 @@ export class StutaskComponent implements OnInit {
             reasoningmark,
             englishmark,
             majormark,
-            total,
+            
+            totalmarks,
             comp_id,
             duration
           }

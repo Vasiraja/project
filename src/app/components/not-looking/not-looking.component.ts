@@ -34,7 +34,7 @@ export class NotLookingComponent {
     });
   }
   get() {
-    this.service.getPythonResults(this.stuid).subscribe({
+    this.service.getcloudresults(this.stuid).subscribe({
       next: (response: any) => {
         this.isloading = false;
         this.facedetectCount = response.facedetectCount;

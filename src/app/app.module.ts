@@ -1,5 +1,7 @@
 import { ContentChild, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
  import { AppRoutingModule } from './app-routing.module';
@@ -22,7 +24,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { QuestionsComponent } from './components/questions/questions.component';
 import { NotEligibleComponent } from './components/not-eligible/not-eligible.component';
 import { VideouploadComponent } from './components/videoupload/videoupload.component';
-import { MatInputModule } from '@angular/material/input';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card'
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -34,9 +35,10 @@ import {MatTableModule} from '@angular/material/table';
 import { LogoutComponent } from './components/logout/logout.component';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { AdmininputComponent } from './components/admininput/admininput.component';
- 
-  
- @NgModule({
+import { UserdashboardComponent } from './components/userdashboard/userdashboard.component';
+import { GenerateresumeComponent } from './components/generateresume/generateresume.component';
+import { CloudComponent } from './components/cloud/cloud.component';
+   @NgModule({
   declarations: [
      AppComponent,
     NewComponent,
@@ -58,8 +60,13 @@ import { AdmininputComponent } from './components/admininput/admininput.componen
      UserdetailsComponent,
      UserprofileComponent,
      AdmininputComponent,
+     UserdashboardComponent,
+     GenerateresumeComponent,
+     CloudComponent,
+   
         ],  imports: [
-     BrowserModule,
+     BrowserModule,    MatFormFieldModule,
+
      AppRoutingModule,
      HttpClientModule,
       FormsModule,

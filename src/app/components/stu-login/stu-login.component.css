@@ -1,0 +1,23 @@
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-header {
+    padding: 1.5rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .login-button {
+    background-color: #63b466;
+    color: #fff;
+  }
+  
+  .register-button {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  

@@ -9,7 +9,7 @@ landmark_predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks_GTX
 video_file = sys.argv[1]
 
 # Open the video capture object
-# video_file = 'https://github.com/Vasiraja/videorefer/blob/main/click1.mp4?raw=true'
+# video_file = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
 video_capture = cv2.VideoCapture(video_file)
 
 # Initialize the eye positions for the first frame
@@ -77,6 +77,5 @@ while True:
 # Release the video capture object and close any open windows
 video_capture.release()
 cv2.destroyAllWindows()
-if(not_looking_camera_count==0):
-    not_looking_camera_count=1
+ 
 print(not_looking_camera_count)

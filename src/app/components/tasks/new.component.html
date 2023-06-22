@@ -1,33 +1,42 @@
+<div class="navigation-container">
+  <div class="add-task-button">
+    <button class="btn btn-primary" (click)="jumpuser(userId)" style="padding: 5px 10px;">
+    </button>
+  </div>
+  <div class="other-buttons">
+    <button class="btn btn-secondary user-button" (click)="openUserInfoModal(userId)">
+      <mat-icon>person</mat-icon>
+    </button>
+    <button class="btn btn-success video-analyze-button" (click)="openinput(userId)">
+      <mat-icon>minus</mat-icon>
+    </button>
+  </div>
+</div>
 
-   
-  <div class="card"    
-    style="width: 15rem;" *ngFor="let task of tasks" 
-     >
-    <img  src="https://wallpapercave.com/wp/wp4318128.jpg" alt="Card image cap"> 
+<div class="card-container">
+  <div class="card" *ngFor="let task of tasks">
+    <img src="https://wallpapercave.com/wp/wp4318128.jpg" alt="Card image cap">
     <div class="card-body">
-    <h6 class="card-title">{{task.comp_id}}</h6>
-    <p class="cid">{{task.challenge_id}} </p>
-    
-      <div class="card-text" ><p class="txt-danger">{{task.AptbeginTime}}</p> 
-    <p class="txt txt-danger">{{task.AptendTime}}</p></div>
-           <div class="short">
-      <div>Reasoning: {{task.no_ofReasoning}} X  {{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}</div>
-     <div >English:  {{task.no_ofEnglish}} X  {{task.englishmark}} = {{task.no_ofEnglish*task.englishmark}} </div>
-     <div >Major:  {{task.no_ofmajor}} X   {{task.majormark}} = {{task.no_ofmajor*task.majormark}} </div>
- 
-     <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor}}</div></div>
-     <button class="btn btn-danger" style="margin: 20px;" (click)="deleteTask(task.challenge_id)">Delete </button>
-     <button class="btn btn-success" (click)="jump(task.challenge_id)">Update</button>  
-
-
-    </div></div>  <div> <button class="btn btn-primary" (click)="jumpuser(userId)"></button>
-
-
-<button class="btn btn-secondary" style="position:absolute;top:100px;right:29px" (click)="openUserInfoModal(userId)">v</button>
- <button class="btn btn-success" style="position:absolute;top:150px;right:29px" (click)="openinput(userId)"> videoanalyse</button>
-  
-   </div> 
-
- 
-
-      
+      <h6 class="card-title">{{task.comp_id}}</h6>
+      <p class="cid">{{task.challenge_id}}</p>
+      <div class="card-text">
+        <p class="txt-danger">{{task.AptbeginTime}}</p>
+        <p class="txt txt-danger">{{task.AptendTime}}</p>
+      </div>
+      <div class="short">
+        <div>Reasoning: {{task.no_ofReasoning}} X {{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}</div>
+        <div>English: {{task.no_ofEnglish}} X {{task.englishmark}} = {{task.no_ofEnglish*task.englishmark}}</div>
+        <div>Major: {{task.no_ofmajor}} X {{task.majormark}} = {{task.no_ofmajor*task.majormark}}</div>
+        <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor}}</div>
+      </div>
+      <div class="button-group">
+        <button class="btn btn-danger" (click)="deleteTask(task.challenge_id)">
+          <mat-icon>delete</mat-icon>  
+        </button>
+        <button class="btn btn-success" (click)="jump(task.challenge_id)">
+          <mat-icon>edit</mat-icon>  
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

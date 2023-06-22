@@ -9,8 +9,10 @@ export interface tasks {
   no_ofEnglish: number;
   no_ofmajor: number;
   total: number;
-  reasoningmark: number;
+  totalmarks:number;
+   reasoningmark: number;
   englishmark: number;
   majormark: number;
   comp_id: string;
+
 }

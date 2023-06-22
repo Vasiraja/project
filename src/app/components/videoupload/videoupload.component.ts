@@ -2,98 +2,74 @@ import { Component, OnInit } from '@angular/core';
 import { MyService } from 'src/app/new.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { error } from 'console';
 @Component({
   selector: 'app-videoupload',
   templateUrl: './videoupload.component.html',
-  styleUrls: ['./videoupload.component.css']
+  styleUrls: ['./videoupload.component.css'],
 })
 export class VideouploadComponent implements OnInit {
-  gitlink: string = '';  
+  path: string = '';
   stuid: string = '';
   transcription: string = '';
-  compID='';
-   spellingErrors: any[] | undefined;
+  compID = '';
+  spellingErrors: any[] | undefined;
   grammaticalErrors: any[] | undefined;
   constructor(
     private service: MyService,
     private route: ActivatedRoute,
-    private router:Router
+    private router: Router
   ) {}
 
   ngOnInit() {
-     this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.stuid = params['stuid'];
-      this.compID=params['id'];
+      this.compID = params['id'];
       console.log(this.stuid); // Check if the value is printed in the console
-     });
-  }
-  
-
-  onSubmit() {
-    this.service.uploadVideo(this.gitlink, this.stuid).subscribe({
-      next: response => {
-         if (response) {
-          console.log(response);
-          if(this.gitlink && this.stuid){
-          alert("submitted successfully")
-          }else{
-            alert("not submitted")
-          }
-         }
-      },
-      error: error => {
-        console.error(error);
-      }
     });
   }
 
-  
+  onSubmit() {
+    this.service.uploadcloud(this.path, this.stuid).subscribe({
+      next: (response:any) => {
+        console.log(response);
+        if (response) {
+          alert('Submitted successfully');
+           this.submitting = false;
+           this.transcription = response.transcription;
+           console.log(response);
+ 
+           this.router.navigate(['/notlook'], {
+             queryParams: { stuid: this.stuid, compID: this.compID },
+           });
+        } else {
+          alert('Not submitted');
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
 
   submitting: boolean = false;
 
   
+  // fetchNotLookingCount() {
+  //   if (this.stuid) {
+  //     this.service.getNotLookingCount(this.stuid).subscribe({
+  //       next: (response: any) => {
+  //         this.notLookingCount = response.notLookingCount;
+  //       },
+  //       error: (error: any) => {
+  //         console.error('Error fetching not looking count:', error);
 
-      submit() {
-        this.submitting=true;
-        this.service.gettextresult(this.stuid).subscribe({
-          next: (response:any) => {
-            this.submitting=false;
-            this.transcription = response.transcription;
-            console.log(response)
-            alert("Uploaded Successfully..")
-            
-              this.router.navigate(['/notlook'], { queryParams: { stuid: this.stuid ,compID:this.compID} });
-            
-            
-           },
-          error: (error) => {
-            this
-            console.error('Error retrieving Python results:', error);
-          }
-        });
-      }
-      // fetchNotLookingCount() {
-      //   if (this.stuid) {
-      //     this.service.getNotLookingCount(this.stuid).subscribe({
-      //       next: (response: any) => {
-      //         this.notLookingCount = response.notLookingCount;
-      //       },
-      //       error: (error: any) => {
-      //         console.error('Error fetching not looking count:', error);       
-       
-      //       }
-      //     });
-      //   }
-      // }
-      
-        
+  //       }
+  //     });
+  //   }
+  // }
 
-
-
-
-    
-  jump(){
-    this.router.navigate(['/detect'],{ queryParams:{stuid:this.stuid}});
-
+  jump() {
+    this.router.navigate(['/detect'], { queryParams: { stuid: this.stuid } });
   }
 }  

@@ -35,7 +35,7 @@ export class QuestionsComponent implements OnInit {
   reasoningmark: string = '';
   englishmark: string = '';
   majormark: string = '';
-  total: string = '';
+  total: number = 0;
   timer: number = 0;
   timerSubscription: Subscription | undefined;
   countdownTimer: number = 0;
@@ -61,7 +61,7 @@ export class QuestionsComponent implements OnInit {
       this.reasoningmark = params['reasoningmark'];
       this.englishmark = params['englishmark'];
       this.majormark = params['majormark'];
-      this.total = params['total'];
+      this.total = params['totalmarks'];
       this.duration = params['duration'];
       this.timer = this.duration || 0;
 
@@ -178,32 +178,35 @@ export class QuestionsComponent implements OnInit {
   }
 
   calculateQuizScore(): void {
-    let score = 0;
+    let resscore = 0;
+    let engscore=0;
+    let majscore=0;
 
     this.reasoningQuestions.forEach((question) => {
       if (question.selectedOption === question.correctAnswer) {
         // Use strict equality comparison for correctness check
-        score += parseInt(this.reasoningmark, 10);
+        resscore += parseInt(this.reasoningmark);
       }
     });
 
     this.englishQuestions.forEach((question) => {
       if (question.selectedOption === question.correctAnswer) {
         // Use strict equality comparison for correctness check
-        score += parseInt(this.englishmark, 10);
+        engscore += parseInt(this.englishmark);
       }
     });
 
     this.majorQuestions.forEach((question) => {
       if (question.selectedOption === question.correctAnswer) {
         // Use strict equality comparison for correctness check
-        score += parseInt(this.majormark, 10);
+        majscore += parseInt(this.majormark);
       }
     });
-
-    this.quizScore = (score / parseInt(this.total, 10)) * 100;
-    this.quizScore = Math.floor(this.quizScore);
-
+    let score=resscore+engscore+majscore;
+  alert("score:"+score)
+  alert("total:"+this.total)
+    this.quizScore = (score / this.total) * 100;
+   
     alert("Total Score in percent: " + this.quizScore);
     this.service.setQuizScore(this.quizScore);
   }
@@ -235,7 +238,7 @@ export class QuestionsComponent implements OnInit {
 
   jump(): void {
     this.calculateQuizScore();
-    this.router.navigate(['/videoupload'], { queryParams: { stuid: this.stuid, id: this.comp_id } });
+      this.router.navigate(['/videoupload'], { queryParams: { stuid: this.stuid, id: this.comp_id } });
   }
 
   // Go to the next tab

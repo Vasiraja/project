@@ -1,0 +1,47 @@
+<form (ngSubmit)="generateResume($event)" class="resume-form">
+    <!-- Personal Information Section -->
+    <h2>Personal Information</h2>
+    <label>Name:</label>
+    <input type="text" [(ngModel)]="personalInfo.name" name="name" required>
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="personalInfo.email" name="email" required>
+    <label>Phone:</label>
+    <input type="tel" [(ngModel)]="personalInfo.phone" name="phone" required>
+    <!-- Add more fields as needed for personal information -->
+  
+    <!-- Education Section -->
+    <h2>Education</h2>
+    <div *ngFor="let educationItem of educationItems; let i = index">
+      <label>Institution:</label>
+      <input type="text" [(ngModel)]="educationItems[i].institution" name="institution{{i}}" required>
+      <label>Degree:</label>
+      <input type="text" [(ngModel)]="educationItems[i].degree" name="degree{{i}}" required>
+      <label>Year:</label>
+      <input type="number" [(ngModel)]="educationItems[i].year" name="year{{i}}" required>
+    </div>
+    <button (click)="addEducationItem()">Add Education</button>
+  
+    <!-- Work Experience Section -->
+    <h2>Work Experience</h2>
+    <div *ngFor="let workExperienceItem of workExperienceItems; let i = index">
+      <label>Company:</label>
+      <input type="text" [(ngModel)]="workExperienceItems[i].company" name="company{{i}}" required>
+      <label>Position:</label>
+      <input type="text" [(ngModel)]="workExperienceItems[i].position" name="position{{i}}" required>
+      <label>Duration:</label>
+      <input type="text" [(ngModel)]="workExperienceItems[i].duration" name="duration{{i}}" required>
+      <!-- Add more fields as needed for work experience -->
+    </div>
+    <button (click)="addWorkExperienceItem()">Add Work Experience</button>
+  
+    <!-- Skills Section -->
+    <h2>Skills</h2>
+    <div *ngFor="let skill of skills; let i = index">
+      <input type="text" [(ngModel)]="skills[i]" name="skill{{i}}" required>
+      <!-- Add more fields as needed for skills -->
+    </div>
+    <button (click)="addSkill()">Add Skill</button>
+  
+    <button type="submit">Generate Resume</button>
+  </form>
+  
