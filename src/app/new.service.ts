@@ -122,7 +122,7 @@ export class MyService {
 
   uploadcloud(path: string, stuId: string) {
     const url = `${this.vidurl}/upload/${stuId}`;
-    return this.http.post(url, { path }, { responseType: 'json' }); // Specify response type as JSON
+    return this.http.post(url, { path }, { responseType: 'json' }); 
   }
 
   getReasoningQuestions(amount: number, difficulty: string): Observable<any> {

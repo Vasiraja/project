@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const fileUpload = require("express-fileupload");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
- 
+ z
 const { spawn } = require("child_process");
 
 const { S3Client, PutObjectCommand,GetObjectCommand } = require("@aws-sdk/client-s3");

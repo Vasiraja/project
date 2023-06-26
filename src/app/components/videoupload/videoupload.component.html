@@ -4,12 +4,12 @@
       <mat-card-title>Videoupload</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p class="message">* upload your GitHub video link and click send and process</p>
+      <p><span class="message">* Provide Your Local Video URL And Name of that Video </span><br><mat-card-content>Ex. D:/desktop/files/video.mp4</mat-card-content>  </p>
       <form (ngSubmit)="onSubmit()" class="form">
         <mat-form-field class="form-field">
           <textarea matInput placeholder="video URL" [(ngModel)]="path" name="path" rows="3"></textarea>
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">submit</button><br><br>
+        <button mat-raised-button  type="submit">send</button><br><br>
       </form>
     </mat-card-content>
   </mat-card> 
