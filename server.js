@@ -7,11 +7,14 @@ const bcrypt = require("bcrypt");
 const fileUpload = require("express-fileupload");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
- z
+
 const { spawn } = require("child_process");
 
-const { S3Client, PutObjectCommand,GetObjectCommand } = require("@aws-sdk/client-s3");
- 
+const {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} = require("@aws-sdk/client-s3");
 
 const app = express();
 
@@ -745,9 +748,8 @@ app.delete("/deleteinfo/:id", (req, res) => {
 
 //------------------------------------------cloud---------------------------------------------//
 
- 
 const s3Client = new S3Client({
-  region: "ap-south-1", 
+  region: "ap-south-1",
   credentials: {
     accessKeyId: "AKIA4GUYU6B64XJDDV2Y",
     secretAccessKey: "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",
@@ -780,8 +782,6 @@ app.post("/upload/:stuid", async (req, res) => {
       .json({ error: "An error occurred while uploading the file." }); // Return error as JSON object
   }
 });
-
-
 
 app.get("/cloudresult/:userid", async (req, res) => {
   try {
@@ -896,7 +896,36 @@ app.get("/cloudresult/:userid", async (req, res) => {
   }
 });
 
+const storage = multer.memoryStorage();
 
+app.post(
+  "/profile-picture/:userid",
+  upload.single("profilePicture"),
+  async (req, res) => {
+    try {
+      const userid = req.params.userid;
+      const fileData = req.file.buffer;
+
+      const uploadParams = {
+        Bucket: "vidzupload",
+        Key: `profile-pictures/${userid}.jpg`,
+        Body: fileData,
+        ACL: "public-read",
+      };
+
+      const command = new PutObjectCommand(uploadParams);
+      await s3Client.send(command);
+
+      console.log("Profile picture uploaded successfully");
+      res.json({ message: "Profile picture uploaded successfully!" }); // Return response as JSON object
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      res.status(500).json({
+        error: "An error occurred while uploading the profile picture.",
+      }); // Return error as JSON object
+    }
+  }
+);
 const port = process.env.port || 3000;
 
 app.listen(port, () => {
