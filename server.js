@@ -195,6 +195,15 @@ app.get("/api/challenges/:userId", (req, res) => {
   });
 });
 
+app.get("/challenges/:challengeId", (req, res) => {
+  const { challengeId } = req.params;
+  const query = `select * from challenges where challenge_id= '${challengeId}'`;
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  })
+})
+
 app.get("/getinformation", (req, res) => {
   const query = "select * from informations";
   connection.query(query, (err, results) => {

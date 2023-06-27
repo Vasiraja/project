@@ -26,7 +26,7 @@ export class NewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.userId = params['userId']; // set userId to the value of "userId" query parameter, or empty string if it is null
+      this.userId = params['userId'];
       this.getValues();
     });
   }

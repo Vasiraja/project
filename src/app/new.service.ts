@@ -35,7 +35,10 @@ export class MyService {
     const apiUrl = `http://localhost:3000/api/challenges/${userId}`;
     return this.http.get<tasks[]>(apiUrl);
   }
-
+  getchallenge(challenge_id: string): Observable<tasks[]> {
+    const geturl = `http://localhost:3000/challenges/${challenge_id}`;
+    return this.http.get<tasks[]>(geturl);
+  }
   deleteTask(challenge_id: string): Observable<{}> {
     const url = `http://localhost:3000/api/challenges/${challenge_id}`;
     return this.http.delete(url, this.httpOptions);
@@ -107,8 +110,6 @@ export class MyService {
     return this.http.get(url);
   }
 
- 
-
   gettasks(): Observable<tasks[]> {
     const geturl = `http://localhost:3000/api/challenges`;
     return this.http.get<tasks[]>(geturl);
@@ -116,7 +117,7 @@ export class MyService {
 
   uploadcloud(path: string, stuId: string) {
     const url = `${this.vidurl}/upload/${stuId}`;
-    return this.http.post(url, { path }, { responseType: 'json' }); 
+    return this.http.post(url, { path }, { responseType: 'json' });
   }
 
   getReasoningQuestions(amount: number, difficulty: string): Observable<any> {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MyService } from 'src/app/new.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-updation',
@@ -19,11 +18,11 @@ export class UpdationComponent implements OnInit {
   reasoningmark: number | null = null;
   englishmark: number | null = null;
   majormark: number | null = null;
-  result1: number = 0;
-  result2: number = 0;
-  result3: number = 0;
-  result4: number = 0;
-  total: number = 0;
+  result1 = 0;
+  result2 = 0;
+  result3 = 0;
+  result4 = 0;
+  total = 0;
   challenge_id: string | undefined;
 
   constructor(
@@ -36,6 +35,10 @@ export class UpdationComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.challenge_id = params['challenge_id'];
       this.userId = params['userId'];
+      if (this.challenge_id) {
+
+        this.getchal(this.challenge_id);
+       }
     });
   }
 
@@ -88,6 +91,23 @@ export class UpdationComponent implements OnInit {
     });
   }
 
+  getchal(challenge_id:string) {
+    this.service.getchallenge(challenge_id).subscribe((res) => {
+      console.log(res);
+          this.AptbeginTime = res[0].AptbeginTime;
+          this.AptendTime = res[0].AptendTime;
+          this.Institute = res[0].Institute;
+          this.no_ofReasoning = res[0].no_ofReasoning;
+          this.no_ofEnglish = res[0].no_ofEnglish;
+          this.no_ofmajor = res[0].no_ofmajor;
+          this.reasoningmark = res[0].reasoningmark;
+          this.englishmark = res[0].englishmark;
+      this.majormark = res[0].majormark;
+      this.total = res[0].total;
+  
+    });
+  }
+
   update(challenge_id: string): void {
     const task = {
       challenge_id: this.challenge_id,
@@ -104,7 +124,7 @@ export class UpdationComponent implements OnInit {
 
     this.service.edittask(task, challenge_id).subscribe((res) => {
       console.log(res);
-      alert('Task: ' + challenge_id + this.userId + ' Updated Successfully');
+      alert(`Task: ${challenge_id} ${this.userId} Updated Successfully`);
 
       this.router.navigate(['/tasks'], {
         queryParams: { userId: this.userId },
