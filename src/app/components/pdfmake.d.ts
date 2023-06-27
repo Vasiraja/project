@@ -1,5 +1,4 @@
 declare module 'pdfmake/build/vfs_fonts' {
-    const pdfFonts: any;
-    export default pdfFonts;
-  }
-  
+  const pdfFonts: any;
+  export default pdfFonts;
+}

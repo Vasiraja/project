@@ -28,7 +28,7 @@ import { CloudComponent } from './components/cloud/cloud.component';
 {path: "register", component:InstRegisterComponent},
       { path: "login", component: LoginComponent },
 
-{ path: '', redirectTo: '/login', pathMatch: 'full' },
+{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 {path:"photoanalyze",component:PhotoInputComponent},
 { path: 'transcribe/:textId', component: TranscriptionComponent },
 // {path:'tasks/:stuid',component:NewComponent},  

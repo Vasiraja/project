@@ -12,6 +12,7 @@ export class UserdashboardComponent implements OnInit {
   adminid: any;
   header: any;
   content: any;
+  headertopic: any;
   link: any;
 
   constructor(
@@ -40,6 +41,7 @@ export class UserdashboardComponent implements OnInit {
 
   addinformation(): void {
     const infodata = {
+      headertopic:this.headertopic,
       header: this.header,
       content: this.content,
       link: this.link

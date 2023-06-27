@@ -1,33 +1,33 @@
 <div class="dashboard-container">
   <h1>Welcome, have a great day ahead!</h1>
 
-  <nav class="dashboard-navigation"   *ngIf="!adminid">
+  <nav class="dashboard-navigation" *ngIf="!adminid">
     <ul>
-      <li >
+      <li>
         <a routerLink="/stulogin">Login</a>
       </li>
       <li *ngIf="!adminid">
         <a routerLink="/sturegister">Signup</a>
       </li>
       <li *ngIf="!adminid">
-        <a routerLink="/generateresume">ResumeBuild</a>
+        <a routerLink="/generateresume">Resume Build</a>
       </li>
     </ul>
   </nav>
 
   <div *ngIf="adminid" class="input-container">
+    <input type="text" [(ngModel)]="headertopic" class="text-input" placeholder="Initial instructions">
     <input type="text" [(ngModel)]="header" class="text-input" placeholder="Header">
     <input type="text" [(ngModel)]="content" class="text-input" placeholder="Content">
     <input type="text" [(ngModel)]="link" class="text-input" placeholder="Link">
 
     <button class="publish-button" (click)="addinformation()">Add Information</button>
   </div>
-  <div class="dashboard-container">
-    <!-- Rest of the code -->
-    
-    <div class="dashboard-content">
-      <div class="card-container">
-        <div class="card" *ngFor="let headerInfo of headerInformation; let i = index" [ngClass]="{ 'alternate': i % 2 !== 0 }">
+
+  <div class="dashboard-content">
+    <div class="card-container">
+      <div class="card" *ngFor="let headerInfo of headerInformation; let i = index"
+        [ngClass]="{ 'alternate': i % 2 !== 0 }">
         <div class="card-content">
           <i class="card-icon fas fa-user"></i>
           <h3>{{ headerInfo?.header }}</h3>
@@ -36,13 +36,15 @@
             <a [href]="headerInfo?.link">Learn More</a>
           </div>
         </div>
-        
+        <div>{{ headerInfo?.headertopic }}</div>
+
         <div *ngIf="adminid">
-          <button class="btn btn-danger" (click)="delinfo(headerInfo.id)"> 
+          <button class="btn btn-danger" (click)="delinfo(headerInfo.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
       </div>
-    </div><br>
+    </div>
   </div>
 </div>
+

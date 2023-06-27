@@ -1,29 +1,26 @@
-
+ 
+<button class="profiles" (click)="toggleProfile()"><i class="fas fa-user"></i> <mat-icon> contact_mail  </mat-icon>  </button>
 <div class="card-container">
   <div class="card" *ngFor="let task of tasks">
     <img src="https://wallpapercave.com/wp/wp4318128.jpg" alt="Card image cap">
     <div class="card-body">
       <h6 class="card-title">{{ task.Institute }}</h6>
-      <p class="cid">{{ task.challenge_id }}</p>
-      <div class="card-text">
-        <p class="txt-danger">{{ task.AptbeginTime }}</p>
+       <div class="card-text">
+        <p class="txt txt-danger">{{ task.AptbeginTime }}</p>
         <p class="txt txt-danger">{{ task.AptendTime }}</p>
       </div>
-      <div>{{ task.comp_id }}</div>
-      <div class="short">
-        <div>Reasoning: {{ task.no_ofReasoning }}x{{ task.reasoningmark }}={{ task.no_ofReasoning * task.reasoningmark
+       <div class="short">
+        <div>Reasoning: {{ task.no_ofReasoning }} x {{ task.reasoningmark }} = {{ task.no_ofReasoning * task.reasoningmark
           }}</div>
-        <div>English: {{ task.no_ofEnglish }}x{{ task.englishmark }}={{ task.no_ofEnglish * task.englishmark }}</div>
-        <div>Major: {{ task.no_ofmajor }}x{{ task.majormark }}={{ task.no_ofmajor * task.majormark }}</div>
-        <div>Total: {{ task.reasoningmark * task.no_ofReasoning + task.englishmark * task.no_ofEnglish + task.majormark
+        <div>English: {{ task.no_ofEnglish }} x {{ task.englishmark }} = {{ task.no_ofEnglish * task.englishmark }}</div>
+        <div>Major: {{ task.no_ofmajor }} x {{ task.majormark }} = {{ task.no_ofmajor * task.majormark }}</div>
+        <div>Total: {{ task.reasoningmark * task.no_ofReasoning  + task.englishmark * task.no_ofEnglish + task.majormark
           * task.no_ofmajor }}</div>
       </div>
       <button class="btn btn-primary" (click)="attendTask(task)"><i class="fas fa-play"></i> Start</button>
     </div>
   </div>
-</div>
+</div><div class="profile-container" *ngIf="showProfile">
 
-<div class="profile-container" *ngIf="showProfile">
-  <app-userprofile class="profile"></app-userprofile>
+ <app-userprofile class="profile"></app-userprofile>
 </div>
-<button class="profiles" (click)="toggleProfile()"><i class="fas fa-user"></i> <mat-icon> contact_mail  </mat-icon>  </button>

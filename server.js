@@ -347,6 +347,9 @@ app.post("/api/update/:taskId", (req, res) => {
   });
 });
 
+ 
+
+
 app.put("/api/challenges/:challenge_id", (req, res) => {
   const challenge_id = req.params.challenge_id;
   const task = req.body;
@@ -731,13 +734,14 @@ app.get("/transcribe-video/:stuid", async (req, res) => {
 //-----------------------------------ADMIN DATA-------------------------------------------------//
 
 app.post("/postinfo", (req, res) => {
+  const headertopic = req.body.headertopic;
   const header = req.body.header;
   const content = req.body.content;
   const link = req.body.link;
 
   // Insert registration data into database
-  const query = `INSERT INTO informations (header,content,link) VALUES (?, ?, ?)`;
-  connection.query(query, [header, content, link], (err, result) => {
+  const query = `INSERT INTO informations (headertopic,header,content,link) VALUES (?,?, ?, ?)`;
+  connection.query(query, [headertopic,header, content, link], (err, result) => {
     if (err) {
       console.error("Error inserting data into MySQL database: ", err);
       res.status(500).json({ message: "Error registering information" });

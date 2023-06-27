@@ -6,13 +6,13 @@
           <label for="profile-image" class="upload-label">
             <img [src]="profileImageUrl ? profileImageUrl : 'https://www.w3schools.com/howto/img_avatar.png'">
             <input type="file" id="profile-image" (change)="onSelectFile($event)">
-            Upload Image
+            <h4>{{ name }}</h4>
           </label>
-          <button type="submit">Save</button>
+          <!-- <button type="submit">Save</button> -->
         </form>
       </div>
       <div class="profile-info">
-        <h4>{{ name }}</h4>
+        
         <div class="profile-item">
           <p class="label">Gender: <span class="value">{{ gender }}</span></p>
         </div>

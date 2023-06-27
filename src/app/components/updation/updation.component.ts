@@ -93,8 +93,7 @@ export class UpdationComponent implements OnInit {
 
   getchal(challenge_id:string) {
     this.service.getchallenge(challenge_id).subscribe((res) => {
-      console.log(res);
-          this.AptbeginTime = res[0].AptbeginTime;
+           this.AptbeginTime = res[0].AptbeginTime;
           this.AptendTime = res[0].AptendTime;
           this.Institute = res[0].Institute;
           this.no_ofReasoning = res[0].no_ofReasoning;

@@ -26,10 +26,10 @@
         <p class="txt txt-danger">{{task.AptendTime}}</p>
       </div>
       <div class="short">
-        <div>Reasoning: {{task.no_ofReasoning}} X {{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}
+        <div>Reasoning: {{task.no_ofReasoning}} x {{task.reasoningmark}} = {{task.no_ofReasoning*task.reasoningmark}}
         </div>
-        <div>English: {{task.no_ofEnglish}} X {{task.englishmark}} = {{task.no_ofEnglish*task.englishmark}}</div>
-        <div>Major: {{task.no_ofmajor}} X {{task.majormark}} = {{task.no_ofmajor*task.majormark}}</div>
+        <div>English: {{task.no_ofEnglish}} x {{task.englishmark}} = {{task.no_ofEnglish*task.englishmark}}</div>
+        <div>Major: {{task.no_ofmajor}} x {{task.majormark}} = {{task.no_ofmajor*task.majormark}}</div>
         <div>
           Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor}}
         </div>
