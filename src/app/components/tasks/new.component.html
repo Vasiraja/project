@@ -1,18 +1,20 @@
 <div class="navigation-container">
   <div class="add-task-button">
     <button class="btn btn-primary" (click)="jumpuser(userId)" style="padding: 5px 10px;">
+      <span></span>
+      Add New Challenge
     </button>
   </div>
   <div class="other-buttons">
     <button class="btn btn-secondary user-button" (click)="openUserInfoModal(userId)">
       <mat-icon>person</mat-icon>
     </button>
-    <button class="btn btn-success video-analyze-button" (click)="openinput(userId)">
-      <mat-icon>minus</mat-icon>
+    <button class="btn btn-success video-analyze-button" style="position: relative;right:10px;" (click)="openinput(userId)">
+    <mat-icon>remove_circle_outline</mat-icon>
+ 
     </button>
   </div>
 </div>
-
 <div class="card-container">
   <div class="card" *ngFor="let task of tasks">
     <img src="https://wallpapercave.com/wp/wp4318128.jpg" alt="Card image cap">
@@ -24,17 +26,19 @@
         <p class="txt txt-danger">{{task.AptendTime}}</p>
       </div>
       <div class="short">
-        <div>Reasoning: {{task.no_ofReasoning}} X {{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}</div>
+        <div>Reasoning: {{task.no_ofReasoning}} X {{task.reasoningmark}}={{task.no_ofReasoning*task.reasoningmark}}
+        </div>
         <div>English: {{task.no_ofEnglish}} X {{task.englishmark}} = {{task.no_ofEnglish*task.englishmark}}</div>
         <div>Major: {{task.no_ofmajor}} X {{task.majormark}} = {{task.no_ofmajor*task.majormark}}</div>
-        <div>Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor}}</div>
+        <div>
+          Total:{{task.reasoningmark*task.no_ofReasoning+task.englishmark*task.no_ofEnglish+task.majormark*task.no_ofmajor}}
+        </div>
       </div>
       <div class="button-group">
         <button class="btn btn-danger" (click)="deleteTask(task.challenge_id)">
-          <mat-icon>delete</mat-icon>  
-        </button>
+<mat-icon>delete_outline</mat-icon>        </button>
         <button class="btn btn-success" (click)="jump(task.challenge_id)">
-          <mat-icon>edit</mat-icon>  
+          <mat-icon >edit</mat-icon>
         </button>
       </div>
     </div>

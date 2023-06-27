@@ -120,6 +120,7 @@ performCalculations() {
       this.service.postuser(postData).subscribe(
         (response: any) => {
           console.log('User details inserted successfully:', response);
+          alert("Thank You for the Participation: " + this.stuid);
         },
         (error) => {
           console.error('Error inserting user details:', error);
@@ -128,4 +129,4 @@ performCalculations() {
     }
   }
 }
-//________________________________________________________-
+//______________________________________________________________________//

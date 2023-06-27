@@ -7,6 +7,8 @@ const bcrypt = require("bcrypt");
 const fileUpload = require("express-fileupload");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
+const { v4: uuidv4 } = require("uuid");
+const { Readable } = require("stream");
 
 const { spawn } = require("child_process");
 
@@ -747,7 +749,6 @@ app.delete("/deleteinfo/:id", (req, res) => {
 });
 
 //------------------------------------------cloud---------------------------------------------//
-
 const s3Client = new S3Client({
   region: "ap-south-1",
   credentials: {
@@ -755,6 +756,7 @@ const s3Client = new S3Client({
     secretAccessKey: "bM6Yqa8xlB53cUBCdhk8k0g1FUhRkh2pmeoyNBlF",
   },
 });
+
 
 app.post("/upload/:stuid", async (req, res) => {
   try {
@@ -896,36 +898,45 @@ app.get("/cloudresult/:userid", async (req, res) => {
   }
 });
 
-const storage = multer.memoryStorage();
+ 
 
-app.post(
-  "/profile-picture/:userid",
-  upload.single("profilePicture"),
-  async (req, res) => {
-    try {
-      const userid = req.params.userid;
-      const fileData = req.file.buffer;
+app.post("/profile/:stuid", upload.single("file"), async (req, res) => {
+  try {
+    const file = req.file;
+    const stuid = req.params.stuid;
 
-      const uploadParams = {
-        Bucket: "vidzupload",
-        Key: `profile-pictures/${userid}.jpg`,
-        Body: fileData,
-        ACL: "public-read",
-      };
-
-      const command = new PutObjectCommand(uploadParams);
-      await s3Client.send(command);
-
-      console.log("Profile picture uploaded successfully");
-      res.json({ message: "Profile picture uploaded successfully!" }); // Return response as JSON object
-    } catch (error) {
-      console.error("Error uploading profile picture:", error);
-      res.status(500).json({
-        error: "An error occurred while uploading the profile picture.",
-      }); // Return error as JSON object
+    if (!file) {
+      res.status(400).json({ error: "No file provided" });
+      return;
     }
+
+    const params = {
+      Bucket: "vidzupload",
+      Key: `${stuid}.jpg`,
+      Body: fs.readFileSync(file.path),
+      ACL: "public-read",
+      ContentType: file.mimetype,
+    };
+
+    await s3.upload(params).promise();
+
+    console.log("Uploaded successfully");
+    res.json({ message: "File uploaded successfully!" });
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while uploading the file." });
   }
-);
+});
+
+
+
+
+
+
+
+
 const port = process.env.port || 3000;
 
 app.listen(port, () => {

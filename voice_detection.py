@@ -1,31 +1,42 @@
-import speech_recognition as sr
-from pydub import AudioSegment
-import requests
+import moviepy.editor as mp
 import numpy as np
+from sklearn.cluster import KMeans
 import librosa
-import matplotlib.pyplot as plt
+import sys
 
-video_url = "https://vidzupload.s3.ap-south-1.amazonaws.com/beem.mp4"
-audio_path = "output_audio.wav"
+# Function to perform voice detection
+def detect_distinct_voices(video_path):
+    # Load the video file
+    video = mp.VideoFileClip(video_path)
+    audio = video.audio
 
-# Download the video file
-response = requests.get(video_url)
-with open("video.mp4", "wb") as f:
-    f.write(response.content)
+    # Extract audio data
+    audio_data = audio.to_soundarray(fps=44100)
 
-# Convert video to audio using pydub
-video = AudioSegment.from_file("video.mp4")
-video.export(audio_path, format="wav")
+    # Preprocess the audio data
+    audio_data = librosa.effects.trim(audio_data[:, 0], top_db=20)[0]
+    audio_data = librosa.util.normalize(audio_data)
+    segments = librosa.effects.split(audio_data, top_db=25, frame_length=2048, hop_length=512)
 
-# Load audio using librosa
-audio, sr = librosa.load(audio_path)
+    # Extract features from the audio data
+    features = []
+    for start, end in segments:
+        segment = audio_data[start:end]
+        mfccs = librosa.feature.mfcc(y=segment, sr=44100, n_mfcc=13)
+        features.append(np.mean(mfccs, axis=1))
 
-# Apply VAD (Voice Activity Detection) using librosa
-vad = librosa.effects.split(audio, top_db=30)
-vad_audio = np.concatenate([audio[start:end] for start, end in vad])
+    # Cluster the features using K-means
+    if len(features) < 2:
+        num_voices = 1
+    else:
+        kmeans = KMeans(n_clusters=2, random_state=0).fit(features)
+        num_voices = len(np.unique(kmeans.labels_))
 
-# Perform speaker diarization using librosa
-speaker_labels = librosa.segment.recurrence_matrix(vad_audio)
-num_speakers = len(np.unique(speaker_labels))
+    return num_voices
 
-print("Number of distinct voices:", num_speakers)
+video_file=sys.argv[1]
+# video_file = "https://vidzupload.s3.ap-south-1.amazonaws.com/beem.mp4"
+
+# Perform voice detection
+num_distinct_voices = detect_distinct_voices(video_file)
+print(num_distinct_voices)

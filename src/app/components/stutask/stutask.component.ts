@@ -7,11 +7,12 @@ import { tasks } from './stutask';
 @Component({
   selector: 'app-stutask',
   templateUrl: './stutask.component.html',
-  styleUrls: ['./stutask.component.css']
+  styleUrls: ['./stutask.component.css'],
 })
 export class StutaskComponent implements OnInit {
-  tasks:any= [];
+  tasks: any = [];
   stuid = '';
+  showProfile: boolean = false;
 
   constructor(
     private myService: MyService,
@@ -23,33 +24,46 @@ export class StutaskComponent implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       this.stuid = params.get('stuid') || '';
       this.getTasks();
-      
-     });
+    });
   }
 
   getTasks(): void {
-    this.myService.gettasks().subscribe((tasks) => { 
+    this.myService.gettasks().subscribe((tasks) => {
       this.tasks = tasks;
     });
   }
-  
+  toggleProfile() {
+    this.showProfile = !this.showProfile;
+  }
   attendTask(task: tasks): void {
-    const { challenge_id, no_ofReasoning, no_ofEnglish, no_ofmajor, comp_id, reasoningmark, englishmark, majormark,totalmarks, AptbeginTime, AptendTime } = task;
-  
+    const {
+      challenge_id,
+      no_ofReasoning,
+      no_ofEnglish,
+      no_ofmajor,
+      comp_id,
+      reasoningmark,
+      englishmark,
+      majormark,
+      totalmarks,
+      AptbeginTime,
+      AptendTime,
+    } = task;
+
     if (this.stuid && challenge_id) {
       const beginTimeParts = AptbeginTime.split(':');
       const endTimeParts = AptendTime.split(':');
-  
+
       const beginTime = new Date();
       beginTime.setHours(parseInt(beginTimeParts[0], 10));
       beginTime.setMinutes(parseInt(beginTimeParts[1], 10));
       const endTime = new Date();
       endTime.setHours(parseInt(endTimeParts[0], 10));
       endTime.setMinutes(parseInt(endTimeParts[1], 10));
-  
+
       const duration = endTime.getTime() - beginTime.getTime();
       console.log(duration);
-  
+
       if (!isNaN(duration) && duration > 0) {
         this.router.navigate(['/questions'], {
           queryParams: {
@@ -61,11 +75,11 @@ export class StutaskComponent implements OnInit {
             reasoningmark,
             englishmark,
             majormark,
-            
+
             totalmarks,
             comp_id,
-            duration
-          }
+            duration,
+          },
         });
       } else {
         console.error('Invalid duration:', duration);

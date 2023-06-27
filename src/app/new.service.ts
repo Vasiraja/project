@@ -107,13 +107,7 @@ export class MyService {
     return this.http.get(url);
   }
 
-  uploadProfilePicture(file: File): Observable<any> {
-    const url = `${this.vidurl}/api/uploadProfilePicture`;
-    const formData: FormData = new FormData();
-    formData.append('profilePicture', file);
-
-    return this.http.post(url, formData);
-  }
+ 
 
   gettasks(): Observable<tasks[]> {
     const geturl = `http://localhost:3000/api/challenges`;

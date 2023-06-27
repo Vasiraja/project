@@ -1,25 +1,27 @@
-<div class="profile-card">
-  <div class="profile-card-header">
-    <div class="user-avatar">
-      <label for="photo-input">
-        <img id="preview-image" [src]="previewSrc || 'default-profile-pic.jpg'" alt="User Photo">
-        <input id="photo-input" type="file" name="photo" (change)="handleFileInput($event)">
-        <span class="change-profile-picture">Change Profile Picture</span>
-      </label>
-    </div>
-    <div class="profile-info">
-      <h4>{{name}}</h4>
-      <div class="profile-item">
-        <p class="label">Gender:</p>
-        <h6 class="value">{{gender}}</h6>
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-card-header">
+      <div class="user-avatar">
+        <form (ngSubmit)="uploadProfileImage()" enctype="multipart/form-data">
+          <label for="profile-image" class="upload-label">
+            <img [src]="profileImageUrl ? profileImageUrl : 'https://www.w3schools.com/howto/img_avatar.png'">
+            <input type="file" id="profile-image" (change)="onSelectFile($event)">
+            Upload Image
+          </label>
+          <button type="submit">Save</button>
+        </form>
       </div>
-      <div class="profile-item">
-        <p class="label">Email:</p>
-        <h6 class="value">{{email}}</h6>
-      </div>
-      <div class="profile-item phone">
-        <p class="label">Phone:</p>
-        <h6 class="value">{{phone}}</h6>
+      <div class="profile-info">
+        <h4>{{ name }}</h4>
+        <div class="profile-item">
+          <p class="label">Gender: <span class="value">{{ gender }}</span></p>
+        </div>
+        <div class="profile-item">
+          <p class="label">Email: <span class="value">{{ email }}</span></p>
+        </div>
+        <div class="profile-item">
+          <p class="label">Phone: <span class="value">{{ phone }}</span></p>
+        </div>
       </div>
     </div>
   </div>
