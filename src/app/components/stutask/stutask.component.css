@@ -1,16 +1,13 @@
-/* Add a gradient background with a shining effect */
-:root {
+ :root {
   --primary-color: #007bff;
   --primary-color-light: #00a0ff;
-  /* Lighter shade of primary color */
   --danger-color: #dc3545;
   --text-color: #333;
   --background-color: #f8f9fa;
   --shine-gradient: linear-gradient(to right, var(--primary-color), var(--primary-color-light), var(--primary-color));
 }
 
-/* Adjustments for responsiveness */
-.card-container {
+ .card-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -26,13 +23,11 @@
   overflow: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease-in-out;
-  /* Add transition effect for hover */
-}
+ }
 
 .card:hover {
   transform: scale(1.05);
-  /* Scale up the card on hover */
-}
+ }
 
 .card img {
   width: 100%;
@@ -45,7 +40,7 @@
 }
 
 .card-title {
-  margin-top: 0;
+ margin-top: 0;
   font-size: 1rem;
   font-weight: 500;
   color: var(--text-color);
@@ -73,18 +68,19 @@
   font-weight: 500;
   text-align: center;
   text-transform: uppercase;
-   color: #fff;
+  color: #fff;
   background-color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: 0.25rem;
-  transition: transform 0.3s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: transform 0.3s ease-in-out, 
+  background-color 0.15s ease-in-out, 
+  border-color 0.15s ease-in-out, 
+  box-shadow 0.15s ease-in-out;
   position: relative;
-  /* Add relative positioning */
-}
+ }
 
 .btn:hover {
   transform: translateY(-2px);
-  /* Add a slight vertical lift effect on hover */
   background-color: var(--primary-color-light);
   border-color: var(--primary-color-light);
 }
@@ -107,14 +103,13 @@
   0% {
     background-position: -200% 0;
   }
-
+ 
   100% {
     background-position: 200% 0;
   }
 }
 
-/* Hide the button on hover */
-.btn:hover:after {
+ .btn:hover:after {
   display: none;
 }
 
@@ -142,23 +137,21 @@
   align-items: center;
   z-index: 9999;
   opacity: 0;
-   animation: fade-in 0.1s ease-in forwards;
+  animation: fade-in 0.1s ease-in forwards;
  }
 
 @keyframes fade-in {
   0% {
     opacity: 0;
-    /* Start with opacity set to 0 */
-  }
+   }
 
   100% {
     opacity: 1;
-    /* Fade in to full opacity */
-  }
+   }
 }
 
 .btn-primary:hover{
-  background-color: #dc3545;
+  background-color: #be2d3c;
   color:white;
   
 
@@ -167,7 +160,7 @@
   position: relative;
   top: 10px;
   border: 2px solid rgb(205, 226, 148);
-  background-color: rgb(160, 180, 170);
+  background-color: rgb(140, 226, 183);
   width: 200px;
   height: 50px;
   font-size: 18px;
@@ -187,7 +180,10 @@
   left: -200%;
   width: 10%;
   height: 100%;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+  background: linear-gradient(to right, 
+  rgba(255, 255, 255, 0), 
+  rgba(255, 255, 255, 0.8), 
+  rgba(255, 255, 255, 0));
   transition: all 0.5s ease;
   pointer-events: none;
 }

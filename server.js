@@ -164,16 +164,11 @@ app.post("/userdetails/:stuId/:userId", (req, res) => {
   const gram = req.body.gram;
   const spell = req.body.spell;
   const totalmarks =
-    parseInt(aptiscore) +
-    parseInt(fluency) +
-    parseInt(facedetections) +
-    parseInt(notlook) +
-    parseInt(voice) +
-    parseInt(gram);
+    req.body.totalmarks;
 
   // Construct the SQL query
   const query = `INSERT INTO userdetails (stuid, aptiscore, fluency, userId, totalmarks, facedetections, notlook, voice, gram,spell) 
-                 VALUES ('${stuId}', '${aptiscore}', '${fluency}', '${userId}', '${totalmarks}', '${facedetections}', '${notlook}', '${voice}', '${gram}','${spell}')`;
+                 VALUES ('${stuId}', '${aptiscore}', '${fluency}', '${userId}', '${totalmarks}', '-${facedetections}', '-${notlook}', '-${voice}', '-${gram}','-${spell}')`;
 
   // Execute the SQL query
   connection.query(query, (err, results) => {
