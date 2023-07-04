@@ -42,7 +42,7 @@ import { CloudComponent } from './components/cloud/cloud.component';
 {path:'admin',component:AdmininputComponent},
  
 {path:'userprofile',component:UserprofileComponent},
-{path:'admininput',component:AdmininputComponent},
+{path:'minusinput',component:AdmininputComponent},
 
  //_______________________________Student Routes________________________________________//
  {path:'sturegister',component:StuRegisterComponent},

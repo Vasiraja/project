@@ -2,12 +2,13 @@ import cv2
 import numpy as np
 import sys
 import urllib.request
+video_url = sys.argv[1]
 
 # Load the face detection model
 net = cv2.dnn.readNetFromCaffe('deploy.prototxt', 'res10_300x300_ssd_iter_140000.caffemodel')
 
 # Read the video URL from the command-line argument
-video_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
+# video_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
 
 # Open the video capture object
 video_capture = cv2.VideoCapture()

@@ -2,8 +2,8 @@ import sys
 import requests
 from sapling import SaplingClient
 
-audio_url = sys.argv[1]
-# audio_url = 'https://github.com/Vasiraja/videorefer/blob/main/first.mp4?raw=true'
+# audio_url = sys.argv[1]
+audio_url = 'https://vidzupload.s3.ap-south-1.amazonaws.com/360.mp4'
 
 endpoint = "https://api.assemblyai.com/v2/transcript"
 json = {
@@ -26,7 +26,7 @@ response = requests.get(endpoint_transcribed, headers=headers)
 text = response.json()["text"]
 
 # Initialize Sapling client with API key
-api_key = 'RP3ABL74AJ0TQ1DNMFW7SWKEPKW9VF37'
+api_key = 'EUBEPI6S8QRZ0DLIUC42YV233KDMYWUC'
 client = SaplingClient(api_key=api_key)
 
 # Get edits from Sapling API
@@ -46,5 +46,5 @@ num_spelling_errors = len(spelling_errors)
 num_grammatical_errors = len(grammatical_errors)
 
 # Print the outputs
-print(num_spelling_errors)
-print(num_grammatical_errors)
+print("no. of Spell errors",num_spelling_errors)
+print("no. of grammatical errors",num_grammatical_errors)

@@ -13,6 +13,7 @@ voicedetectminus: any;
 notlookcameraminus: any;
  gramminus: any;
 userId:any;
+ 
 
 constructor(private service:MyService,private route:ActivatedRoute,private router:Router){}
   ngOnInit(): void {
@@ -35,6 +36,9 @@ submitForm() {
     notlookcameraminus: this.notlookcameraminus,
      gramminus: this.gramminus
   };
+
+
+
 
   this.service.minusdata(formData,this.userId)
     .subscribe(

@@ -1,14 +1,14 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">We are getting your results please wait...</h5>
+    <h5 class="card-title">We are processing your results, please wait...</h5>
   </div>
 </div>
 
 <div class="row">
   <div class="col-sm-6">
-    <div class="card" [ngClass]="{'answer-available': facedetectCount, 'no-answer': !facedetectCount}">
+    <div class="card result-card" [ngClass]="{'answer-available': facedetectCount, 'no-answer': !facedetectCount}">
       <div class="card-body">
-        <h5 class="card-title">No. of faces Detected</h5>
+        <h5 class="card-title">Number of Faces Detected</h5>
         <div *ngIf="!facedetectCount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
@@ -20,9 +20,9 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card" [ngClass]="{'answer-available': notLookingCount, 'no-answer': !notLookingCount}">
+    <div class="card result-card" [ngClass]="{'answer-available': notLookingCount, 'no-answer': !notLookingCount}">
       <div class="card-body">
-        <h5 class="card-title">No. of not facing camera</h5>
+        <h5 class="card-title">Number of People Not Facing Camera</h5>
         <div *ngIf="!notLookingCount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
@@ -34,9 +34,9 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card" [ngClass]="{'answer-available': voicecount, 'no-answer': !voicecount}">
+    <div class="card result-card" [ngClass]="{'answer-available': voicecount, 'no-answer': !voicecount}">
       <div class="card-body">
-        <h5 class="card-title">No. of voices detected</h5>
+        <h5 class="card-title">Number of Voices Detected</h5>
         <div *ngIf="!voicecount && isloading" class="loading-spinner">
           <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
         </div>
@@ -48,7 +48,7 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card" [ngClass]="{'answer-available': fluency, 'no-answer': !fluency}">
+    <div class="card result-card" [ngClass]="{'answer-available': fluency, 'no-answer': !fluency}">
       <div class="card-body">
         <h5 class="card-title">Fluency Percentage</h5>
         <div *ngIf="!fluency && isloading" class="loading-spinner">
@@ -64,7 +64,7 @@
 
 <div class="row">
   <div class="col-sm-6">
-    <div class="card" [ngClass]="{'answer-available': spell, 'no-answer': !spell}">
+    <div class="card result-card" [ngClass]="{'answer-available': spell, 'no-answer': !spell}">
       <div class="card-body">
         <h5 class="card-title">Spelling Mistakes</h5>
         <div *ngIf="!spell && isloading" class="loading-spinner">
@@ -78,7 +78,7 @@
   </div>
 
   <div class="col-sm-6">
-    <div class="card" [ngClass]="{'answer-available': grammer, 'no-answer': !grammer}">
+    <div class="card result-card" [ngClass]="{'answer-available': grammer, 'no-answer': !grammer}">
       <div class="card-body">
         <h5 class="card-title">Grammar Mistakes</h5>
         <div *ngIf="!grammer && isloading" class="loading-spinner">
@@ -91,6 +91,3 @@
     </div>
   </div>
 </div>
-
- 
- 

@@ -9,6 +9,8 @@ const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { Readable } = require("stream");
+const os = require("os");
+const path = require("path");
 
 const { spawn } = require("child_process");
 
@@ -163,8 +165,7 @@ app.post("/userdetails/:stuId/:userId", (req, res) => {
   const voice = req.body.voice;
   const gram = req.body.gram;
   const spell = req.body.spell;
-  const totalmarks =
-    req.body.totalmarks;
+  const totalmarks = req.body.totalmarks;
 
   // Construct the SQL query
   const query = `INSERT INTO userdetails (stuid, aptiscore, fluency, userId, totalmarks, facedetections, notlook, voice, gram,spell) 
@@ -196,8 +197,8 @@ app.get("/challenges/:challengeId", (req, res) => {
   connection.query(query, (err, results) => {
     if (err) throw err;
     res.json(results);
-  })
-})
+  });
+});
 
 app.get("/getinformation", (req, res) => {
   const query = "select * from informations";
@@ -215,6 +216,7 @@ app.delete("/api/challenges/:challenge_id", (req, res) => {
     res.send(results);
   });
 });
+
 app.post("/api/register", async (req, res) => {
   try {
     const email = req.body.email;
@@ -263,7 +265,6 @@ app.post("/api/register", async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 app.post("/api/login", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -341,9 +342,6 @@ app.post("/api/update/:taskId", (req, res) => {
     }
   });
 });
-
- 
-
 
 app.put("/api/challenges/:challenge_id", (req, res) => {
   const challenge_id = req.params.challenge_id;
@@ -489,22 +487,6 @@ app.get("/api/challenges", (req, res) => {
     } else {
       res.json(results);
     }
-  });
-});
-
-app.post("/videoupload/:stuid", (req, res) => {
-  const { stuid } = req.params;
-  const gitlink = req.body.gitlink;
-  const gitlinktrue = gitlink + "?raw=true";
-  const sql = "INSERT INTO upload (gitlink, stuid) VALUES (?, ?)";
-
-  connection.query(sql, [gitlinktrue, stuid], (err, result) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Internal Server Error");
-    }
-
-    res.json(result);
   });
 });
 
@@ -736,15 +718,19 @@ app.post("/postinfo", (req, res) => {
 
   // Insert registration data into database
   const query = `INSERT INTO informations (headertopic,header,content,link) VALUES (?,?, ?, ?)`;
-  connection.query(query, [headertopic,header, content, link], (err, result) => {
-    if (err) {
-      console.error("Error inserting data into MySQL database: ", err);
-      res.status(500).json({ message: "Error registering information" });
-      return;
+  connection.query(
+    query,
+    [headertopic, header, content, link],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL database: ", err);
+        res.status(500).json({ message: "Error registering information" });
+        return;
+      }
+      console.log("Successfully information registered ", result.insertId);
+      res.status(200).json({ message: "Successfully registered information" });
     }
-    console.log("Successfully information registered ", result.insertId);
-    res.status(200).json({ message: "Successfully registered information" });
-  });
+  );
 });
 
 app.delete("/deleteinfo/:id", (req, res) => {
@@ -757,48 +743,95 @@ app.delete("/deleteinfo/:id", (req, res) => {
 });
 
 //------------------------------------------cloud---------------------------------------------//
-const s3Client = new S3Client({
-  region: "ap-south-1",
-  credentials: {
-    accessKeyId: "AKIA4GUYU6B64XJDDV2Y",
-    secretAccessKey: "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",
-  },
-});
+app.post("/postaccess", (req, res) => {
+  const bucket = req.body.bucket_name;
+  const access_key = req.body.access_key;
+  const secret_access_key = req.body.secret_access_key;
+  const region = req.body.region;
+  const sql = `insert into cloudaccess (bucket_name,access_key,secret_access_key,region) values ('${bucket}','${access_key}','${secret_access_key}','${region}')`
+  
+  connection.query(sql, (err, result) => {
+    if(result){ res.json(result);
+      console.log(result)
+    }
+    else if (err) {
+      console.log(err)
+    }
+   
+  })
+})
 
+app.get("/getaccess", (req, res) => {
+  const sql=`select * from cloudaccess order by id desc limit 1`;
+  connection.query(sql, (err, result) => {
+    if (result) {
+      console.log(result)
+      res.json(result)
+    }
+    else if (err) {
+      console.log(err)
+    }
+   })
+})
 
-app.post("/upload/:stuid", async (req, res) => {
-  try {
-    const videoPath = req.body.path;
-    const userid = req.params.stuid;
-
-    const fileData = fs.readFileSync(videoPath);
-
-    const uploadParams = {
-      Bucket: "vidzupload",
-      Key: `${userid}.mp4`,
-      Body: fileData,
-      ACL: "public-read",
-    };
-
-    const command = new PutObjectCommand(uploadParams);
-    await s3Client.send(command);
-
-    console.log("Uploaded successfully");
-    res.json({ message: "File uploaded successfully!" }); // Return response as JSON object
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while uploading the file." }); // Return error as JSON object
+var bucketname, accessKeyId, secretAccesskey;
+var s3Client;
+const sql = `SELECT * FROM cloudaccess ORDER BY id DESC LIMIT 1`;
+connection.query(sql, (err, result) => {
+  if (err) {
+    console.log(err);
+    return;
   }
+
+  bucketname = result[0].bucket_name;
+  accessKeyId = result[0].access_key;
+  secretAccesskey = result[0].secret_access_key;
+
+    s3Client = new S3Client({
+    region: "ap-south-1",
+    credentials: {
+      accessKeyId: accessKeyId,
+      secretAccessKey: secretAccesskey,
+    },
+  });
+
+  app.post("/upload/:stuid", async (req, res) => {
+    try {
+      const videoName = req.body.videoName;
+      const desktopPath = path.join(os.homedir(), "Desktop");
+      const videoPath = path.join(desktopPath, `${videoName}.mp4`);
+      const stuid = req.params.stuid;
+
+      const fileData = fs.readFileSync(videoPath);
+
+      const uploadParams = {
+        Bucket: bucketname,
+        Key: `${stuid}.mp4`,
+        Body: fileData,
+        ACL: "public-read",
+      };
+
+      const command = new PutObjectCommand(uploadParams);
+      await s3Client.send(command);
+
+      console.log("Uploaded successfully");
+      res.json({ message: "File uploaded successfully!" }); 
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while uploading the file." }); 
+    }
+  });
 });
+
 
 app.get("/cloudresult/:userid", async (req, res) => {
   try {
     const userid = req.params.userid;
     const videoKey = `${userid}.mp4`;
     const getObjectParams = {
-      Bucket: "vidzupload",
+      Bucket: bucketname,
       Key: videoKey,
     };
 
@@ -906,8 +939,6 @@ app.get("/cloudresult/:userid", async (req, res) => {
   }
 });
 
- 
-
 app.post("/profile/:stuid", upload.single("file"), async (req, res) => {
   try {
     const file = req.file;
@@ -937,13 +968,6 @@ app.post("/profile/:stuid", upload.single("file"), async (req, res) => {
       .json({ error: "An error occurred while uploading the file." });
   }
 });
-
-
-
-
-
-
-
 
 const port = process.env.port || 3000;
 

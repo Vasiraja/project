@@ -9,7 +9,7 @@ import { error } from 'console';
   styleUrls: ['./videoupload.component.css'],
 })
 export class VideouploadComponent implements OnInit {
-  path: string = '';
+  videoName: string = '';
   stuid: string = '';
   transcription: string = '';
   compID = '';
@@ -30,7 +30,7 @@ export class VideouploadComponent implements OnInit {
   }
 
   onSubmit() {
-    this.service.uploadcloud(this.path, this.stuid).subscribe({
+    this.service.uploadcloud(this.videoName, this.stuid).subscribe({
       next: (response:any) => {
         console.log(response);
         if (response) {

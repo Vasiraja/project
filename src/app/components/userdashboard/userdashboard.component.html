@@ -1,27 +1,82 @@
 <div class="dashboard-container">
-  <h1>Welcome, have a great day ahead!</h1>
-
-  <nav class="dashboard-navigation" *ngIf="!adminid">
+<header class="dashboard-header">
+  <nav class="dashboard-navigation">
     <ul>
       <li>
-        <a routerLink="/stulogin">Login</a>
+        <a routerLink="/stulogin" class="nav-link">Login</a>
       </li>
-      <li *ngIf="!adminid">
-        <a routerLink="/sturegister">Signup</a>
+      <li>
+        <a routerLink="/sturegister" class="nav-link">Signup</a>
       </li>
-      <li *ngIf="!adminid">
-        <a routerLink="/generateresume">Resume Build</a>
+      <li>
+        <a routerLink="/generateresume" class="nav-link">Resume Building</a>
       </li>
     </ul>
   </nav>
+</header>
+
+
+  <h1 class="dashboard-heading">Welcome, have a great day ahead!</h1>
+
+  <!-- <div *ngIf="!adminid" class="dashboard-content">
+    <nav class="dashboard-navigation">
+      <ul>
+        <li>
+          <a routerLink="/stulogin">Login</a>
+        </li>
+        <li>
+          <a routerLink="/sturegister">Signup</a>
+        </li>
+        <li>
+          <a routerLink="/generateresume">Resume Build</a>
+        </li>
+      </ul>
+    </nav>
+  </div> -->
 
   <div *ngIf="adminid" class="input-container">
-    <input type="text" [(ngModel)]="headertopic" class="text-input" placeholder="Initial instructions">
-    <input type="text" [(ngModel)]="header" class="text-input" placeholder="Header">
-    <input type="text" [(ngModel)]="content" class="text-input" placeholder="Content">
-    <input type="text" [(ngModel)]="link" class="text-input" placeholder="Link">
+    <h2 class="section-heading">Add Information</h2>
+    <div class="form-group">
+      <label for="headertopic">Initial Instructions:</label>
+      <input type="text" id="headertopic" [(ngModel)]="headertopic" class="form-control"
+        placeholder="Initial instructions">
+    </div>
+    <div class="form-group">
+      <label for="header">Header:</label>
+      <input type="text" id="header" [(ngModel)]="header" class="form-control" placeholder="Header">
+    </div>
+    <div class="form-group">
+      <label for="content">Content:</label>
+      <input type="text" id="content" [(ngModel)]="content" class="form-control" placeholder="Content">
+    </div>
+    <div class="form-group">
+      <label for="link">Link:</label>
+      <input type="text" id="link" [(ngModel)]="link" class="form-control" placeholder="Link">
+    </div>
 
     <button class="publish-button" (click)="addinformation()">Add Information</button>
+  </div>
+
+  <div class="cloudaccess" *ngIf="adminid">
+    <h2 class="section-heading">Cloud Access</h2>
+    <div class="form-group">
+      <label for="bucket_name">Bucket Name:</label>
+      <input type="text" id="bucket_name" [(ngModel)]="bucket_name" class="form-control" placeholder="Bucket Name">
+    </div>
+    <div class="form-group">
+      <label for="secret_access_key">Secret Access Key:</label>
+      <input type="text" id="secret_access_key" [(ngModel)]="secret_access_key" class="form-control"
+        placeholder="Secret Access Key">
+    </div>
+    <div class="form-group">
+      <label for="access_key">Access Key:</label>
+      <input type="text" id="access_key" [(ngModel)]="access_key" class="form-control" placeholder="Access Key">
+    </div>
+    <div class="form-group">
+      <label for="region">Region:</label>
+      <input type="text" id="region" [(ngModel)]="region" class="form-control" placeholder="Region">
+      <input type="submit" class="btn btn-primary" value="send" (click)="addaccess()">
+    </div>
   </div>
 
   <div class="dashboard-content">
@@ -30,21 +85,20 @@
         [ngClass]="{ 'alternate': i % 2 !== 0 }">
         <div class="card-content">
           <i class="card-icon fas fa-user"></i>
-          <h3>{{ headerInfo?.header }}</h3>
+          <h3 class="card-header">{{ headerInfo?.header }}</h3>
           <p class="card-description">{{ headerInfo?.content }}</p>
           <div class="card-link">
             <a [href]="headerInfo?.link">Learn More</a>
           </div>
         </div>
-        <div>{{ headerInfo?.headertopic }}</div>
+        <div class="card-headertopic">{{ headerInfo?.headertopic }}</div>
 
         <div *ngIf="adminid">
           <button class="btn btn-danger" (click)="delinfo(headerInfo.id)">
-            <mat-icon>delete</mat-icon>
+            <mat-icon>delete_outline</mat-icon>
           </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-

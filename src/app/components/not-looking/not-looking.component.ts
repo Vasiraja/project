@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MyService } from 'src/app/new.service';
 import { minus } from './minus';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-not-looking',
   templateUrl: 'not-looking.component.html',
@@ -20,7 +20,7 @@ export class NotLookingComponent {
   minus: minus | null = null;
   quizScore: number = 0;
 
-  constructor(private route: ActivatedRoute, private service: MyService) {}
+  constructor(private route: ActivatedRoute, private service: MyService,private router:Router) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -41,8 +41,8 @@ export class NotLookingComponent {
         this.notLookingCount = response.notLookingCount;
         this.voicecount = response.noofvoices;
         this.fluency = response.fluency;
-        this.spell = '4';
-        this.grammer = '5';
+        this.spell = '2';
+        this.grammer = '7';
 
         this.performCalculations();
       },
@@ -121,6 +121,7 @@ performCalculations() {
         (response: any) => {
           console.log('User details inserted successfully:', response);
           alert("Thank You for the Participation: " + this.stuid);
+          this.router.navigate(['/stutask'],{queryParams:{stuid:this.stuid}})
         },
         (error) => {
           console.error('Error inserting user details:', error);
@@ -129,4 +130,4 @@ performCalculations() {
     }
   }
 }
-//______________________________________________________________________//
+//____________________________________________________________________//

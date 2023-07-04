@@ -4,10 +4,10 @@
       <mat-card-title>Videoupload</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p><span class="message">* Provide Your Local Video URL And Name of that Video </span><br><mat-card-content>Ex. D:/desktop/files/video.mp4</mat-card-content>  </p>
+      <p><span class="message">* Make sure your video located in the desktop window </span><br><mat-card-content></mat-card-content>  </p>
       <form (ngSubmit)="onSubmit()" class="form">
         <mat-form-field class="form-field">
-          <textarea matInput placeholder="video URL" [(ngModel)]="path" name="path" rows="3"></textarea>
+          <textarea matInput placeholder="Enter the video name in your desktop" [(ngModel)]="videoName" name="path" rows="3"></textarea>
         </mat-form-field>
         <button mat-raised-button  type="submit">send</button><br><br>
       </form>
