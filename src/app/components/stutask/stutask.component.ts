@@ -13,8 +13,7 @@ export class StutaskComponent implements OnInit {
   tasks: any = [];
   stuid = '';
   showProfile: boolean = false;
-
-  constructor(
+   constructor(
     private myService: MyService,
     private route: ActivatedRoute,
     private router: Router
@@ -75,7 +74,6 @@ export class StutaskComponent implements OnInit {
             reasoningmark,
             englishmark,
             majormark,
-
             totalmarks,
             comp_id,
             duration,

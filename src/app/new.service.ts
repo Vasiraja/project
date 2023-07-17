@@ -119,13 +119,16 @@ export class MyService {
     const url = `${this.vidurl}/upload/${stuId}`;
     return this.http.post(url, { videoName }, { responseType: 'json' });
   }
-  postaccess(bucket_name: string, secret_access_key: string, access_key: string, region: string) {
-    
+  postaccess(
+    bucket_name: string,
+    secret_access_key: string,
+    access_key: string,
+    region: string
+  ) {
     const url = `${this.vidurl}/postaccess`;
     const data = { bucket_name, secret_access_key, access_key, region };
-    return this.http.post(url,data,{responseType:'json'})
-     
-   }
+    return this.http.post(url, data, { responseType: 'json' });
+  }
   getReasoningQuestions(amount: number, difficulty: string): Observable<any> {
     const url = `https://opentdb.com/api.php?amount=${amount}&category=10&difficulty=${difficulty}&type=multiple`;
     return this.http.get(url);
@@ -162,27 +165,20 @@ export class MyService {
     }
   }
 
-  // uploadVideo(gitlink: string, stuid: string): Observable<any> {
-  //   const url = `${this.vidurl}/videoupload/${stuid}`;
-  //   return this.http.post(url, { gitlink });
-  // }
-
+ 
   gettextresult(stuid: string): Observable<any> {
     const url = `${this.vidurl}/transcribe-video/${stuid}`;
     return this.http.get(url);
   }
 
-  // getPythonResults(stuid: string): Observable<any> {
-  //   const url = `${this.vidurl}/results/${stuid}`;
-  //   return this.http.get(url);
-  // }
+   
   getcloudresults(stuid: string): Observable<any> {
     const url = `${this.vidurl}/cloudresult/${stuid}`;
     return this.http.get(url);
   }
-  getcloud():Observable<any> {
+  getcloud(): Observable<any> {
     const url = `${this.vidurl}/getaccess`;
-  return this.http.get(url); 
+    return this.http.get(url);
   }
   //------------------------admin-------------------------//
   postinfo(infodata: any): Observable<any> {

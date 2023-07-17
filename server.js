@@ -7,8 +7,7 @@ const bcrypt = require("bcrypt");
 const fileUpload = require("express-fileupload");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
-const { v4: uuidv4 } = require("uuid");
-const { Readable } = require("stream");
+
 const os = require("os");
 const path = require("path");
 
@@ -742,37 +741,35 @@ app.delete("/deleteinfo/:id", (req, res) => {
   });
 });
 
-//------------------------------------------cloud---------------------------------------------//
+//----------------------------------------cloud---------------------------------------------//
 app.post("/postaccess", (req, res) => {
   const bucket = req.body.bucket_name;
   const access_key = req.body.access_key;
   const secret_access_key = req.body.secret_access_key;
   const region = req.body.region;
-  const sql = `insert into cloudaccess (bucket_name,access_key,secret_access_key,region) values ('${bucket}','${access_key}','${secret_access_key}','${region}')`
-  
-  connection.query(sql, (err, result) => {
-    if(result){ res.json(result);
-      console.log(result)
-    }
-    else if (err) {
-      console.log(err)
-    }
-   
-  })
-})
+  const sql = `insert into cloudaccess (bucket_name,access_key,secret_access_key,region) values ('${bucket}','${access_key}','${secret_access_key}','${region}')`;
 
-app.get("/getaccess", (req, res) => {
-  const sql=`select * from cloudaccess order by id desc limit 1`;
   connection.query(sql, (err, result) => {
     if (result) {
-      console.log(result)
-      res.json(result)
+      res.json(result);
+      console.log(result);
+    } else if (err) {
+      console.log(err);
     }
-    else if (err) {
-      console.log(err)
+  });
+});
+
+app.get("/getaccess", (req, res) => {
+  const sql = `select * from cloudaccess order by id desc limit 1`;
+  connection.query(sql, (err, result) => {
+    if (result) {
+      console.log(result);
+      res.json(result);
+    } else if (err) {
+      console.log(err);
     }
-   })
-})
+  });
+});
 
 var bucketname, accessKeyId, secretAccesskey;
 var s3Client;
@@ -787,7 +784,7 @@ connection.query(sql, (err, result) => {
   accessKeyId = result[0].access_key;
   secretAccesskey = result[0].secret_access_key;
 
-    s3Client = new S3Client({
+  s3Client = new S3Client({
     region: "ap-south-1",
     credentials: {
       accessKeyId: accessKeyId,
@@ -815,16 +812,15 @@ connection.query(sql, (err, result) => {
       await s3Client.send(command);
 
       console.log("Uploaded successfully");
-      res.json({ message: "File uploaded successfully!" }); 
+      res.json({ message: "File uploaded successfully!" });
     } catch (error) {
       console.error("Error uploading file:", error);
       res
         .status(500)
-        .json({ error: "An error occurred while uploading the file." }); 
+        .json({ error: "An error occurred while uploading the file." });
     }
   });
 });
-
 
 app.get("/cloudresult/:userid", async (req, res) => {
   try {

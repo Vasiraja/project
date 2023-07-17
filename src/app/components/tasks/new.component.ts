@@ -62,7 +62,7 @@ export class NewComponent implements OnInit {
     });
   }
   openinput(userId: string): void {
-    this.router.navigate(['/minusinput'], { queryParams: { userId: userId } });
+    this.router.navigate(['/admin'], { queryParams: { userId: userId } });
   }
   jumpuser(userId: string): void {
     this.router.navigate(['/update'], { queryParams: { userId: userId } });

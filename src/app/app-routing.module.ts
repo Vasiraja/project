@@ -39,10 +39,9 @@ import { CloudComponent } from './components/cloud/cloud.component';
 {path: 'update-tasks' ,component:MergeComponent},
 // {path:'tasks/:challenge_id', redirectTo:'/tasks' ,pathMatch:'full'},
 {path:'dashboard',component:DashboardComponent},
-{path:'admin',component:AdmininputComponent},
- 
+  
 {path:'userprofile',component:UserprofileComponent},
-{path:'minusinput',component:AdmininputComponent},
+{path:'admin',component:AdmininputComponent},
 
  //_______________________________Student Routes________________________________________//
  {path:'sturegister',component:StuRegisterComponent},

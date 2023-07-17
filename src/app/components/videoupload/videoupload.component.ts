@@ -31,30 +31,32 @@ export class VideouploadComponent implements OnInit {
 
   onSubmit() {
     this.service.uploadcloud(this.videoName, this.stuid).subscribe({
-      next: (response:any) => {
+      next: (response: any) => {
         console.log(response);
-        if (response) {
+            if (response) {
+            
           alert('Submitted successfully');
-           this.submitting = false;
-           this.transcription = response.transcription;
-           console.log(response);
- 
-           this.router.navigate(['/notlook'], {
-             queryParams: { stuid: this.stuid, compID: this.compID },
-           });
+          this.submitting = false;
+          this.transcription = response.transcription;
+                console.log(response);
+                console.log(this.transcription)
+
+          this.router.navigate(['/notlook'], {
+            queryParams: { stuid: this.stuid, compID: this.compID },
+          });
         } else {
           alert('Not submitted');
         }
       },
       error: (error) => {
-        console.error(error);
+          console.error(error);
+          alert("Ensure that your video name holds that video located in your local desktop path")
       },
     });
   }
 
   submitting: boolean = false;
 
-  
   // fetchNotLookingCount() {
   //   if (this.stuid) {
   //     this.service.getNotLookingCount(this.stuid).subscribe({
@@ -72,4 +74,4 @@ export class VideouploadComponent implements OnInit {
   jump() {
     this.router.navigate(['/detect'], { queryParams: { stuid: this.stuid } });
   }
-}  
+}

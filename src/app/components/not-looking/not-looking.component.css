@@ -2,13 +2,13 @@ body {
   background-color: #f2f2f2;
 }
 
-
 .card {
   margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  background-color: #e7d3d3;
 }
+
 
 .card-title {
   font-weight: bold;

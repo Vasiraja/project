@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatIconModule} from '@angular/material/icon';
- import { AppRoutingModule } from './app-routing.module';
+import { MatIconModule } from '@angular/material/icon';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NewComponent } from './components/tasks/new.component';
 import { HttpClientModule, HttpHeaders } from '@angular/common/http';
@@ -25,22 +25,22 @@ import { QuestionsComponent } from './components/questions/questions.component';
 import { NotEligibleComponent } from './components/not-eligible/not-eligible.component';
 import { VideouploadComponent } from './components/videoupload/videoupload.component';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card'
+import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NotLookingComponent } from './components/not-looking/not-looking.component';
 import { CardComponent } from './components/card/card.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserdetailsComponent } from './components/userdetails/userdetails.component';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { LogoutComponent } from './components/logout/logout.component';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { AdmininputComponent } from './components/admininput/admininput.component';
 import { UserdashboardComponent } from './components/userdashboard/userdashboard.component';
 import { GenerateresumeComponent } from './components/generateresume/generateresume.component';
 import { CloudComponent } from './components/cloud/cloud.component';
-   @NgModule({
+@NgModule({
   declarations: [
-     AppComponent,
+    AppComponent,
     NewComponent,
     UpdationComponent,
     InstRegisterComponent,
@@ -54,33 +54,34 @@ import { CloudComponent } from './components/cloud/cloud.component';
     QuestionsComponent,
     NotEligibleComponent,
     NotLookingComponent,
-     VideouploadComponent,
-     CardComponent,
-     DashboardComponent,
-     UserdetailsComponent,
-     UserprofileComponent,
-     AdmininputComponent,
-     UserdashboardComponent,
-     GenerateresumeComponent,
-     CloudComponent,
-   
-        ],  imports: [
-     BrowserModule,    MatFormFieldModule,
+    VideouploadComponent,
+    CardComponent,
+    DashboardComponent,
+    UserdetailsComponent,
+    UserprofileComponent,
+    AdmininputComponent,
+    UserdashboardComponent,
+    GenerateresumeComponent,
+    CloudComponent,
+  ],
+  imports: [
+    BrowserModule,
+    MatFormFieldModule,
 
-     AppRoutingModule,
-     HttpClientModule,
-      FormsModule,
-  MatTabsModule,
-  MatIconModule,
-  MatInputModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  
- 
-  MatProgressSpinnerModule,
-  BrowserAnimationsModule  ],
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    MatTabsModule,
+    MatIconModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+  ],
   providers: [MyService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

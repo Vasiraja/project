@@ -11,7 +11,17 @@ import { User } from './user';
   styleUrls: ['./userdetails.component.css']
 })
 export class UserdetailsComponent implements OnInit {
-  displayedColumns: string[] = ['stuid', 'fluency', 'notlook', 'aptiscore', 'gram', 'spell', 'facedetections', 'totalmarks', 'userId'];
+  displayedColumns: string[] = [
+    'stuid',
+    'fluency',
+    'notlook',
+    'aptiscore',
+    'gram',
+    'spell',
+    'facedetections',
+    'totalmarks',
+    'userId'
+  ];
   user: User[] = [];
   userId: string = '';
 
@@ -55,7 +65,7 @@ export class UserdetailsComponent implements OnInit {
     const excelBlob = this.workbookToExcelBlob(workbook);
 
     // Save the Blob as a file
-    saveAs(excelBlob, 'table_data.xlsx');
+    saveAs(excelBlob, `${this.userId}.xlsx`);
   }
 
   private workbookToExcelBlob(workbook: XLSX.WorkBook): Blob {
